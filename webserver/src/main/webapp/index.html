@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=UTF-8>
+<title>ToChat v1.0</title>
+<script>
+	var ws,url="ws://localhost:8080/tochatserver/echo";
+
+	function init() {
+		setWebSocket();
+	}
+
+	function setWebSocket() {
+		ws = new WebSocket(url);
+		ws.onopen = function(evt) {
+			onOpen(evt)
+		};
+		ws.onclose = function(evt) {
+			onClose(evt)
+		};
+		ws.onmessage = function(message) {
+			document.getElementById("chatlog").textContent += message.data + "\n";
+		};
+		ws.onerror = function(evt) {
+			onError(evt)
+		};
+	}
+
+	
+	function postToServer() {
+		ws.send(document.getElementById("msg").value);
+		document.getElementById("msg").value = "";
+	}
+	function closeConnect() {
+		ws.close();
+	}
+	window.addEventListener("load", init, false);
+</script>
+</head>
+<body>
+	<textarea id="chatlog" readonly></textarea>
+	<br />
+	<input id="msg" type="text" />
+	<button type="submit" id="sendButton" onClick="postToServer()">Send!</button>
+	<button type="submit" id="sendButton" onClick="closeConnect()">End</button>
+</body>
+</html>
