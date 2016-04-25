@@ -5,8 +5,8 @@
   <artifactId>webserver</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>webserver Maven Webapp</name>
-  <url>http://maven.apache.org</url>
+  <name>ToChat Webserver</name>
+  <url>https://github.com/daileyet/tochat.git</url>
   <properties>
 		<tomcatVersion>7.0.67</tomcatVersion>
 		<tomcatDeployUrl>http://localhost:8080/manager/text</tomcatDeployUrl>
@@ -29,6 +29,20 @@
 			<version>7.0</version>
 			<scope>provided</scope>
 	</dependency>
+	<dependency>
+			<groupId>com.openthinks.libs</groupId>
+			<artifactId>utilities</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<scope>provided</scope>
+	</dependency>
+	
+	<dependency>
+			<groupId>com.openthinks</groupId>
+			<artifactId>easyweb</artifactId>
+			<version>1.0</version>
+			<scope>provided</scope>
+	</dependency>
+	
   </dependencies>
   <build>
 	<defaultGoal>compile</defaultGoal>
