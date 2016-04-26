@@ -16,78 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: ChatMessage.java 
+* @Title: FetchRoomListMessage.java 
 * @Package cc.tochat.webserver.model 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 25, 2016
+* @date Apr 26, 2016
 * @version V1.0   
 */
 package cc.tochat.webserver.model;
 
-import cc.tochat.webserver.helper.MessageTypes;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * Message of Chat type
  * @author dailey.yet@outlook.com
  *
  */
-public abstract class ChatMessage extends AbstractMessage implements IRecordable {
-	private String id;
-	private String room;
-	private String from;
-	private String to;
-	private Object content;
-
-	@Override
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getRoom() {
-		return room;
-	}
-
-	public void setRoom(String room) {
-		this.room = room;
-	}
-
-	public String getFrom() {
-		return from;
-	}
-
-	public void setFrom(String from) {
-		this.from = from;
-	}
-
-	public String getTo() {
-		return to;
-	}
-
-	public void setTo(String to) {
-		this.to = to;
-	}
+public class FetchRoomListMessage extends ActionMessage {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Object> T getContent() {
-		return (T) content;
+	public List<Room> getContent() {
+		//TODO
+		return Collections.emptyList();
 	}
-
-	public <T extends Object> void setContent(T content) {
-		this.content = content;
-	}
-
-	@Override
-	public String getType() {
-		return MessageTypes.lookup(this.getClass());
-	}
-
 }

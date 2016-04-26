@@ -4,20 +4,31 @@
 <meta charset=UTF-8>
 <title>ToChat v1.0</title>
 <script>
-	var ws,url="ws://localhost:8080/tochatserver/echo/";
+	var ws, url = "ws://localhost:8080/tochatserver/chat/{room}";
 
 	function init() {
 		setWebSocket();
 	}
+	
+	function setRoom(){
+		setWebSocket();
+	}
 
 	function setWebSocket() {
-		ws = new WebSocket(url);
+		try{
+			if(ws && ws.close){
+				ws.close()
+			}
+		}catch(e){console.log(e);}
+		var room = document.getElementById("roomlist").value;
+		var _url = url.replace("{room}", room);
+		ws = new WebSocket(_url);
 		ws.onmessage = function(message) {
-			document.getElementById("chatlog").textContent += message.data + "\n";
+			document.getElementById("chatlog").textContent += message.data
+					+ "\n";
 		};
 	}
 
-	
 	function postToServer() {
 		ws.send(document.getElementById("msg").value);
 		document.getElementById("msg").value = "";
@@ -29,6 +40,16 @@
 </script>
 </head>
 <body>
+	<div>
+		<label>Select a room:</label>
+		<select id="roomlist">
+			<option value="R1" selected>Room 1</option>
+			<option value="R2">Room 2</option>
+			<option value="R3">Room 3</option>
+		</select>
+		<button id="setRoom" onClick="setRoom()">Apply</button>
+	</div>
+
 	<textarea id="chatlog" readonly></textarea>
 	<br />
 	<input id="msg" type="text" />

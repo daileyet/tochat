@@ -33,7 +33,6 @@ import java.util.Date;
  */
 public abstract class AbstractMessage implements IMessage {
 	private Date timestamp;
-	private String room;
 
 	public Date getTimestamp() {
 		return timestamp;
@@ -41,14 +40,6 @@ public abstract class AbstractMessage implements IMessage {
 
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
-	}
-
-	public String getRoom() {
-		return room;
-	}
-
-	public void setRoom(String room) {
-		this.room = room;
 	}
 
 }

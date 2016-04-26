@@ -30,6 +30,15 @@ package cc.tochat.webserver.model;
  *
  */
 public class LoginMessage extends ActionMessage {
+	private String room;
+
+	public String getRoom() {
+		return room;
+	}
+
+	public void setRoom(String room) {
+		this.room = room;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override

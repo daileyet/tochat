@@ -33,7 +33,16 @@ import java.util.List;
  *
  */
 public class FetchHistoryMessage extends ActionMessage {
+	private String room;
 	private Integer count;
+
+	public String getRoom() {
+		return room;
+	}
+
+	public void setRoom(String room) {
+		this.room = room;
+	}
 
 	public Integer getCount() {
 		return count;
@@ -46,6 +55,7 @@ public class FetchHistoryMessage extends ActionMessage {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<IMessage> getContent() {
+		//TODO
 		return Collections.emptyList();
 	}
 
