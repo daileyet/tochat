@@ -16,31 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: IMessage.java 
+* @Title: IEncode.java 
 * @Package cc.tochat.webserver.model 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 25, 2016
+* @date Apr 27, 2016
 * @version V1.0   
 */
 package cc.tochat.webserver.model;
 
 /**
- * Interface of all communication message
+ * Encode the value of {@link IMessage#getContent()}
  * @author dailey.yet@outlook.com
  *
  */
-public interface IMessage {
-	/**
-	 * get this type instance message content
-	 * @return message content
-	 */
-	public <T extends Object> T getContent();
-
-	/**
-	 * get this instance message type
-	 * @return message type
-	 */
-	public String getType();
-
+public interface IContentEncoder {
+	public String encode();
 }

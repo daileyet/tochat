@@ -25,6 +25,9 @@
 */
 package cc.tochat.webserver.controller.websocket;
 
+import java.io.IOException;
+import java.util.Set;
+
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -33,28 +36,53 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import cc.tochat.webserver.model.ChatMessage;
+import cc.tochat.webserver.model.IConstant;
+import cc.tochat.webserver.model.decoder.ChatMessageDecoder;
+import cc.tochat.webserver.model.encoder.ChatMessageEncoder;
+
 import com.openthinks.libs.utilities.logger.ProcessLogger;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
-@ServerEndpoint("/chat/{room}")
+@ServerEndpoint(value = "/chat/{room}", encoders = { ChatMessageEncoder.class }, decoders = { ChatMessageDecoder.class })
 public class ChatEndPoint {
-
 	@OnOpen
 	public void open(Session session, EndpointConfig configuration, @PathParam("room") String room) {
+		session.getUserProperties().put(IConstant.MSG_ROOM, room);
 		ProcessLogger.debug("One client connect to room:[" + room + "]");
 	}
 
 	@OnMessage
-	public String processMessage(Session session, String message, @PathParam("room") String room) {
+	public void processMessage(Session session, ChatMessage chatMessage) {
+		String room = (String) session.getUserProperties().get(IConstant.MSG_ROOM);
+		ProcessLogger.debug("One client send message to room:[" + room + "]," + chatMessage);
+		String rmsg = "Receive your message:[" + chatMessage.getContent() + "], you are in room:[" + room + "]";
+		log(session.getOpenSessions(), room);
+		for (Session s : session.getOpenSessions()) {
+			if (!room.equals(s.getUserProperties().get(IConstant.MSG_ROOM)))
+				continue;
+			try {
+				s.getBasicRemote().sendText(rmsg);
+			} catch (IOException e) {
+				ProcessLogger.error("Error on process message in room:[" + room + "]");
+			}
+		}
+	}
 
-		return "Receive your message:[" + message + "], you are in room:[" + room + "]";
+	private void log(Set<Session> openSessions, String room) {
+		ProcessLogger.debug("all client which coonect to room:[" + room + "]");
+		for (Session s : openSessions) {
+			String r = (String) s.getUserProperties().get(IConstant.MSG_ROOM);
+			ProcessLogger.debug(">>> Session ID:" + s.getId() + ",Room:" + r);
+		}
 	}
 
 	@OnClose
 	public void close(Session session, @PathParam("room") String room) {
 		ProcessLogger.debug("One client disconnect to room:[" + room + "]");
 	}
+
 }

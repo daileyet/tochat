@@ -16,31 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: IMessage.java 
+* @Title: IConstant.java 
 * @Package cc.tochat.webserver.model 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 25, 2016
+* @date Apr 27, 2016
 * @version V1.0   
 */
 package cc.tochat.webserver.model;
 
 /**
- * Interface of all communication message
  * @author dailey.yet@outlook.com
  *
  */
-public interface IMessage {
-	/**
-	 * get this type instance message content
-	 * @return message content
-	 */
-	public <T extends Object> T getContent();
+public interface IConstant {
+	String MESSAGE_TYPE = "mt";
+	String EMPTY_CHAT_MESSAGE_TYPE = "C99";
+	String EMPTY_ACTION_MESSAGE_TYPE = "A99";
 
-	/**
-	 * get this instance message type
-	 * @return message type
-	 */
-	public String getType();
-
+	String MSG_ID = "id";
+	String MSG_ROOM = "ro";
+	String MSG_FROM = "fr";
+	String MSG_TO = "to";
+	String MSG_CONTENT = "co";
+	String MSG_TIMESTAMP = "ti";
 }

@@ -30,6 +30,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import cc.tochat.webserver.model.FetchHistoryMessage;
+import cc.tochat.webserver.model.FetchRoomListMessage;
 import cc.tochat.webserver.model.IMessage;
 import cc.tochat.webserver.model.LoginMessage;
 import cc.tochat.webserver.model.LogoutMessage;
@@ -48,12 +49,13 @@ public final class MessageTypes {
 	private final static Map<Class<? extends IMessage>, String> directory = new ConcurrentHashMap<Class<? extends IMessage>, String>();
 
 	static {
-		register(TextChatMessage.class, "TEXT_C");
-		register(VoiceChatMessage.class, "VOICE_C");
-		register(VideoChatMessage.class, "VIDEO_C");
-		register(LoginMessage.class, "LOGIN_A");
-		register(LogoutMessage.class, "LOGOUT_A");
-		register(FetchHistoryMessage.class, "HISTORY_A");
+		register(TextChatMessage.class, "C00");
+		register(VoiceChatMessage.class, "C10");
+		register(VideoChatMessage.class, "C20");
+		register(LoginMessage.class, "C01");
+		register(LogoutMessage.class, "C02");
+		register(FetchHistoryMessage.class, "A00");
+		register(FetchRoomListMessage.class, "A01");
 	}
 
 	/**
@@ -67,11 +69,12 @@ public final class MessageTypes {
 		return type == null ? clazz.getName() : type;
 	}
 
-	public final static Class<? extends IMessage> valueOf(String messageTypeName) {
-		Class<? extends IMessage> clazz = null;
+	@SuppressWarnings("unchecked")
+	public final static <T extends IMessage> Class<T> valueOf(String messageTypeName) {
+		Class<T> clazz = null;
 		for (Entry<Class<? extends IMessage>, String> entry : directory.entrySet()) {
 			if (entry.getValue().equals(messageTypeName)) {
-				clazz = entry.getKey();
+				clazz = (Class<T>) entry.getKey();
 			}
 		}
 		return clazz;

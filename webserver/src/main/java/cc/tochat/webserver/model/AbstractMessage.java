@@ -25,20 +25,18 @@
 */
 package cc.tochat.webserver.model;
 
-import java.util.Date;
-
 /**
  * @author dailey.yet@outlook.com
  *
  */
 public abstract class AbstractMessage implements IMessage {
-	private Date timestamp;
+	private String timestamp;
 
-	public Date getTimestamp() {
+	public String getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(Date timestamp) {
+	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
 	}
 

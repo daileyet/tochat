@@ -25,8 +25,6 @@
 */
 package cc.tochat.webserver.model;
 
-import java.util.Date;
-
 /**
  * @author dailey.yet@outlook.com
  *
@@ -36,7 +34,7 @@ public class Room implements IRecordable {
 	private String name;
 	private String owner;
 	private String active;
-	private Date createon;
+	private String createon;
 	private Integer period;
 	private String desc;
 
@@ -73,11 +71,11 @@ public class Room implements IRecordable {
 		this.active = active;
 	}
 
-	public Date getCreateon() {
+	public String getCreateon() {
 		return createon;
 	}
 
-	public void setCreateon(Date createon) {
+	public void setCreateon(String createon) {
 		this.createon = createon;
 	}
 

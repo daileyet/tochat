@@ -29,16 +29,7 @@ package cc.tochat.webserver.model;
  * @author dailey.yet@outlook.com
  *
  */
-public class LogoutMessage extends ActionMessage {
-	private String room;
-
-	public String getRoom() {
-		return room;
-	}
-
-	public void setRoom(String room) {
-		this.room = room;
-	}
+public class LogoutMessage extends ChatMessage {
 
 	@SuppressWarnings("unchecked")
 	@Override

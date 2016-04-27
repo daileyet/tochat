@@ -32,7 +32,7 @@ import cc.tochat.webserver.helper.MessageTypes;
  * @author dailey.yet@outlook.com
  *
  */
-public abstract class ChatMessage extends AbstractMessage implements IRecordable {
+public abstract class ChatMessage extends AbstractMessage implements IRecordable, IContentEncoder {
 	private String id;
 	private String room;
 	private String from;
@@ -88,6 +88,26 @@ public abstract class ChatMessage extends AbstractMessage implements IRecordable
 	@Override
 	public String getType() {
 		return MessageTypes.lookup(this.getClass());
+	}
+
+	@Override
+	public String encode() {
+		return (String) getContent();
+	}
+
+	@Override
+	public String toString() {
+		return "ChatMessage [id=" + id + ", room=" + room + ", from=" + from + ", to=" + to + ", content=" + content
+				+ "]";
+	}
+
+	public final static ChatMessage EMPTY = new NullChatMessage();
+
+	static class NullChatMessage extends ChatMessage {
+		@Override
+		public String getType() {
+			return "EMPTY";
+		}
 	}
 
 }
