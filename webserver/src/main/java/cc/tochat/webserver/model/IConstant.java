@@ -40,4 +40,6 @@ public interface IConstant {
 	String MSG_TO = "to";
 	String MSG_CONTENT = "co";
 	String MSG_TIMESTAMP = "ti";
+	String JOIN_AT = "@";
+	String MSG_ROOM_DEFAULT_INSTANCE = "NULL";
 }

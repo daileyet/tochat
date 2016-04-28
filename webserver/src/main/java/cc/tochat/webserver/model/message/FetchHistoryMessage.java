@@ -23,7 +23,7 @@
 * @date Apr 25, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.model;
+package cc.tochat.webserver.model.message;
 
 import java.util.Collections;
 import java.util.List;

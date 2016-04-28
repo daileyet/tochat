@@ -16,28 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: AbstractMessage.java 
+* @Title: TextChatMessage.java 
 * @Package cc.tochat.webserver.model 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
 * @date Apr 25, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.model;
+package cc.tochat.webserver.model.message;
+
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
-public abstract class AbstractMessage implements IMessage {
-	private String timestamp;
-
-	public String getTimestamp() {
-		return timestamp;
+public class TextChatMessage extends ChatMessage {
+	@SuppressWarnings("unchecked")
+	@Override
+	public String getContent() {
+		return super.getContent();
 	}
-
-	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
-	}
-
 }

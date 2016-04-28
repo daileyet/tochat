@@ -29,14 +29,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import cc.tochat.webserver.model.FetchHistoryMessage;
-import cc.tochat.webserver.model.FetchRoomListMessage;
-import cc.tochat.webserver.model.IMessage;
-import cc.tochat.webserver.model.LoginMessage;
-import cc.tochat.webserver.model.LogoutMessage;
-import cc.tochat.webserver.model.TextChatMessage;
-import cc.tochat.webserver.model.VideoChatMessage;
-import cc.tochat.webserver.model.VoiceChatMessage;
+import cc.tochat.webserver.model.message.FetchHistoryMessage;
+import cc.tochat.webserver.model.message.FetchRoomListMessage;
+import cc.tochat.webserver.model.message.IMessage;
+import cc.tochat.webserver.model.message.LoginMessage;
+import cc.tochat.webserver.model.message.LogoutMessage;
+import cc.tochat.webserver.model.message.TextChatMessage;
+import cc.tochat.webserver.model.message.VideoChatMessage;
+import cc.tochat.webserver.model.message.VoiceChatMessage;
 
 import com.openthinks.libs.utilities.Checker;
 

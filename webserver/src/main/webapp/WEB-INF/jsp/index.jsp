@@ -24,9 +24,13 @@
 		var _url = url.replace("{room}", room);
 		ws = new WebSocket(_url);
 		ws.onmessage = function(message) {
+			console.log(message.data.fr);
 			document.getElementById("chatlog").textContent += message.data
 					+ "\n";
 		};
+		ws.onerror = function(){
+			console.log("WebSocket occur error.");
+		}
 	}
 
 	function postToServer() {

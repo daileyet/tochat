@@ -16,20 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: VideoChatMessage.java 
-* @Package cc.tochat.webserver.model 
+* @Title: IMessageHander.java 
+* @Package cc.tochat.webserver.controller.websocket.support 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 25, 2016
+* @date Apr 28, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.model;
+package cc.tochat.webserver.controller.websocket.support;
+
+import cc.tochat.webserver.model.message.IMessage;
 
 /**
- * Video message
  * @author dailey.yet@outlook.com
  *
  */
-public class VideoChatMessage extends ChatMessage {
+public interface IMessageHander extends IHander<IMessage> {
 
 }

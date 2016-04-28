@@ -23,9 +23,11 @@
 * @date Apr 25, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.model;
+package cc.tochat.webserver.model.message;
 
 import cc.tochat.webserver.helper.MessageTypes;
+import cc.tochat.webserver.model.IContentEncoder;
+import cc.tochat.webserver.model.IRecordable;
 
 /**
  * Message of Chat type

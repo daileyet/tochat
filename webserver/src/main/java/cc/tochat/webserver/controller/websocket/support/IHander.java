@@ -16,34 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: ActionMessage.java 
-* @Package cc.tochat.webserver.model 
+* @Title: IHander.java 
+* @Package cc.tochat.webserver.controller.websocket.support 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 25, 2016
+* @date Apr 28, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.model;
-
-import cc.tochat.webserver.helper.MessageTypes;
+package cc.tochat.webserver.controller.websocket.support;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
-public abstract class ActionMessage extends AbstractMessage {
-	private String from;
-
-	public String getFrom() {
-		return from;
-	}
-
-	public void setFrom(String from) {
-		this.from = from;
-	}
-
-	@Override
-	public String getType() {
-		return MessageTypes.lookup(this.getClass());
-	}
+public interface IHander<T> {
+	void process(T t);
 }

@@ -42,7 +42,7 @@ import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 
 import cc.tochat.webserver.helper.MessageTypes;
-import cc.tochat.webserver.model.ChatMessage;
+import cc.tochat.webserver.model.message.ChatMessage;
 
 import com.openthinks.libs.utilities.InstanceUtilities;
 import com.openthinks.libs.utilities.logger.ProcessLogger;

@@ -16,20 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: VoiceChatMessage.java 
-* @Package cc.tochat.webserver.model 
+* @Title: IEndPointSession.java 
+* @Package cc.tochat.webserver.controller.websocket.support 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 25, 2016
+* @date Apr 28, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.model;
+package cc.tochat.webserver.controller.websocket.support;
 
 /**
- * Voice message, like the audio message
  * @author dailey.yet@outlook.com
  *
  */
-public class VoiceChatMessage extends ChatMessage {
+public interface IEndPointSession {
+
+	public boolean isOpen();
+
+	public String getId();
+
+	public String getGroup();
 
 }

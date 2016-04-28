@@ -16,31 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: IMessage.java 
+* @Title: FetchRoomListMessage.java 
 * @Package cc.tochat.webserver.model 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 25, 2016
+* @date Apr 26, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.model;
+package cc.tochat.webserver.model.message;
+
+import java.util.Collections;
+import java.util.List;
+
+import cc.tochat.webserver.model.Room;
 
 /**
- * Interface of all communication message
  * @author dailey.yet@outlook.com
  *
  */
-public interface IMessage {
-	/**
-	 * get this type instance message content
-	 * @return message content
-	 */
-	public <T extends Object> T getContent();
+public class FetchRoomListMessage extends ActionMessage {
 
-	/**
-	 * get this instance message type
-	 * @return message type
-	 */
-	public String getType();
-
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Room> getContent() {
+		//TODO
+		return Collections.emptyList();
+	}
 }

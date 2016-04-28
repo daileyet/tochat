@@ -16,22 +16,29 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: IEncode.java 
-* @Package cc.tochat.webserver.model 
+* @Title: IEndPointSupported.java 
+* @Package cc.tochat.webserver.controller.websocket.support 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 27, 2016
+* @date Apr 28, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.model;
+package cc.tochat.webserver.controller.websocket.support;
 
-import cc.tochat.webserver.model.message.IMessage;
+import javax.websocket.Session;
 
 /**
- * Encode the value of {@link IMessage#getContent()}
  * @author dailey.yet@outlook.com
  *
  */
-public interface IContentEncoder {
-	public String encode();
+public interface IEndPointSupported<T, E extends IEndPointSession> {
+
+	public void addSession(E endPointSession);
+
+	public IErrorHander getErrorHander(Session session);
+
+	public IMessageHander getMessageHander(Session session);
+
+	public void remove(Session session);
+
 }

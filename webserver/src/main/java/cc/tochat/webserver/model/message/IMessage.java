@@ -16,25 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: LoginMessage.java 
+* @Title: IMessage.java 
 * @Package cc.tochat.webserver.model 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
 * @date Apr 25, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.model;
+package cc.tochat.webserver.model.message;
 
 /**
+ * Interface of all communication message
  * @author dailey.yet@outlook.com
  *
  */
-public class LoginMessage extends ChatMessage {
+public interface IMessage {
+	/**
+	 * get this type instance message content
+	 * @return message content
+	 */
+	public <T extends Object> T getContent();
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public String getContent() {
-		return "";
-	}
+	/**
+	 * get this instance message type
+	 * @return message type
+	 */
+	public String getType();
 
 }

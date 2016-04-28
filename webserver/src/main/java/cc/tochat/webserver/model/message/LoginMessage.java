@@ -16,22 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: IEncode.java 
+* @Title: LoginMessage.java 
 * @Package cc.tochat.webserver.model 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 27, 2016
+* @date Apr 25, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.model;
+package cc.tochat.webserver.model.message;
 
-import cc.tochat.webserver.model.message.IMessage;
 
 /**
- * Encode the value of {@link IMessage#getContent()}
  * @author dailey.yet@outlook.com
  *
  */
-public interface IContentEncoder {
-	public String encode();
+public class LoginMessage extends ChatMessage {
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public String getContent() {
+		return "";
+	}
+
 }

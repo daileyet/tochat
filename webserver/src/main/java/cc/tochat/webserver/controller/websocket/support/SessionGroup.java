@@ -16,25 +16,38 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: LogoutMessage.java 
-* @Package cc.tochat.webserver.model 
+* @Title: ChatGroupSession.java 
+* @Package cc.tochat.webserver.controller.websocket.support 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 25, 2016
+* @date Apr 28, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.model;
+package cc.tochat.webserver.controller.websocket.support;
+
+import java.util.HashSet;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
-public class LogoutMessage extends ChatMessage {
+public final class SessionGroup<T extends IEndPointSession> extends HashSet<T> implements IEndPointSession {
+	private static final long serialVersionUID = 3529009300847141055L;
+	private String groupName;
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public String getContent() {
-		return "";
+	public boolean isOpen() {
+		return true;
+	}
+
+	@Override
+	public String getId() {
+		return groupName;
+	}
+
+	@Override
+	public String getGroup() {
+		return groupName;
 	}
 
 }

@@ -30,8 +30,8 @@ import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 
-import cc.tochat.webserver.model.ChatMessage;
 import cc.tochat.webserver.model.IConstant;
+import cc.tochat.webserver.model.message.ChatMessage;
 
 /**
  * @author dailey.yet@outlook.com

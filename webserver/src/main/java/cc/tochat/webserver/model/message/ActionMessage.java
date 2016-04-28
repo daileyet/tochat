@@ -16,23 +16,34 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: TextChatMessage.java 
+* @Title: ActionMessage.java 
 * @Package cc.tochat.webserver.model 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
 * @date Apr 25, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.model;
+package cc.tochat.webserver.model.message;
+
+import cc.tochat.webserver.helper.MessageTypes;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
-public class TextChatMessage extends ChatMessage {
-	@SuppressWarnings("unchecked")
+public abstract class ActionMessage extends AbstractMessage {
+	private String from;
+
+	public String getFrom() {
+		return from;
+	}
+
+	public void setFrom(String from) {
+		this.from = from;
+	}
+
 	@Override
-	public String getContent() {
-		return super.getContent();
+	public String getType() {
+		return MessageTypes.lookup(this.getClass());
 	}
 }

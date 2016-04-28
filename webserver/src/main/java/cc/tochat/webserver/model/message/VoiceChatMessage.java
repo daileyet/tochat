@@ -16,28 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: FetchRoomListMessage.java 
+* @Title: VoiceChatMessage.java 
 * @Package cc.tochat.webserver.model 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 26, 2016
+* @date Apr 25, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.model;
+package cc.tochat.webserver.model.message;
 
-import java.util.Collections;
-import java.util.List;
 
 /**
+ * Voice message, like the audio message
  * @author dailey.yet@outlook.com
  *
  */
-public class FetchRoomListMessage extends ActionMessage {
+public class VoiceChatMessage extends ChatMessage {
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Room> getContent() {
-		//TODO
-		return Collections.emptyList();
-	}
 }
