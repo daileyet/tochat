@@ -25,21 +25,49 @@
 */
 package cc.tochat.webserver.model.message;
 
-import java.util.Collections;
 import java.util.List;
 
+import cc.tochat.webserver.model.IConstant;
 import cc.tochat.webserver.model.Room;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
 public class FetchRoomListMessage extends ActionMessage {
+	@SerializedName(IConstant.MSG_COUNT)
+	private int count = IConstant.FETCH_COUNT_DEFAULT;
+	@SerializedName(IConstant.MSG_OFFSET)
+	private long offset;
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public long getOffset() {
+		return offset;
+	}
+
+	public void setOffset(long offset) {
+		this.offset = offset;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Room> getContent() {
-		//TODO
-		return Collections.emptyList();
+		return super.getContent();
 	}
+
+	@Override
+	public String toString() {
+		return "FetchRoomListMessage [getCount()=" + getCount() + ", getOffset()=" + getOffset() + ", getContent()="
+				+ getContent() + ", getFrom()=" + getFrom() + ", getType()=" + getType() + "]";
+	}
+
 }

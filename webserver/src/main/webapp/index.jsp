@@ -17,6 +17,8 @@ if(session.getAttribute("LOGIN_NAME")!=null){
 	session.setAttribute("LOGIN_NAME","dailey");
 }
 %>
-<jsp:include page="index.htm"></jsp:include>
+
+<jsp:forward page="/room/index.htm"></jsp:forward>
+
 </body>
 </html>

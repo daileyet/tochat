@@ -30,16 +30,22 @@ package cc.tochat.webserver.model;
  *
  */
 public interface IConstant {
-	String MESSAGE_TYPE = "mt";
 	String EMPTY_CHAT_MESSAGE_TYPE = "C99";
 	String EMPTY_ACTION_MESSAGE_TYPE = "A99";
 
+	//////////////////////////////
+	String MSG_TYPE = "mt";
 	String MSG_ID = "id";
 	String MSG_ROOM = "ro";
 	String MSG_FROM = "fr";
 	String MSG_TO = "to";
 	String MSG_CONTENT = "co";
 	String MSG_TIMESTAMP = "ti";
+	String MSG_COUNT = "cou";
+	String MSG_OFFSET = "of";
+
+	/////////////////////////////
 	String JOIN_AT = "@";
 	String MSG_ROOM_DEFAULT_INSTANCE = "NULL";
+	int FETCH_COUNT_DEFAULT = 15;
 }

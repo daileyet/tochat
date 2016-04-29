@@ -26,12 +26,18 @@
 package cc.tochat.webserver.model.message;
 
 import cc.tochat.webserver.helper.MessageTypes;
+import cc.tochat.webserver.model.IConstant;
+import cc.tochat.webserver.model.IDecoder;
+import cc.tochat.webserver.model.IEncoder;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
-public abstract class ActionMessage extends AbstractMessage {
+public abstract class ActionMessage extends AbstractMessage implements IEncoder, IDecoder<ActionMessage> {
+	@SerializedName(IConstant.MSG_FROM)
 	private String from;
 
 	public String getFrom() {
@@ -45,5 +51,41 @@ public abstract class ActionMessage extends AbstractMessage {
 	@Override
 	public String getType() {
 		return MessageTypes.lookup(this.getClass());
+	}
+
+	@Override
+	public String encode() {
+		return gson.toJson(this);
+	}
+
+	@Override
+	public ActionMessage decode(String target) {
+		return gson.fromJson(target, this.getClass());
+	}
+
+	public final static ActionMessage EMPTY = new NullMessage();
+
+	static class NullMessage extends ActionMessage {
+		@Override
+		public String getType() {
+			return "EMPTY";
+		}
+
+		@Override
+		public String encode() {
+			return "";
+		}
+
+		@Override
+		public ActionMessage decode(String target) {
+			return this;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public String getContent() {
+			return "";
+		}
+
 	}
 }

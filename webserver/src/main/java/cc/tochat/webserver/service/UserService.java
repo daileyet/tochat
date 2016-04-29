@@ -16,27 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: MainController.java 
-* @Package cc.tochat.webserver.controller 
+* @Title: UserService.java 
+* @Package cc.tochat.webserver.service 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 28, 2016
+* @date Apr 29, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.controller;
-
-import com.openthinks.easyweb.annotation.Controller;
-import com.openthinks.easyweb.annotation.Mapping;
+package cc.tochat.webserver.service;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
-@Controller
-public class MainController {
+public class UserService {
 
-	@Mapping("/index")
-	public String chat() {
-		return "WEB-INF/index.jsp";
-	}
 }

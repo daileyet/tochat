@@ -16,45 +16,39 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: FetchHistoryMessage.java 
-* @Package cc.tochat.webserver.model 
+* @Title: ActionMessageEncoder.java 
+* @Package cc.tochat.webserver.model.encoder 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 25, 2016
+* @date Apr 29, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.model.message;
+package cc.tochat.webserver.model.encoder;
 
-import java.util.List;
+import javax.websocket.EncodeException;
+import javax.websocket.Encoder;
+import javax.websocket.EndpointConfig;
+
+import cc.tochat.webserver.model.message.ActionMessage;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
-public class FetchHistoryMessage extends ActionMessage {
-	private String room;
-	private Integer count;
+public class ActionMessageEncoder implements Encoder.Text<ActionMessage> {
 
-	public String getRoom() {
-		return room;
-	}
-
-	public void setRoom(String room) {
-		this.room = room;
-	}
-
-	public Integer getCount() {
-		return count;
-	}
-
-	public void setCount(Integer count) {
-		this.count = count;
-	}
-
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<IMessage> getContent() {
-		return super.getContent();
+	public void destroy() {
+
 	}
 
+	@Override
+	public void init(EndpointConfig conf) {
+
+	}
+
+	@Override
+	public String encode(ActionMessage actionMsg) throws EncodeException {
+		return actionMsg.encode();
+	}
 }

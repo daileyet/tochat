@@ -26,20 +26,27 @@
 package cc.tochat.webserver.model.message;
 
 import cc.tochat.webserver.helper.MessageTypes;
-import cc.tochat.webserver.model.IContentEncoder;
+import cc.tochat.webserver.model.IConstant;
+import cc.tochat.webserver.model.IDecoder;
+import cc.tochat.webserver.model.IEncoder;
 import cc.tochat.webserver.model.IRecordable;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Message of Chat type
  * @author dailey.yet@outlook.com
  *
  */
-public abstract class ChatMessage extends AbstractMessage implements IRecordable, IContentEncoder {
+public abstract class ChatMessage extends AbstractMessage implements IRecordable, IEncoder, IDecoder<ChatMessage> {
+	@SerializedName(IConstant.MSG_ID)
 	private String id;
+	@SerializedName(IConstant.MSG_ROOM)
 	private String room;
+	@SerializedName(IConstant.MSG_FROM)
 	private String from;
+	@SerializedName(IConstant.MSG_TO)
 	private String to;
-	private Object content;
 
 	@Override
 	public String getId() {
@@ -77,16 +84,6 @@ public abstract class ChatMessage extends AbstractMessage implements IRecordable
 		this.to = to;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T extends Object> T getContent() {
-		return (T) content;
-	}
-
-	public <T extends Object> void setContent(T content) {
-		this.content = content;
-	}
-
 	@Override
 	public String getType() {
 		return MessageTypes.lookup(this.getClass());
@@ -94,18 +91,23 @@ public abstract class ChatMessage extends AbstractMessage implements IRecordable
 
 	@Override
 	public String encode() {
-		return (String) getContent();
+		return gson.toJson(this);
+	}
+
+	@Override
+	public ChatMessage decode(String target) {
+		return gson.fromJson(target, this.getClass());
 	}
 
 	@Override
 	public String toString() {
-		return "ChatMessage [id=" + id + ", room=" + room + ", from=" + from + ", to=" + to + ", content=" + content
-				+ "]";
+		return "ChatMessage [id=" + id + ", room=" + room + ", from=" + from + ", to=" + to + ", content="
+				+ getContent() + "]";
 	}
 
-	public final static ChatMessage EMPTY = new NullChatMessage();
+	public final static ChatMessage EMPTY = new NullMessage();
 
-	static class NullChatMessage extends ChatMessage {
+	static class NullMessage extends ChatMessage {
 		@Override
 		public String getType() {
 			return "EMPTY";

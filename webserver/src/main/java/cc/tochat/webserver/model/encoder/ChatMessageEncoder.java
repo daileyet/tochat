@@ -25,12 +25,10 @@
 */
 package cc.tochat.webserver.model.encoder;
 
-import javax.json.Json;
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 
-import cc.tochat.webserver.model.IConstant;
 import cc.tochat.webserver.model.message.ChatMessage;
 
 /**
@@ -51,11 +49,7 @@ public class ChatMessageEncoder implements Encoder.Text<ChatMessage> {
 
 	@Override
 	public String encode(ChatMessage chatMsgObj) throws EncodeException {
-		return Json.createObjectBuilder().add(IConstant.MSG_ID, chatMsgObj.getId())
-				.add(IConstant.MESSAGE_TYPE, chatMsgObj.getType()).add(IConstant.MSG_ROOM, chatMsgObj.getId())
-				.add(IConstant.MSG_FROM, chatMsgObj.getFrom()).add(IConstant.MSG_TO, chatMsgObj.getTo())
-				.add(IConstant.MSG_CONTENT, chatMsgObj.encode())
-				.add(IConstant.MSG_TIMESTAMP, chatMsgObj.getTimestamp()).build().toString();
+		return chatMsgObj.encode();
 	}
 
 }

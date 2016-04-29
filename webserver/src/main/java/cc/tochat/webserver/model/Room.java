@@ -35,7 +35,7 @@ public class Room implements IRecordable {
 	private String owner;
 	private String active;
 	private String createon;
-	private Integer period;
+	private Float period;
 	private String desc;
 
 	@Override
@@ -79,11 +79,11 @@ public class Room implements IRecordable {
 		this.createon = createon;
 	}
 
-	public Integer getPeriod() {
+	public Float getPeriod() {
 		return period;
 	}
 
-	public void setPeriod(Integer period) {
+	public void setPeriod(Float period) {
 		this.period = period;
 	}
 

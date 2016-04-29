@@ -16,45 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: FetchHistoryMessage.java 
-* @Package cc.tochat.webserver.model 
+* @Title: ChatMessageService.java 
+* @Package cc.tochat.webserver.service 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 25, 2016
+* @date Apr 29, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.model.message;
-
-import java.util.List;
+package cc.tochat.webserver.service;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
-public class FetchHistoryMessage extends ActionMessage {
-	private String room;
-	private Integer count;
-
-	public String getRoom() {
-		return room;
-	}
-
-	public void setRoom(String room) {
-		this.room = room;
-	}
-
-	public Integer getCount() {
-		return count;
-	}
-
-	public void setCount(Integer count) {
-		this.count = count;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<IMessage> getContent() {
-		return super.getContent();
-	}
+public interface ChatMessageService {
 
 }

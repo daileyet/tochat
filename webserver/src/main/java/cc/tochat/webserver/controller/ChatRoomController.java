@@ -16,22 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: IEncode.java 
-* @Package cc.tochat.webserver.model 
+* @Title: ChatRoomController.java 
+* @Package cc.tochat.webserver.controller 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 27, 2016
+* @date Apr 29, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.model;
+package cc.tochat.webserver.controller;
 
-import cc.tochat.webserver.model.message.IMessage;
+import com.openthinks.easyweb.annotation.Controller;
+import com.openthinks.easyweb.annotation.Mapping;
 
 /**
- * Encode the value of {@link IMessage#getContent()}
  * @author dailey.yet@outlook.com
  *
  */
-public interface IContentEncoder {
-	public String encode();
+@Controller("/room")
+public class ChatRoomController {
+
+	@Mapping("/index")
+	public String index() {
+		return "WEB-INF/jsp/chatroom.jsp";
+	}
 }

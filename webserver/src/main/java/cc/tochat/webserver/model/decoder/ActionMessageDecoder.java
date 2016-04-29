@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: ChatMessageDecoder.java 
+* @Title: ActionMessageDecoder.java 
 * @Package cc.tochat.webserver.model.decoder 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 27, 2016
+* @date Apr 29, 2016
 * @version V1.0   
 */
 package cc.tochat.webserver.model.decoder;
@@ -36,7 +36,7 @@ import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 
 import cc.tochat.webserver.helper.MessageTypes;
-import cc.tochat.webserver.model.message.ChatMessage;
+import cc.tochat.webserver.model.message.ActionMessage;
 
 import com.openthinks.libs.utilities.InstanceUtilities;
 import com.openthinks.libs.utilities.logger.ProcessLogger;
@@ -45,7 +45,7 @@ import com.openthinks.libs.utilities.logger.ProcessLogger;
  * @author dailey.yet@outlook.com
  *
  */
-public class ChatMessageDecoder implements Decoder.Text<ChatMessage> {
+public class ActionMessageDecoder implements Decoder.Text<ActionMessage> {
 
 	@Override
 	public void destroy() {
@@ -53,26 +53,26 @@ public class ChatMessageDecoder implements Decoder.Text<ChatMessage> {
 	}
 
 	@Override
-	public void init(EndpointConfig cfg) {
+	public void init(EndpointConfig conf) {
 
 	}
 
 	@Override
-	public ChatMessage decode(String message) throws DecodeException {
-		ChatMessage chatMessage = ChatMessage.EMPTY;
-		JsonObject msgObj = Json.createReader(new StringReader(message)).readObject();
+	public ActionMessage decode(String actionMsg) throws DecodeException {
+		ActionMessage actionMessage = ActionMessage.EMPTY;
+		JsonObject msgObj = Json.createReader(new StringReader(actionMsg)).readObject();
 		String msgType = msgObj.getString(MSG_TYPE);
-		Class<ChatMessage> clz = MessageTypes.valueOf(msgType);
+		Class<ActionMessage> clz = MessageTypes.valueOf(msgType);
 		try {
-			chatMessage = InstanceUtilities.create(clz, null);
+			actionMessage = InstanceUtilities.create(clz, null);
 		} catch (Exception e) {
-			ProcessLogger.error("Decode ChatMessage:[" + message + "] failed on instancing: " + e.getMessage());
+			ProcessLogger.error("Decode ChatMessage:[" + actionMsg + "] failed on instancing: " + e.getMessage());
 		}
-		return chatMessage.decode(message);
+		return actionMessage.decode(actionMsg);
 	}
 
 	@Override
-	public boolean willDecode(String message) {
+	public boolean willDecode(String actionMsg) {
 		return true;
 	}
 

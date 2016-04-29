@@ -25,13 +25,25 @@
 */
 package cc.tochat.webserver.model.message;
 
+import cc.tochat.webserver.model.IConstant;
+
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
 public abstract class AbstractMessage implements IMessage {
+
+	@SerializedName(IConstant.MSG_TIMESTAMP)
 	private String timestamp;
+	@SerializedName(IConstant.MSG_CONTENT)
+	private Object content;
+	@SerializedName(IConstant.MSG_TYPE)
+	private String type = getType();
+
+	protected transient Gson gson = new Gson();
 
 	public String getTimestamp() {
 		return timestamp;
@@ -41,4 +53,17 @@ public abstract class AbstractMessage implements IMessage {
 		this.timestamp = timestamp;
 	}
 
+	public void setTimestamp(long timestamp) {
+		this.timestamp = String.valueOf(timestamp);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends Object> T getContent() {
+		return (T) content;
+	}
+
+	public <T extends Object> void setContent(T content) {
+		this.content = content;
+	}
 }
