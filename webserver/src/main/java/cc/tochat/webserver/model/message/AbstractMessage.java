@@ -42,6 +42,8 @@ public abstract class AbstractMessage implements IMessage {
 	private Object content;
 	@SerializedName(IConstant.MSG_TYPE)
 	private String type = getType();
+	@SerializedName(IConstant.MSG_TOKEN)
+	private String token;
 
 	protected transient Gson gson = new Gson();
 
@@ -65,5 +67,13 @@ public abstract class AbstractMessage implements IMessage {
 
 	public <T extends Object> void setContent(T content) {
 		this.content = content;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 }

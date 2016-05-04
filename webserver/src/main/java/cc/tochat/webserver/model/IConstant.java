@@ -43,9 +43,14 @@ public interface IConstant {
 	String MSG_TIMESTAMP = "ti";
 	String MSG_COUNT = "cou";
 	String MSG_OFFSET = "of";
-
+	String MSG_TOKEN = "tok";
 	/////////////////////////////
 	String JOIN_AT = "@";
 	String MSG_ROOM_DEFAULT_INSTANCE = "NULL";
 	int FETCH_COUNT_DEFAULT = 15;
+
+	////////////////////////////////
+	String PARAM_LOGIN_NAME = "tochat_name";
+	String PARAM_LOGIN_PASS = "tochat_pass";
+
 }

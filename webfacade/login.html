@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Login ToChat</title>
+		<script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
+	</head>
+
+	<body>
+		<p>Login ToChat, Let's Chat Now!</p>
+		<from method="post">
+			<div>
+				<input placeholder="Account" type="text" id="tochat_name" name="tochat_name" required/>
+			</div>
+			<div>
+				<input placeholder="Password" type="password" id="tochat_pass" name="tochat_pass" required/>
+			</div>
+			<div>
+				<input type="button" value="Log In" onclick="login()" />
+				<a href="#">Sign Up</a>
+			</div>
+		</from>
+		<script type="text/javascript">
+			function login() {
+				$.post("http://localhost:8080/tochatserver/auth/login.htm",
+				{"tochat_name":$("#tochat_name").val(),"tochat_pass":$("#tochat_pass").val()},
+				function(data) {
+					if(data.type =="SUCESS"){
+						window.location="/webfacade/list.html?token="+data.msg;
+					}else{
+						alert("Iinvalid account and password!");
+					}
+				},"json");
+				//window.location="/webfacade/list.html";
+			}
+		</script>
+	</body>
+
+</html>

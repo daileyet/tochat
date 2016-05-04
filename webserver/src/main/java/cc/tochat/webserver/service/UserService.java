@@ -25,10 +25,17 @@
 */
 package cc.tochat.webserver.service;
 
+import cc.tochat.webserver.model.User;
+
 /**
  * @author dailey.yet@outlook.com
  *
  */
-public class UserService {
+public interface UserService {
 
+	public User findUser(String account, String pass);
+
+	public boolean update(User user);
+
+	public String generateToken(User user);
 }
