@@ -44,7 +44,9 @@ import cc.tochat.webserver.model.encoder.ActionMessageEncoder;
 import cc.tochat.webserver.model.message.ActionMessage;
 import cc.tochat.webserver.model.message.FetchRoomListMessage;
 import cc.tochat.webserver.service.ChatRoomService;
+import cc.tochat.webserver.service.SecurityService;
 import cc.tochat.webserver.service.impl.ChatRoomServiceImpl;
+import cc.tochat.webserver.service.impl.SecurityServiceImpl;
 
 import com.openthinks.easyweb.context.WebContexts;
 import com.openthinks.libs.utilities.CommonUtilities;
@@ -54,12 +56,22 @@ import com.openthinks.libs.utilities.logger.ProcessLogger;
  * @author dailey.yet@outlook.com
  *
  */
-@ServerEndpoint(value = "/room", encoders = { ActionMessageEncoder.class }, decoders = { ActionMessageDecoder.class })
+@ServerEndpoint(value = "/room", configurator = EndPointsConfigurator.class, encoders = { ActionMessageEncoder.class }, decoders = { ActionMessageDecoder.class })
 public class ChatRoomEndPoint {
 	private ChatRoomService roomService = WebContexts.get().lookup(ChatRoomServiceImpl.class);
+	private SecurityService securityService = WebContexts.get().lookup(SecurityServiceImpl.class);
 
 	@OnOpen
 	public void open(Session session, EndpointConfig configuration) {
+		if (!securityService.validateEndpoit(session)) {
+			ProcessLogger.debug("Not login.");
+			try {
+				session.close();
+			} catch (IOException e) {
+				ProcessLogger.error(CommonUtilities.getCurrentInvokerMethod() + ":" + e.getMessage());
+			}
+			return;
+		}
 		FetchRoomListMessage actionMsg = new FetchRoomListMessage();
 		List<Room> rooms = roomService.getRooms(actionMsg.getCount(), actionMsg.getOffset());
 		actionMsg.setTimestamp(new Date().getTime());

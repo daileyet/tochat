@@ -47,7 +47,7 @@ import com.openthinks.libs.utilities.logger.ProcessLogger;
  * @author dailey.yet@outlook.com
  *
  */
-@ServerEndpoint(value = "/chat/{room}", encoders = { ChatMessageEncoder.class }, decoders = { ChatMessageDecoder.class })
+@ServerEndpoint(value = "/chat/{room}", configurator = EndPointsConfigurator.class, encoders = { ChatMessageEncoder.class }, decoders = { ChatMessageDecoder.class })
 public class ChatEndPoint {
 
 	@OnOpen

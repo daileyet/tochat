@@ -23,16 +23,23 @@
 		</from>
 		<script type="text/javascript">
 			function login() {
-				$.post("http://localhost:8080/tochatserver/auth/login.htm",
-				{"tochat_name":$("#tochat_name").val(),"tochat_pass":$("#tochat_pass").val()},
-				function(data) {
-					if(data.type =="SUCESS"){
-						window.location="/webfacade/list.html?token="+data.msg;
-					}else{
-						alert("Iinvalid account and password!");
+				$.ajax({
+					type: "post",
+					url: "http://localhost:8080/tochatserver/auth/login.htm",
+					async: false,
+					data:{
+						tochat_name:$("#tochat_name").val(),
+						tochat_pass:$("#tochat_pass").val()
+					},
+					dataType: "jsonp",
+					success: function(data) {
+						if (data.type == "SUCESS") {
+							window.location = "/webfacade/list.html?token=" + data.msg;
+						} else {
+							alert("Iinvalid account and password!");
+						}
 					}
-				},"json");
-				//window.location="/webfacade/list.html";
+				});
 			}
 		</script>
 	</body>

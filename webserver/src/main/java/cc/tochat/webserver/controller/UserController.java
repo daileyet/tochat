@@ -32,6 +32,7 @@ import cc.tochat.webserver.service.impl.UserServiceImpl;
 
 import com.openthinks.easyweb.WebUtils;
 import com.openthinks.easyweb.annotation.Controller;
+import com.openthinks.easyweb.annotation.Jsonp;
 import com.openthinks.easyweb.annotation.Mapping;
 import com.openthinks.easyweb.annotation.ResponseReturn;
 import com.openthinks.easyweb.context.WebContexts;
@@ -47,20 +48,23 @@ public class UserController {
 	private UserService userService = WebContexts.get().lookup(UserServiceImpl.class);
 
 	@Mapping("/login")
-	@ResponseReturn(contentType = "text/json")
+	@Jsonp
+	@ResponseReturn(contentType = "text/javascript")
 	public String login(WebAttributers was) {
 		String account = (String) was.get(IConstant.PARAM_LOGIN_NAME);
 		String pass = (String) was.get(IConstant.PARAM_LOGIN_PASS);
 		String token = "";
+		System.out.println("checking:" + account + "," + pass);
 		User user = userService.findUser(account, pass);
+		System.out.println(user);
 		if (user != null) {
 			String clientIP = WebUtils.getRemoteIP(was.getRequest());
 			user.setLastip(clientIP);
 			userService.update(user);
 			token = userService.generateToken(user);
-			OperationJson.build().sucess(token).toString();
+			was.storeSession(IConstant.SESSION_USER, user);
+			return OperationJson.build().sucess(token).toString();
 		}
-
 		return OperationJson.build().error().toString();
 	}
 }

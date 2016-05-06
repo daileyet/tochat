@@ -16,45 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: IConstant.java 
-* @Package cc.tochat.webserver.model 
+* @Title: SecurityService.java 
+* @Package cc.tochat.webserver.service 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 27, 2016
+* @date May 6, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.model;
+package cc.tochat.webserver.service;
 
-import java.util.UUID;
+import javax.websocket.Session;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
-public interface IConstant {
-	String EMPTY_CHAT_MESSAGE_TYPE = "C99";
-	String EMPTY_ACTION_MESSAGE_TYPE = "A99";
+public interface SecurityService {
 
-	//////////////////////////////
-	String MSG_TYPE = "mt";
-	String MSG_ID = "id";
-	String MSG_ROOM = "ro";
-	String MSG_FROM = "fr";
-	String MSG_TO = "to";
-	String MSG_CONTENT = "co";
-	String MSG_TIMESTAMP = "ti";
-	String MSG_COUNT = "cou";
-	String MSG_OFFSET = "of";
-	String MSG_TOKEN = "tok";
-	/////////////////////////////
-	String JOIN_AT = "@";
-	String MSG_ROOM_DEFAULT_INSTANCE = "NULL";
-	int FETCH_COUNT_DEFAULT = 15;
-
-	////////////////////////////////
-	String PARAM_LOGIN_NAME = "tochat_name";
-	String PARAM_LOGIN_PASS = "tochat_pass";
-	String ATTRIBUTE_HTTP_SESSION = "HTTP_SESSION_ATTRIBUTE";
-	String SESSION_USER = "SESSION_USER_" + UUID.randomUUID();
-
+	public boolean validateEndpoit(Session webSocketSession);
 }
