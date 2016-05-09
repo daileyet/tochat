@@ -25,11 +25,18 @@
 */
 package cc.tochat.webserver.service.impl;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpSession;
+import javax.websocket.CloseReason;
+import javax.websocket.CloseReason.CloseCodes;
 import javax.websocket.Session;
 
 import cc.tochat.webserver.model.IConstant;
 import cc.tochat.webserver.service.SecurityService;
+
+import com.openthinks.libs.utilities.CommonUtilities;
+import com.openthinks.libs.utilities.logger.ProcessLogger;
 
 /**
  * @author dailey.yet@outlook.com
@@ -48,6 +55,22 @@ public class SecurityServiceImpl implements SecurityService {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void requireValidated(Session webSocketSession) throws SecurityException {
+		if (!validateEndpoit(webSocketSession)) {
+			ProcessLogger.debug("Not login.");
+			try {
+				ProcessLogger.debug("All connected session count:" + webSocketSession.getOpenSessions().size());
+				webSocketSession.close(new CloseReason(CloseCodes.VIOLATED_POLICY,
+						"Invalid websocket session security!"));
+			} catch (IOException e) {
+				ProcessLogger.warn(CommonUtilities.getCurrentInvokerMethod() + ":" + e.getMessage());
+			}
+			throw new SecurityException("Invalid websocket session security!");
+		}
+
 	}
 
 }

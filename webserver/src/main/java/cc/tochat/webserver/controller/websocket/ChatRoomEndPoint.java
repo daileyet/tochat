@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import javax.websocket.CloseReason;
 import javax.websocket.EncodeException;
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
@@ -63,15 +64,7 @@ public class ChatRoomEndPoint {
 
 	@OnOpen
 	public void open(Session session, EndpointConfig configuration) {
-		if (!securityService.validateEndpoit(session)) {
-			ProcessLogger.debug("Not login.");
-			try {
-				session.close();
-			} catch (IOException e) {
-				ProcessLogger.error(CommonUtilities.getCurrentInvokerMethod() + ":" + e.getMessage());
-			}
-			return;
-		}
+		securityService.requireValidated(session);
 		FetchRoomListMessage actionMsg = new FetchRoomListMessage();
 		List<Room> rooms = roomService.getRooms(actionMsg.getCount(), actionMsg.getOffset());
 		actionMsg.setTimestamp(new Date().getTime());
@@ -87,6 +80,7 @@ public class ChatRoomEndPoint {
 
 	@OnMessage
 	public void receive(Session session, ActionMessage actionMessage) {
+		securityService.requireValidated(session);
 		FetchRoomListMessage fetchRoomListMessage = (FetchRoomListMessage) actionMessage;
 		List<Room> rooms = roomService.getRooms(fetchRoomListMessage.getCount(), fetchRoomListMessage.getOffset());
 		fetchRoomListMessage.setContent(rooms);
@@ -100,8 +94,8 @@ public class ChatRoomEndPoint {
 	}
 
 	@OnClose
-	public void close(Session session) {
-		ProcessLogger.debug("One client disconnected to  room ,session id :[" + session.getId() + "]");
+	public void close(Session session, CloseReason closeReason) {
+		ProcessLogger.debug("One client disconnected to  room ,session id :[" + session.getId() + "]," + closeReason);
 	}
 
 	@OnError

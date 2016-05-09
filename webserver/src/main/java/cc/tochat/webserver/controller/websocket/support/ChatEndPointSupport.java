@@ -27,6 +27,7 @@ package cc.tochat.webserver.controller.websocket.support;
 
 import java.io.IOException;
 
+import javax.websocket.CloseReason;
 import javax.websocket.EncodeException;
 import javax.websocket.EndpointConfig;
 import javax.websocket.Session;
@@ -98,7 +99,7 @@ public class ChatEndPointSupport implements IEndPointSupported<ChatEndPoint, Cha
 	}
 
 	@Override
-	public void remove(Session session) {
+	public void remove(Session session, CloseReason closeReason) {
 		sessionCache.remove(ChatSession.convert(session));
 	}
 

@@ -25,6 +25,7 @@
 */
 package cc.tochat.webserver.controller.websocket.support;
 
+import javax.websocket.CloseReason;
 import javax.websocket.Session;
 
 /**
@@ -39,6 +40,6 @@ public interface IEndPointSupported<T, E extends IEndPointSession> {
 
 	public IMessageHander getMessageHander(Session session);
 
-	public void remove(Session session);
+	public void remove(Session session, CloseReason closeReason);
 
 }

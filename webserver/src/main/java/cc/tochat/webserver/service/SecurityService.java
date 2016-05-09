@@ -34,4 +34,6 @@ import javax.websocket.Session;
 public interface SecurityService {
 
 	public boolean validateEndpoit(Session webSocketSession);
+
+	public void requireValidated(Session webSocketSession) throws SecurityException;
 }

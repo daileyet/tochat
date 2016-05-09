@@ -16,33 +16,29 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: EndPointsConfigurator.java 
-* @Package cc.tochat.webserver.controller.websocket 
+* @Title: ExceptionMessage.java 
+* @Package cc.tochat.webserver.model.message 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date May 6, 2016
+* @date May 9, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.controller.websocket;
+package cc.tochat.webserver.model.message;
 
-import javax.servlet.http.HttpSession;
-import javax.websocket.HandshakeResponse;
-import javax.websocket.server.HandshakeRequest;
-import javax.websocket.server.ServerEndpointConfig;
-import javax.websocket.server.ServerEndpointConfig.Configurator;
-
-import cc.tochat.webserver.model.IConstant;
+import cc.tochat.webserver.helper.MessageTypes;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
-public class EndPointsConfigurator extends Configurator {
+public class ExceptionMessage extends AbstractMessage {
+
+	/* (non-Javadoc)
+	 * @see cc.tochat.webserver.model.message.IMessage#getType()
+	 */
 	@Override
-	public void modifyHandshake(ServerEndpointConfig config, HandshakeRequest request, HandshakeResponse response) {
-		super.modifyHandshake(config, request, response);
-		HttpSession httpSession = (HttpSession) request.getHttpSession();
-		if (httpSession != null)
-			config.getUserProperties().put(IConstant.ATTRIBUTE_HTTP_SESSION, httpSession);
+	public String getType() {
+		return MessageTypes.lookup(this.getClass());
 	}
+
 }
