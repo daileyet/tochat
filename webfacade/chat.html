@@ -4,33 +4,40 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>ToChat Now</title>
-		<script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="css/chat.css" />
+		<script src="https://code.jquery.com/jquery-1.12.3.min.js" crossorigin="anonymous"></script>
 	</head>
 
 	<body>
 
-		<section id="top"><span title="Chat Room">{Chat Room title}</span></section>
+		<section id="top"><span class="room-name" title="Chat Room">{Chat Room title}</span></section>
 		<section id="main">
 			<section id="messages">
 				<section id="viewer">
 					<div>
-						<div class="viewer-title">{from}</div>
+						<div class="viewer-title">Title</div>
 						<div class="viewer-content">
-							{message}
+
 						</div>
 					</div>
 				</section>
 				<section id="sender">
 					<div class="sender-toolbar">Toolbar</div>
-					<div class="sender-input" contenteditable="true">
-						{send messages}
-					</div>
+					<div class="sender-input" contenteditable="true"></div>
 					<div class="sender-options">
-						<button onclick="postToServer()">Send</button>
+						<div class="float-left"></div>
+						<div class="float-right"><button onclick="postToServer()">Send</button></div>
 					</div>
 				</section>
 			</section>
-			<section id="siderbar"></section>
+			<section id="siderbar">
+				<div class="user-list">
+					<div class="title">Users</div>
+					<div class="content">
+						
+					</div>
+				</div>
+			</section>
 		</section>
 		<section id="bottom"></section>
 		<script type="text/javascript">
@@ -42,6 +49,7 @@
 					window.history.back();
 					return;
 				}
+				$("#top .room-name").text(room);
 				setWebSocket();
 			}
 
@@ -67,15 +75,27 @@
 				ws = new WebSocket(url + getRoom());
 				ws.onmessage = function(message) {
 					var amObj = JSON.parse(message.data);
-					if (amObj.co.length > 0) {
-						for (var i = 0; i < amObj.co.length; i++) {
-							var strMsg = "<div>From:{fr}>, at:{ti}<BR>{co}</div>";
-							var rmObj = amObj.co[i];
-							strMsg = strMsg.replace("{fr}", rmObj["fr"]);
-							strMsg = strMsg.replace("{ti}", rmObj["ti"]);
-							strMsg = strMsg.replace("{co}", rmObj["co"]);
+					console.log(message.data);
+					switch (amObj.mt) {
+						case "C00":
+							var strMsg = "<div>From:{fr}, at:{ti}<BR>{co}</div>";
+							var chObj = amObj;
+							strMsg = strMsg.replace("{fr}", chObj["fr"]);
+							strMsg = strMsg.replace("{ti}", chObj["ti"]);
+							strMsg = strMsg.replace("{co}", decodeURI(chObj["co"]));
 							$("#viewer .viewer-content").append(strMsg);
-						}
+							break;
+						case "C01":
+							var strMsg = "<div class='item' id='{id}'>{name}</div>";
+							var chObj_user = amObj.user;
+							strMsg = strMsg.replace("{id}",chObj_user.id);
+							strMsg = strMsg.replace("{name}",chObj_user.name);
+							$("#siderbar .user-list .content").append(strMsg);
+						break;
+						case "C02":
+						break;
+						default:
+							break;
 					}
 				};
 				ws.onerror = function() {
@@ -88,14 +108,16 @@
 					if (txt == undefined) {
 						var cm = ChatMessage.create({
 							id: "1",
-							from: "dailey",
+							from: "U1",
 							to: "",
 							room: getRoom(),
-							content: document.getElementById("#sender .sender-input").value
+							content: encodeURI($("#sender .sender-input").html())
 						});
-						txt = JSON.stringify(cm);
+						txt = cm.format();
 					}
+					console.log(txt);
 					ws.send(txt);
+					$("#sender .sender-input").empty();
 				}
 			}
 			window.addEventListener("load", init, false);

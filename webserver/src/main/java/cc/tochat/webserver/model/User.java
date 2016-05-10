@@ -25,16 +25,21 @@
 */
 package cc.tochat.webserver.model;
 
+import cc.tochat.webserver.helper.json.Exclude;
+
 /**
  * @author dailey.yet@outlook.com
  *
  */
 public class User implements IRecordable {
+
 	private String id;
 	private String name;
 	private String email;
+	@Exclude
 	private String password;
 	private String alias;
+	@Exclude
 	private String lastip;
 
 	@Override

@@ -1,0 +1,87 @@
+body{
+	margin: 0;
+	padding: 0 ;
+}
+section {
+	background-color: lightslategray;
+	padding: 0px;
+	margin: 0px;
+}
+
+section#top {
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	border-bottom: 1px sandybrown solid;
+	padding-left: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+section#main {
+	border-bottom: 1px sandybrown solid;
+	background-color: whitesmoke;
+}
+
+section#viewer {}
+section#viewer .viewer-title{
+	background-color:beige ;
+	height: 30px;
+}
+section#viewer .viewer-content {
+	background-color:whitesmoke;
+	height: 100px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	overflow-y: auto;
+}
+
+section#sender .sender-toolbar {
+	height: 30px;
+}
+
+section#sender .sender-input {
+	height: 60px;
+	background-color: whitesmoke;
+	padding-left: 10px;
+	padding-right: 10px;
+	overflow-y: auto;
+	word-break: break-all;
+}
+
+section#sender .sender-options {
+	height: 30px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	
+	overflow-y: auto;
+	word-break: break-all;
+}
+
+section#messages{
+	float: left;
+	width: 80%;
+}
+
+section#siderbar{
+	float: right;
+	width: 20%;
+	height: 210px;
+	background-color: whitesmoke;
+	
+}
+
+section#siderbar .user-list{
+	
+}
+
+
+
+.float-left{
+	float: left;
+}
+.float-right{
+	float: right;
+}

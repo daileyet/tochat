@@ -25,6 +25,10 @@
 */
 package cc.tochat.webserver.model.message;
 
+import cc.tochat.webserver.model.IConstant;
+import cc.tochat.webserver.model.User;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * @author dailey.yet@outlook.com
@@ -32,10 +36,27 @@ package cc.tochat.webserver.model.message;
  */
 public class LoginMessage extends ChatMessage {
 
+	@SerializedName(IConstant.MSG_LOGIN_USER)
+	private User user;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public String getContent() {
 		return "";
 	}
 
+	public User getUser() {
+		return this.user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public static LoginMessage valueOf(User user) {
+		LoginMessage loginMessage = new LoginMessage();
+		loginMessage.user = user;
+		return loginMessage;
+
+	}
 }

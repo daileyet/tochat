@@ -101,8 +101,8 @@ public abstract class ChatMessage extends AbstractMessage implements IRecordable
 
 	@Override
 	public String toString() {
-		return "ChatMessage [id=" + id + ", room=" + room + ", from=" + from + ", to=" + to + ", content="
-				+ getContent() + "]";
+		return "ChatMessage [id=" + id + ", room=" + room + ", from=" + from + ", to=" + to + ", getTimestamp()="
+				+ getTimestamp() + "]";
 	}
 
 	public final static ChatMessage EMPTY = new NullMessage();

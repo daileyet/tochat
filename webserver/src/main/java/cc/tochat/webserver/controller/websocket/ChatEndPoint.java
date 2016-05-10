@@ -38,9 +38,11 @@ import javax.websocket.server.ServerEndpoint;
 import cc.tochat.webserver.controller.websocket.support.ChatEndPointSupport;
 import cc.tochat.webserver.controller.websocket.support.ChatSession;
 import cc.tochat.webserver.controller.websocket.support.EndPointSupports;
+import cc.tochat.webserver.model.User;
 import cc.tochat.webserver.model.decoder.ChatMessageDecoder;
 import cc.tochat.webserver.model.encoder.ChatMessageEncoder;
 import cc.tochat.webserver.model.message.ChatMessage;
+import cc.tochat.webserver.model.message.LoginMessage;
 import cc.tochat.webserver.service.SecurityService;
 import cc.tochat.webserver.service.impl.SecurityServiceImpl;
 
@@ -59,6 +61,9 @@ public class ChatEndPoint {
 	public void open(Session session, EndpointConfig configuration, @PathParam("room") String room) {
 		securityService.requireValidated(session);
 		EndPointSupports.lookup(ChatEndPointSupport.class).addSession(ChatSession.valueOf(session, room));
+		User validatedUser = securityService.getValidatedUser(session);
+		EndPointSupports.lookup(ChatEndPointSupport.class).getMessageHander(session)
+				.process(LoginMessage.valueOf(validatedUser));
 		ProcessLogger.debug("One client connected to chat room:[" + room + "],session id :[" + session.getId() + "]");
 	}
 

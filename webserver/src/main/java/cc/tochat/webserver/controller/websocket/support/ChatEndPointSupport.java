@@ -77,7 +77,7 @@ public class ChatEndPointSupport implements IEndPointSupported<ChatEndPoint, Cha
 
 			@Override
 			public void process(IMessage t) {
-				ProcessLogger.debug("Receive message on Chat Server:" + t.getContent());
+				ProcessLogger.debug("Receive message on Chat Server:" + t);
 				ProcessLogger.debug("Find client number in Chat room[" + chatSession.getGroup() + "]:"
 						+ sessionCache.getSessionGroup(chatSession).size());
 				for (ChatSession cs : sessionCache.getSessionGroup(chatSession)) {

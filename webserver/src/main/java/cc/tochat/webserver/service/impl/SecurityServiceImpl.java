@@ -33,6 +33,7 @@ import javax.websocket.CloseReason.CloseCodes;
 import javax.websocket.Session;
 
 import cc.tochat.webserver.model.IConstant;
+import cc.tochat.webserver.model.User;
 import cc.tochat.webserver.service.SecurityService;
 
 import com.openthinks.libs.utilities.CommonUtilities;
@@ -71,6 +72,16 @@ public class SecurityServiceImpl implements SecurityService {
 			throw new SecurityException("Invalid websocket session security!");
 		}
 
+	}
+
+	@Override
+	public User getValidatedUser(Session webSocketSession) {
+		if (validateEndpoit(webSocketSession)) {
+			HttpSession httpSession = (HttpSession) webSocketSession.getUserProperties().get(
+					IConstant.ATTRIBUTE_HTTP_SESSION);
+			return (User) httpSession.getAttribute(IConstant.SESSION_USER);
+		}
+		return null;
 	}
 
 }

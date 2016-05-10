@@ -27,6 +27,8 @@ package cc.tochat.webserver.service;
 
 import javax.websocket.Session;
 
+import cc.tochat.webserver.model.User;
+
 /**
  * @author dailey.yet@outlook.com
  *
@@ -36,4 +38,6 @@ public interface SecurityService {
 	public boolean validateEndpoit(Session webSocketSession);
 
 	public void requireValidated(Session webSocketSession) throws SecurityException;
+
+	public User getValidatedUser(Session webSocketSession);
 }

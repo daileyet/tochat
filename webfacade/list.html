@@ -62,7 +62,7 @@
 			if(amObj.co.length>0){
 				for(var i=0;i<amObj.co.length;i++){
 					var rmObj = amObj.co[i];
-					var strTR = "<tr class='room-item'><td>{name}</td><td>{desc}</td><td>{owner}</td><td>{createon}</td><td><button id='{id}'>Join</button></td>";
+					var strTR = "<tr class='room-item'><td>{name}</td><td>{desc}</td><td>{owner}</td><td>{createon}</td><td><button id='{id}' onclick='joinChat(this)'>Join</button></td>";
 					var strTR = strTR.replace('{name}',rmObj['name'])
 					.replace('{desc}',rmObj['desc'])
 					.replace('{owner}',rmObj['owner'])
@@ -76,7 +76,10 @@
 			console.log("WebSocket occur error.");
 		}
 	}
-	
+	function joinChat(domBtn){
+		var strRoomId = $(domBtn).attr("id");
+		window.location = "/webfacade/chat.html#"+strRoomId;
+	}
 
 	function postToServer(txt) {
 		ws.send(txt);

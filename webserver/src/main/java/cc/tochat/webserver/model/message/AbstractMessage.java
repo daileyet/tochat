@@ -25,9 +25,12 @@
 */
 package cc.tochat.webserver.model.message;
 
+import cc.tochat.webserver.helper.json.AnnotationExclusionStrategy;
+import cc.tochat.webserver.helper.json.Exclude;
 import cc.tochat.webserver.model.IConstant;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -43,9 +46,14 @@ public abstract class AbstractMessage implements IMessage {
 	@SerializedName(IConstant.MSG_TYPE)
 	private String type = getType();
 	@SerializedName(IConstant.MSG_TOKEN)
+	@Exclude
 	private String token;
+	@Exclude
+	protected transient Gson gson;
 
-	protected transient Gson gson = new Gson();
+	public AbstractMessage() {
+		this.gson = new GsonBuilder().setExclusionStrategies(new AnnotationExclusionStrategy()).create();
+	}
 
 	public String getTimestamp() {
 		return timestamp;
