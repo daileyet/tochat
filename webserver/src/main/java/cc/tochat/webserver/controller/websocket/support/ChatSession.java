@@ -25,6 +25,10 @@
 */
 package cc.tochat.webserver.controller.websocket.support;
 
+import java.util.Collections;
+import java.util.Optional;
+
+import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
 import cc.tochat.webserver.model.IConstant;
@@ -73,6 +77,14 @@ public final class ChatSession implements IEndPointSession {
 	@Override
 	public String getGroup() {
 		return getRoom();
+	}
+
+	public Object getHttpSessionAttribute(String attributeName) {
+		HttpSession httpSession = (HttpSession) session.getUserProperties().get(IConstant.ATTRIBUTE_HTTP_SESSION);
+		if(httpSession!=null){
+			httpSession.getAttribute(attributeName);
+		}
+		return null;
 	}
 
 	@Override

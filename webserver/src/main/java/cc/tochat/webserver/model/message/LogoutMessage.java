@@ -25,17 +25,42 @@
 */
 package cc.tochat.webserver.model.message;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.google.gson.annotations.SerializedName;
+
+import cc.tochat.webserver.model.IConstant;
+import cc.tochat.webserver.model.User;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
 public class LogoutMessage extends ChatMessage {
+	@SerializedName(IConstant.MSG_LOGIN_USERS)
+	private Set<User> users=new HashSet<User>();
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public String getContent() {
 		return "";
+	}
+	public boolean addUser(User user){
+		return users.add(user);
+	}
+	
+	public Set<User> getUsers() {
+		return users;
+	}
+	
+	public void setUsers(Set<User> users) {
+		this.users = users;
+	}
+	
+	public static LogoutMessage empty() {
+		LogoutMessage logoutMessage = new LogoutMessage();
+		return logoutMessage;
 	}
 
 }

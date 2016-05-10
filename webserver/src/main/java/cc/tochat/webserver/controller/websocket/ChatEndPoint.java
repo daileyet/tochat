@@ -43,6 +43,7 @@ import cc.tochat.webserver.model.decoder.ChatMessageDecoder;
 import cc.tochat.webserver.model.encoder.ChatMessageEncoder;
 import cc.tochat.webserver.model.message.ChatMessage;
 import cc.tochat.webserver.model.message.LoginMessage;
+import cc.tochat.webserver.model.message.LogoutMessage;
 import cc.tochat.webserver.service.SecurityService;
 import cc.tochat.webserver.service.impl.SecurityServiceImpl;
 
@@ -63,7 +64,7 @@ public class ChatEndPoint {
 		EndPointSupports.lookup(ChatEndPointSupport.class).addSession(ChatSession.valueOf(session, room));
 		User validatedUser = securityService.getValidatedUser(session);
 		EndPointSupports.lookup(ChatEndPointSupport.class).getMessageHander(session)
-				.process(LoginMessage.valueOf(validatedUser));
+				.processLogin(LoginMessage.empty());
 		ProcessLogger.debug("One client connected to chat room:[" + room + "],session id :[" + session.getId() + "]");
 	}
 
@@ -76,6 +77,8 @@ public class ChatEndPoint {
 	@OnClose
 	public void close(Session session, @PathParam("room") String room, CloseReason closeReason) {
 		EndPointSupports.lookup(ChatEndPointSupport.class).remove(session, closeReason);
+		EndPointSupports.lookup(ChatEndPointSupport.class).getMessageHander(session)
+		.processLogout(LogoutMessage.empty());
 		ProcessLogger.debug("One client disconnected to chat room:[" + room + "],session id :[" + session.getId()
 				+ "]," + closeReason);
 	}

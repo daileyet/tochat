@@ -33,7 +33,11 @@ import javax.websocket.EndpointConfig;
 import javax.websocket.Session;
 
 import cc.tochat.webserver.controller.websocket.ChatEndPoint;
+import cc.tochat.webserver.model.IConstant;
+import cc.tochat.webserver.model.User;
 import cc.tochat.webserver.model.message.IMessage;
+import cc.tochat.webserver.model.message.LoginMessage;
+import cc.tochat.webserver.model.message.LogoutMessage;
 
 import com.openthinks.libs.utilities.CommonUtilities;
 import com.openthinks.libs.utilities.logger.ProcessLogger;
@@ -70,10 +74,10 @@ public class ChatEndPointSupport implements IEndPointSupported<ChatEndPoint, Cha
 	}
 
 	@Override
-	public IMessageHander getMessageHander(Session session) {
+	public IChatMessageHander getMessageHander(Session session) {
 		final ChatSession chatSession = ChatSession.convert(session);
 
-		return new IMessageHander() {
+		return new IChatMessageHander() {
 
 			@Override
 			public void process(IMessage t) {
@@ -94,6 +98,30 @@ public class ChatEndPointSupport implements IEndPointSupported<ChatEndPoint, Cha
 						ProcessLogger.error(CommonUtilities.getCurrentInvokerMethod() + ":" + e.getMessage());
 					}
 				}
+			}
+
+			@Override
+			public void processLogin(LoginMessage loginMessage) {
+				if(loginMessage==null) loginMessage = LoginMessage.empty();
+				for (ChatSession cs : sessionCache.getSessionGroup(chatSession)) {
+					User user = (User) cs.getHttpSessionAttribute(IConstant.SESSION_USER);
+					if(user!=null){
+						loginMessage.addUser(user);
+					}
+				}
+				this.process(loginMessage);
+			}
+
+			@Override
+			public void processLogout(LogoutMessage logoutMessage) {
+				if(logoutMessage==null) logoutMessage = LogoutMessage.empty();
+				for (ChatSession cs : sessionCache.getSessionGroup(chatSession)) {
+					User user = (User) cs.getHttpSessionAttribute(IConstant.SESSION_USER);
+					if(user!=null){
+						logoutMessage.addUser(user);
+					}
+				}
+				this.process(logoutMessage);
 			}
 		};
 	}

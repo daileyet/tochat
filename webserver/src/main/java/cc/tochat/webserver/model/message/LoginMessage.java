@@ -28,6 +28,10 @@ package cc.tochat.webserver.model.message;
 import cc.tochat.webserver.model.IConstant;
 import cc.tochat.webserver.model.User;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -36,8 +40,8 @@ import com.google.gson.annotations.SerializedName;
  */
 public class LoginMessage extends ChatMessage {
 
-	@SerializedName(IConstant.MSG_LOGIN_USER)
-	private User user;
+	@SerializedName(IConstant.MSG_LOGIN_USERS)
+	private Set<User> users=new HashSet<User>();
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -45,18 +49,20 @@ public class LoginMessage extends ChatMessage {
 		return "";
 	}
 
-	public User getUser() {
-		return this.user;
+	public Set<User> getUser() {
+		return this.users;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUser(Set<User> users) {
+		this.users = users;
 	}
 
-	public static LoginMessage valueOf(User user) {
+	public static LoginMessage empty() {
 		LoginMessage loginMessage = new LoginMessage();
-		loginMessage.user = user;
 		return loginMessage;
-
+	}
+	
+	public boolean addUser(User user){
+		return users.add(user);
 	}
 }

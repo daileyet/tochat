@@ -32,5 +32,5 @@ import cc.tochat.webserver.model.message.IMessage;
  *
  */
 public interface IMessageHander extends IHander<IMessage> {
-
+	
 }
