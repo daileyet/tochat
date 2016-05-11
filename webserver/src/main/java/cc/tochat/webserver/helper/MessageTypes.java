@@ -35,6 +35,7 @@ import cc.tochat.webserver.model.message.IMessage;
 import cc.tochat.webserver.model.message.LoginMessage;
 import cc.tochat.webserver.model.message.LogoutMessage;
 import cc.tochat.webserver.model.message.TextChatMessage;
+import cc.tochat.webserver.model.message.UserInfoMessage;
 import cc.tochat.webserver.model.message.VideoChatMessage;
 import cc.tochat.webserver.model.message.VoiceChatMessage;
 
@@ -56,6 +57,7 @@ public final class MessageTypes {
 		register(LogoutMessage.class, "C02");
 		register(FetchHistoryMessage.class, "A00");
 		register(FetchRoomListMessage.class, "A01");
+		register(UserInfoMessage.class, "B00");
 	}
 
 	/**

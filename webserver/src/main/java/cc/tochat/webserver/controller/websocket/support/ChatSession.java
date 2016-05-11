@@ -25,13 +25,17 @@
 */
 package cc.tochat.webserver.controller.websocket.support;
 
-import java.util.Collections;
-import java.util.Optional;
+import java.io.IOException;
 
 import javax.servlet.http.HttpSession;
+import javax.websocket.EncodeException;
 import javax.websocket.Session;
 
 import cc.tochat.webserver.model.IConstant;
+import cc.tochat.webserver.model.message.IMessage;
+
+import com.openthinks.libs.utilities.CommonUtilities;
+import com.openthinks.libs.utilities.logger.ProcessLogger;
 
 /**
  * @author dailey.yet@outlook.com
@@ -81,10 +85,22 @@ public final class ChatSession implements IEndPointSession {
 
 	public Object getHttpSessionAttribute(String attributeName) {
 		HttpSession httpSession = (HttpSession) session.getUserProperties().get(IConstant.ATTRIBUTE_HTTP_SESSION);
-		if(httpSession!=null){
-			httpSession.getAttribute(attributeName);
+		if (httpSession != null) {
+			return httpSession.getAttribute(attributeName);
 		}
 		return null;
+	}
+
+	public void sendMessage(IMessage message) {
+		try {
+			ProcessLogger.debug("Sending message from Chat Server:" + message);
+			this.session.getBasicRemote().sendObject(message);
+			ProcessLogger.debug("Send message from Chat Server finished.");
+		} catch (IOException e) {
+			ProcessLogger.error(CommonUtilities.getCurrentInvokerMethod() + ":" + e.getMessage());
+		} catch (EncodeException e) {
+			ProcessLogger.error(CommonUtilities.getCurrentInvokerMethod() + ":" + e.getMessage());
+		}
 	}
 
 	@Override

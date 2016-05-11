@@ -27,8 +27,6 @@ package cc.tochat.webserver.model.message;
 
 import cc.tochat.webserver.helper.MessageTypes;
 import cc.tochat.webserver.model.IConstant;
-import cc.tochat.webserver.model.IDecoder;
-import cc.tochat.webserver.model.IEncoder;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -36,7 +34,7 @@ import com.google.gson.annotations.SerializedName;
  * @author dailey.yet@outlook.com
  *
  */
-public abstract class ActionMessage extends AbstractMessage implements IEncoder, IDecoder<ActionMessage> {
+public abstract class ActionMessage extends AbstractMessage {
 	@SerializedName(IConstant.MSG_FROM)
 	private String from;
 

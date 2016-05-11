@@ -6,6 +6,7 @@
 		<title>ToChat Now</title>
 		<link rel="stylesheet" href="css/chat.css" />
 		<script src="https://code.jquery.com/jquery-1.12.3.min.js" crossorigin="anonymous"></script>
+		<script src="js/chat.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 
 	<body>
@@ -34,7 +35,7 @@
 				<div class="user-list">
 					<div class="title">Users</div>
 					<div class="content">
-						
+
 					</div>
 				</div>
 			</section>
@@ -86,14 +87,28 @@
 							$("#viewer .viewer-content").append(strMsg);
 							break;
 						case "C01":
-							var strMsg = "<div class='item' id='{id}'>{name}</div>";
-							var chObj_user = amObj.user;
-							strMsg = strMsg.replace("{id}",chObj_user.id);
-							strMsg = strMsg.replace("{name}",chObj_user.name);
-							$("#siderbar .user-list .content").append(strMsg);
-						break;
+							var chObj_users = amObj.users;
+							$("#siderbar .user-list .content").empty();
+							for (var i = 0; i < chObj_users.length; i++) {
+								var strMsg = "<div class='item' data-id='{id}'>{name}</div>";
+								var userObj = chObj_users[i];
+								strMsg = strMsg.replace("{id}", userObj.id);
+								strMsg = strMsg.replace("{name}", userObj.name);
+								var $strMsg = $(strMsg);
+								if (window.tochat.Chat.M.current_user) {
+									if (userObj.id == window.tochat.Chat.M.current_user.id) {
+										$strMsg.addClass("is-current-user");
+									}
+								}
+								$("#siderbar .user-list .content").append($strMsg);
+							}
+							break;
 						case "C02":
-						break;
+							break;
+						case "B00":
+							var userObj = amObj.user;
+							window.tochat.Chat.M.current_user = userObj;
+							break;
 						default:
 							break;
 					}
@@ -102,13 +117,22 @@
 					console.log("WebSocket occur error.");
 				}
 			}
+			
+			function getCurrentUser(){
+				if(window.tochat.Chat.M.current_user){
+					return window.tochat.Chat.M.current_user;
+				}else{
+					return {};
+				}
+			}
 
 			function postToServer(txt) {
 				if (ws && ws.readyState == 1) {
 					if (txt == undefined) {
+						var cuObj = getCurrentUser(),sUid = cuObj?cuObj.id:'';
 						var cm = ChatMessage.create({
 							id: "1",
-							from: "U1",
+							from: sUid,
 							to: "",
 							room: getRoom(),
 							content: encodeURI($("#sender .sender-input").html())

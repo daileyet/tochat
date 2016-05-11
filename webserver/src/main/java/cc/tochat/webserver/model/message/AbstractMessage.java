@@ -28,6 +28,8 @@ package cc.tochat.webserver.model.message;
 import cc.tochat.webserver.helper.json.AnnotationExclusionStrategy;
 import cc.tochat.webserver.helper.json.Exclude;
 import cc.tochat.webserver.model.IConstant;
+import cc.tochat.webserver.model.IDecoder;
+import cc.tochat.webserver.model.IEncoder;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -37,7 +39,7 @@ import com.google.gson.annotations.SerializedName;
  * @author dailey.yet@outlook.com
  *
  */
-public abstract class AbstractMessage implements IMessage {
+public abstract class AbstractMessage implements IMessage, IEncoder, IDecoder<AbstractMessage> {
 
 	@SerializedName(IConstant.MSG_TIMESTAMP)
 	private String timestamp;
@@ -77,11 +79,30 @@ public abstract class AbstractMessage implements IMessage {
 		this.content = content;
 	}
 
+	@Override
+	public String encode() {
+		return gson.toJson(this);
+	}
+
+	@Override
+	public AbstractMessage decode(String target) {
+		return gson.fromJson(target, this.getClass());
+	}
+
 	public String getToken() {
 		return token;
 	}
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public final static AbstractMessage EMPTY = new NullMessage();
+
+	static class NullMessage extends AbstractMessage {
+		@Override
+		public String getType() {
+			return "EMPTY";
+		}
 	}
 }

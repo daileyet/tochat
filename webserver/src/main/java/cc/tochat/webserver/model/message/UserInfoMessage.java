@@ -16,18 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: LoginMessage.java 
-* @Package cc.tochat.webserver.model 
+* @Title: UserInfoMessage.java 
+* @Package cc.tochat.webserver.model.message 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 25, 2016
+* @date May 11, 2016
 * @version V1.0   
 */
 package cc.tochat.webserver.model.message;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import cc.tochat.webserver.helper.MessageTypes;
 import cc.tochat.webserver.model.IConstant;
 import cc.tochat.webserver.model.User;
 
@@ -37,31 +35,41 @@ import com.google.gson.annotations.SerializedName;
  * @author dailey.yet@outlook.com
  *
  */
-public class LoginMessage extends ChatMessage {
+public class UserInfoMessage extends AbstractMessage {
 
-	@SerializedName(IConstant.MSG_LOGIN_USERS)
-	private Set<User> users = new HashSet<User>();
+	@SerializedName(IConstant.MSG_CURRENT_USER)
+	private User currentUser;
 
-	@SuppressWarnings("unchecked")
+	/* (non-Javadoc)
+	 * @see cc.tochat.webserver.model.message.IMessage#getType()
+	 */
 	@Override
-	public String getContent() {
-		return "";
+	public String getType() {
+		return MessageTypes.lookup(this.getClass());
 	}
 
-	public Set<User> getUser() {
-		return this.users;
+	@Override
+	public UserInfoMessage decode(String target) {
+		return gson.fromJson(target, this.getClass());
 	}
 
-	public void setUser(Set<User> users) {
-		this.users = users;
+	@Override
+	public String encode() {
+		return gson.toJson(this);
 	}
 
-	public static LoginMessage empty() {
-		LoginMessage loginMessage = new LoginMessage();
-		return loginMessage;
+	public void setCurrentUser(User currentUser) {
+		this.currentUser = currentUser;
 	}
 
-	public boolean addUser(User user) {
-		return users.add(user);
+	public User getCurrentUser() {
+		return currentUser;
 	}
+
+	public static UserInfoMessage valueOf(User user) {
+		UserInfoMessage userInfoMessage = new UserInfoMessage();
+		userInfoMessage.currentUser = user;
+		return userInfoMessage;
+	}
+
 }

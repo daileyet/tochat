@@ -15,7 +15,7 @@ public class LoginMessageTest {
 		user.setAlias("d1");
 		msg.setFrom("U1");
 		msg.setRoom("1");
-		msg.setUser(user);
+		msg.addUser(user);
 		System.out.println(msg.encode());
 
 		LoginMessage msg2 = (LoginMessage) msg.decode(msg.encode());

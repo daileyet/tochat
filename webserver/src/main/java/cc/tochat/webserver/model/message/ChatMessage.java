@@ -27,8 +27,6 @@ package cc.tochat.webserver.model.message;
 
 import cc.tochat.webserver.helper.MessageTypes;
 import cc.tochat.webserver.model.IConstant;
-import cc.tochat.webserver.model.IDecoder;
-import cc.tochat.webserver.model.IEncoder;
 import cc.tochat.webserver.model.IRecordable;
 
 import com.google.gson.annotations.SerializedName;
@@ -38,7 +36,7 @@ import com.google.gson.annotations.SerializedName;
  * @author dailey.yet@outlook.com
  *
  */
-public abstract class ChatMessage extends AbstractMessage implements IRecordable, IEncoder, IDecoder<ChatMessage> {
+public abstract class ChatMessage extends AbstractMessage implements IRecordable {
 	@SerializedName(IConstant.MSG_ID)
 	private String id;
 	@SerializedName(IConstant.MSG_ROOM)
@@ -87,11 +85,6 @@ public abstract class ChatMessage extends AbstractMessage implements IRecordable
 	@Override
 	public String getType() {
 		return MessageTypes.lookup(this.getClass());
-	}
-
-	@Override
-	public String encode() {
-		return gson.toJson(this);
 	}
 
 	@Override

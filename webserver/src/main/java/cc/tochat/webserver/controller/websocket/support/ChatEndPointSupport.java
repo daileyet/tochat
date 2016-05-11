@@ -25,20 +25,20 @@
 */
 package cc.tochat.webserver.controller.websocket.support;
 
-import java.io.IOException;
-
 import javax.websocket.CloseReason;
-import javax.websocket.EncodeException;
 import javax.websocket.EndpointConfig;
 import javax.websocket.Session;
 
 import cc.tochat.webserver.controller.websocket.ChatEndPoint;
-import cc.tochat.webserver.model.IConstant;
 import cc.tochat.webserver.model.User;
 import cc.tochat.webserver.model.message.IMessage;
 import cc.tochat.webserver.model.message.LoginMessage;
 import cc.tochat.webserver.model.message.LogoutMessage;
+import cc.tochat.webserver.model.message.UserInfoMessage;
+import cc.tochat.webserver.service.SecurityService;
+import cc.tochat.webserver.service.impl.SecurityServiceImpl;
 
+import com.openthinks.easyweb.context.WebContexts;
 import com.openthinks.libs.utilities.CommonUtilities;
 import com.openthinks.libs.utilities.logger.ProcessLogger;
 
@@ -47,6 +47,7 @@ import com.openthinks.libs.utilities.logger.ProcessLogger;
  *
  */
 public class ChatEndPointSupport implements IEndPointSupported<ChatEndPoint, ChatSession> {
+	private SecurityService securityService = WebContexts.get().lookup(SecurityServiceImpl.class);
 
 	@SuppressWarnings("unused")
 	private final EndpointConfig endpointConfig;
@@ -62,7 +63,7 @@ public class ChatEndPointSupport implements IEndPointSupported<ChatEndPoint, Cha
 	}
 
 	@Override
-	public IErrorHander getErrorHander(Session session) {
+	public IErrorHander getErrorHander(final Session session) {
 		final ChatSession chatSession = ChatSession.convert(session);
 		return new IErrorHander() {
 			@Override
@@ -74,9 +75,9 @@ public class ChatEndPointSupport implements IEndPointSupported<ChatEndPoint, Cha
 	}
 
 	@Override
-	public IChatMessageHander getMessageHander(Session session) {
+	public IChatMessageHander getMessageHander(final Session session) {
+		securityService.requireValidated(session);
 		final ChatSession chatSession = ChatSession.convert(session);
-
 		return new IChatMessageHander() {
 
 			@Override
@@ -85,43 +86,41 @@ public class ChatEndPointSupport implements IEndPointSupported<ChatEndPoint, Cha
 				ProcessLogger.debug("Find client number in Chat room[" + chatSession.getGroup() + "]:"
 						+ sessionCache.getSessionGroup(chatSession).size());
 				for (ChatSession cs : sessionCache.getSessionGroup(chatSession)) {
-
 					if (!cs.isOpen())
 						continue;
-					try {
-						ProcessLogger.debug("Sending message from Chat Server:" + t.getContent());
-						cs.getInstance().getBasicRemote().sendObject(t);
-						ProcessLogger.debug("Send message from Chat Server finished.");
-					} catch (IOException e) {
-						ProcessLogger.error(CommonUtilities.getCurrentInvokerMethod() + ":" + e.getMessage());
-					} catch (EncodeException e) {
-						ProcessLogger.error(CommonUtilities.getCurrentInvokerMethod() + ":" + e.getMessage());
-					}
+					cs.sendMessage(t);
 				}
 			}
 
 			@Override
-			public void processLogin(LoginMessage loginMessage) {
-				if(loginMessage==null) loginMessage = LoginMessage.empty();
+			public void processLogin() {
+				LoginMessage loginMessage = LoginMessage.empty();
 				for (ChatSession cs : sessionCache.getSessionGroup(chatSession)) {
-					User user = (User) cs.getHttpSessionAttribute(IConstant.SESSION_USER);
-					if(user!=null){
+					User user = securityService.getValidatedUser(cs.getInstance());
+					if (user != null) {
 						loginMessage.addUser(user);
 					}
 				}
+				ProcessLogger.debug("Process LoginMessage:" + loginMessage);
 				this.process(loginMessage);
 			}
 
 			@Override
-			public void processLogout(LogoutMessage logoutMessage) {
-				if(logoutMessage==null) logoutMessage = LogoutMessage.empty();
+			public void processLogout() {
+				LogoutMessage logoutMessage = LogoutMessage.empty();
 				for (ChatSession cs : sessionCache.getSessionGroup(chatSession)) {
-					User user = (User) cs.getHttpSessionAttribute(IConstant.SESSION_USER);
-					if(user!=null){
+					User user = securityService.getValidatedUser(cs.getInstance());
+					if (user != null) {
 						logoutMessage.addUser(user);
 					}
 				}
 				this.process(logoutMessage);
+			}
+
+			@Override
+			public void processSessionUser() {
+				User user = securityService.getValidatedUser(session);
+				chatSession.sendMessage(UserInfoMessage.valueOf(user));
 			}
 		};
 	}
@@ -134,6 +133,7 @@ public class ChatEndPointSupport implements IEndPointSupported<ChatEndPoint, Cha
 	@Override
 	public void addSession(ChatSession endPointSession) {
 		// validate is login and pass the room security 
+		securityService.requireValidated(endPointSession.getInstance());
 		sessionCache.add(endPointSession);
 	}
 

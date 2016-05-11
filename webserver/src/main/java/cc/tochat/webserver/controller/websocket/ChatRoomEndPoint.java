@@ -40,8 +40,8 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import cc.tochat.webserver.model.Room;
-import cc.tochat.webserver.model.decoder.ActionMessageDecoder;
-import cc.tochat.webserver.model.encoder.ActionMessageEncoder;
+import cc.tochat.webserver.model.decoder.AbstractMessageDecoder;
+import cc.tochat.webserver.model.encoder.AbstractMessageEncoder;
 import cc.tochat.webserver.model.message.ActionMessage;
 import cc.tochat.webserver.model.message.FetchRoomListMessage;
 import cc.tochat.webserver.service.ChatRoomService;
@@ -57,7 +57,7 @@ import com.openthinks.libs.utilities.logger.ProcessLogger;
  * @author dailey.yet@outlook.com
  *
  */
-@ServerEndpoint(value = "/room", configurator = EndPointsConfigurator.class, encoders = { ActionMessageEncoder.class }, decoders = { ActionMessageDecoder.class })
+@ServerEndpoint(value = "/room", configurator = EndPointsConfigurator.class, encoders = { AbstractMessageEncoder.class }, decoders = { AbstractMessageDecoder.class })
 public class ChatRoomEndPoint {
 	private ChatRoomService roomService = WebContexts.get().lookup(ChatRoomServiceImpl.class);
 	private SecurityService securityService = WebContexts.get().lookup(SecurityServiceImpl.class);

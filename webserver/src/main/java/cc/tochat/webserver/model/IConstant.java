@@ -47,6 +47,7 @@ public interface IConstant {
 	String MSG_OFFSET = "of";
 	String MSG_TOKEN = "tok";
 
+	String MSG_CURRENT_USER = "user";
 	String MSG_LOGIN_USERS = "users";
 	/////////////////////////////
 	String JOIN_AT = "@";

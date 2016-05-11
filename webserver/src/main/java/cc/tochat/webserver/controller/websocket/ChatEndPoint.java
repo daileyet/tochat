@@ -38,47 +38,36 @@ import javax.websocket.server.ServerEndpoint;
 import cc.tochat.webserver.controller.websocket.support.ChatEndPointSupport;
 import cc.tochat.webserver.controller.websocket.support.ChatSession;
 import cc.tochat.webserver.controller.websocket.support.EndPointSupports;
-import cc.tochat.webserver.model.User;
-import cc.tochat.webserver.model.decoder.ChatMessageDecoder;
-import cc.tochat.webserver.model.encoder.ChatMessageEncoder;
+import cc.tochat.webserver.model.decoder.AbstractMessageDecoder;
+import cc.tochat.webserver.model.encoder.AbstractMessageEncoder;
 import cc.tochat.webserver.model.message.ChatMessage;
-import cc.tochat.webserver.model.message.LoginMessage;
-import cc.tochat.webserver.model.message.LogoutMessage;
-import cc.tochat.webserver.service.SecurityService;
-import cc.tochat.webserver.service.impl.SecurityServiceImpl;
 
-import com.openthinks.easyweb.context.WebContexts;
 import com.openthinks.libs.utilities.logger.ProcessLogger;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
-@ServerEndpoint(value = "/chat/{room}", configurator = EndPointsConfigurator.class, encoders = { ChatMessageEncoder.class }, decoders = { ChatMessageDecoder.class })
+@ServerEndpoint(value = "/chat/{room}", configurator = EndPointsConfigurator.class, encoders = { AbstractMessageEncoder.class }, decoders = { AbstractMessageDecoder.class })
 public class ChatEndPoint {
-	private SecurityService securityService = WebContexts.get().lookup(SecurityServiceImpl.class);
 
 	@OnOpen
 	public void open(Session session, EndpointConfig configuration, @PathParam("room") String room) {
-		securityService.requireValidated(session);
 		EndPointSupports.lookup(ChatEndPointSupport.class).addSession(ChatSession.valueOf(session, room));
-		User validatedUser = securityService.getValidatedUser(session);
-		EndPointSupports.lookup(ChatEndPointSupport.class).getMessageHander(session)
-				.processLogin(LoginMessage.empty());
+		EndPointSupports.lookup(ChatEndPointSupport.class).getMessageHander(session).processSessionUser();
+		EndPointSupports.lookup(ChatEndPointSupport.class).getMessageHander(session).processLogin();
 		ProcessLogger.debug("One client connected to chat room:[" + room + "],session id :[" + session.getId() + "]");
 	}
 
 	@OnMessage
 	public void receive(Session session, ChatMessage chatMessage) {
-		securityService.requireValidated(session);
 		EndPointSupports.lookup(ChatEndPointSupport.class).getMessageHander(session).process(chatMessage);
 	}
 
 	@OnClose
 	public void close(Session session, @PathParam("room") String room, CloseReason closeReason) {
 		EndPointSupports.lookup(ChatEndPointSupport.class).remove(session, closeReason);
-		EndPointSupports.lookup(ChatEndPointSupport.class).getMessageHander(session)
-		.processLogout(LogoutMessage.empty());
+		EndPointSupports.lookup(ChatEndPointSupport.class).getMessageHander(session).processLogout();
 		ProcessLogger.debug("One client disconnected to chat room:[" + room + "],session id :[" + session.getId()
 				+ "]," + closeReason);
 	}

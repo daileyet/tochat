@@ -16,30 +16,38 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: IEndPointSupported.java 
-* @Package cc.tochat.webserver.controller.websocket.support 
+* @Title: AbstractMessageEncoder.java 
+* @Package cc.tochat.webserver.model.encoder 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 28, 2016
+* @date May 11, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.controller.websocket.support;
+package cc.tochat.webserver.model.encoder;
 
-import javax.websocket.CloseReason;
-import javax.websocket.Session;
+import javax.websocket.EncodeException;
+import javax.websocket.Encoder;
+import javax.websocket.EndpointConfig;
+
+import cc.tochat.webserver.model.message.AbstractMessage;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
-public interface IEndPointSupported<T, E extends IEndPointSession> {
+public class AbstractMessageEncoder implements Encoder.Text<AbstractMessage> {
 
-	public void addSession(E endPointSession);
+	@Override
+	public void destroy() {
+	}
 
-	public IErrorHander getErrorHander(final Session session);
+	@Override
+	public void init(EndpointConfig arg0) {
+	}
 
-	public IMessageHander getMessageHander(final Session session);
-
-	public void remove(Session session, CloseReason closeReason);
+	@Override
+	public String encode(AbstractMessage abstractMessage) throws EncodeException {
+		return abstractMessage.encode();
+	}
 
 }
