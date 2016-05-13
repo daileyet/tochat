@@ -34,7 +34,7 @@
 					dataType: "jsonp",
 					success: function(data) {
 						if (data.type == "SUCESS") {
-							window.location = "/webfacade/list.html?token=" + data.msg;
+							window.location = "/webfacade/channels.html?token=" + data.msg;
 						} else {
 							alert("Iinvalid account and password!");
 						}
