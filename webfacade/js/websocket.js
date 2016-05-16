@@ -20,7 +20,6 @@ TcWebSocket.prototype = {
 		this.instance = new WebSocket(this.url);
 		
 		function execHandlers(handlers,evt){
-			console.log(handlers);
 			for(var i=0,j=handlers.length;i<j;i++){
 				var handler = handlers[i];
 				
@@ -59,8 +58,14 @@ TcWebSocket.prototype = {
 	},
 	
 	closeConnection:function(){
-		if(this.getStatus() == 1)
-			this.instance.close();
+		if(this.getStatus() == 1){
+			//
+		}
+		try{
+			this.instance.close();	
+		}catch(e){
+		}
+		
 	},
 	
 	sendMessage:function(strMsg){
@@ -73,6 +78,7 @@ TcWebSocket.prototype = {
 	addMessageHander:function(fnHander){
 		this.handlers["onmessage"].push(fnHander);
 	},
+	
 	addErrorHander:function(fnHander){
 		this.handlers["onerror"].push(fnHander);
 	},

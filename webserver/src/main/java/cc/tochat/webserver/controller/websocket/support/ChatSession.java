@@ -90,9 +90,9 @@ public final class ChatSession implements IEndPointSession {
 
 	public void sendMessage(IMessage message) {
 		try {
-			ProcessLogger.debug("Sending message from Chat Server:" + message);
+			ProcessLogger.debug("Sending message from Chat Server:" + message.getClass());
 			this.session.getBasicRemote().sendObject(message);
-			ProcessLogger.debug("Send message from Chat Server finished.");
+			ProcessLogger.debug("Send message from Chat Server finished:" + message.getClass());
 		} catch (IOException e) {
 			ProcessLogger.error(CommonUtilities.getCurrentInvokerMethod() + ":" + e.getMessage());
 		} catch (EncodeException e) {

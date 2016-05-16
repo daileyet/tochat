@@ -11,12 +11,14 @@
 	};
 	if (!win['Class']) {
 		win['Class'] = { //define Class object
-			create: function() {
-				return function() {
+			create: function(code) {
+				 var clazz = function() {
 					this.init.apply(this, arguments);
 				}
+				clazz.code = code;
+				return clazz;
 			},
-			extend: function(parentClass, extendObj) {// class inherit
+			extend: function(parentClass, extendObj,code) {// class inherit
 				var childClass = Class.create();
 				var F = function() {};
 				F.prototype = parentClass.prototype;
@@ -30,6 +32,7 @@
 					 }
 				}
 				childClass.prototype.uber = F.prototype;
+				childClass.code = code;
 				return childClass;
 			}
 		}

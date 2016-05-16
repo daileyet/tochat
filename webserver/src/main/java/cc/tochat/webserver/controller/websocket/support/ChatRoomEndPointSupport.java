@@ -91,7 +91,6 @@ public class ChatRoomEndPointSupport implements IEndPointSupported<ChatRoomEndPo
 
 			@Override
 			public void process(IMessage t) {
-				ProcessLogger.debug("Receive message on Chat Server:" + t);
 				if (chatSession.isOpen()) {
 					chatSession.sendMessage(t);
 				}
@@ -105,6 +104,7 @@ public class ChatRoomEndPointSupport implements IEndPointSupported<ChatRoomEndPo
 
 			@Override
 			public void processFetchChannels(ActionMessage actionMessage) {
+				ProcessLogger.debug("Receive message on Chat Server:" + actionMessage);
 				FetchRoomListMessage actionMsg = (FetchRoomListMessage) actionMessage;
 				if (actionMsg == null) {
 					actionMsg = new FetchRoomListMessage();

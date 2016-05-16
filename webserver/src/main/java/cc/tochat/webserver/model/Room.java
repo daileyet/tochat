@@ -122,7 +122,7 @@ public class Room implements IRecordable {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", owner=" + owner + ", active=" + active + ", createon="
+		return "Channel [id=" + id + ", name=" + name + ", owner=" + owner + ", active=" + active + ", createon="
 				+ createon + ", period=" + period + ", desc=" + desc + "]";
 	}
 

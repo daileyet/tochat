@@ -8,6 +8,7 @@ window.tochat.Chat = window.tochat.Chat || {
 var chat_V = window.tochat.Chat.V;
 var chat_M = window.tochat.Chat.M;
 var chat_C = window.tochat.Chat.C;
+//////////////////////
 //chat view components
 chat_V.templates = {
 	applyFromSelf: function(cmJson) {
@@ -60,6 +61,7 @@ chat_V.templates = {
 		return "";
 	}
 };
+//////////////////////
 //chat model definetions
 chat_M.current_user = {};//current user
 chat_M.online_users = {};//online users map

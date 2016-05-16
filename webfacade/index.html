@@ -1,15 +1,40 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
-		<meta charset="UTF-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>ToChat</title>
+		<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
+		<link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	</head>
+
 	<body>
-		<p>Let's go to chat!</p>
-		<p>Simple, quick and free.</p>
-		
-		<p>
-			<button>Start Now!</button>
-		</p>
+		<div class="parallax-container">
+			<div class="parallax"><img src="images/9435123826_a4c3b35c08_o.jpg"></div>
+		</div>
+		<div class="section white">
+			<div class="row container">
+				<h2 class="header">ToChat</h2>
+				<p>Let's go to chat!</p>
+				<p>Simple, quick and free.</p>
+
+				<p>
+					<a class="waves-effect waves-light btn-large">Start Now! <i class="zmdi zmdi-comment-text"></i></a>
+				</p>
+				<p class="grey-text text-darken-3 lighten-3">ToChat is an effect where the background content or image in this case, is moved at a different speed than the foreground content while scrolling.</p>
+			</div>
+		</div>
+	<!--	<div class="parallax-container">
+			<div class="parallax"><img src="images/5620.jpg"></div>
+		</div>-->
+		<script src="js/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="js/materialize.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				$('.parallax').parallax();
+			});
+		</script>
 	</body>
+
 </html>

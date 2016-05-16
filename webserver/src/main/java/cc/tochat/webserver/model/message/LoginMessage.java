@@ -39,6 +39,13 @@ import com.google.gson.annotations.SerializedName;
  */
 public class LoginMessage extends ChatMessage {
 
+	@Override
+	public String toString() {
+		return "LoginMessage [users=" + users + ", getId()=" + getId() + ", getRoom()=" + getRoom() + ", getFrom()="
+				+ getFrom() + ", getTo()=" + getTo() + ", getType()=" + getType() + ", getTimestamp()="
+				+ getTimestamp() + "]";
+	}
+
 	@SerializedName(IConstant.MSG_LOGIN_USERS)
 	private Set<User> users = new HashSet<User>();
 
@@ -64,4 +71,5 @@ public class LoginMessage extends ChatMessage {
 	public boolean addUser(User user) {
 		return users.add(user);
 	}
+
 }
