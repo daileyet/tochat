@@ -70,4 +70,6 @@ public class FetchRoomListMessage extends ActionMessage {
 				+ getContent() + ", getFrom()=" + getFrom() + ", getType()=" + getType() + "]";
 	}
 
+	public static final FetchRoomListMessage EMPTY = new FetchRoomListMessage();
+
 }

@@ -25,12 +25,7 @@
 */
 package cc.tochat.webserver.controller.websocket;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-
 import javax.websocket.CloseReason;
-import javax.websocket.EncodeException;
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -39,18 +34,15 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-import cc.tochat.webserver.model.Room;
+import cc.tochat.webserver.controller.websocket.support.ChatRoomEndPointSupport;
+import cc.tochat.webserver.controller.websocket.support.ChatSession;
+import cc.tochat.webserver.controller.websocket.support.EndPointSupports;
+import cc.tochat.webserver.model.IConstant;
 import cc.tochat.webserver.model.decoder.AbstractMessageDecoder;
 import cc.tochat.webserver.model.encoder.AbstractMessageEncoder;
 import cc.tochat.webserver.model.message.ActionMessage;
 import cc.tochat.webserver.model.message.FetchRoomListMessage;
-import cc.tochat.webserver.service.ChatRoomService;
-import cc.tochat.webserver.service.SecurityService;
-import cc.tochat.webserver.service.impl.ChatRoomServiceImpl;
-import cc.tochat.webserver.service.impl.SecurityServiceImpl;
 
-import com.openthinks.easyweb.context.WebContexts;
-import com.openthinks.libs.utilities.CommonUtilities;
 import com.openthinks.libs.utilities.logger.ProcessLogger;
 
 /**
@@ -59,47 +51,31 @@ import com.openthinks.libs.utilities.logger.ProcessLogger;
  */
 @ServerEndpoint(value = "/room", configurator = EndPointsConfigurator.class, encoders = { AbstractMessageEncoder.class }, decoders = { AbstractMessageDecoder.class })
 public class ChatRoomEndPoint {
-	private ChatRoomService roomService = WebContexts.get().lookup(ChatRoomServiceImpl.class);
-	private SecurityService securityService = WebContexts.get().lookup(SecurityServiceImpl.class);
 
 	@OnOpen
 	public void open(Session session, EndpointConfig configuration) {
-		securityService.requireValidated(session);
-		FetchRoomListMessage actionMsg = new FetchRoomListMessage();
-		List<Room> rooms = roomService.getRooms(actionMsg.getCount(), actionMsg.getOffset());
-		actionMsg.setTimestamp(new Date().getTime());
-		actionMsg.setContent(rooms);
-		try {
-			session.getBasicRemote().sendObject(actionMsg);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (EncodeException e) {
-			e.printStackTrace();
-		}
+		EndPointSupports.lookup(ChatRoomEndPointSupport.class).addSession(
+				ChatSession.valueOf(session, IConstant.MSG_ROOM_DEFAULT_INSTANCE));
+		EndPointSupports.lookup(ChatRoomEndPointSupport.class).getMessageHander(session).processSessionUser();
+		EndPointSupports.lookup(ChatRoomEndPointSupport.class).getMessageHander(session)
+				.processFetchChannels(FetchRoomListMessage.EMPTY);
 	}
 
 	@OnMessage
 	public void receive(Session session, ActionMessage actionMessage) {
-		securityService.requireValidated(session);
-		FetchRoomListMessage fetchRoomListMessage = (FetchRoomListMessage) actionMessage;
-		List<Room> rooms = roomService.getRooms(fetchRoomListMessage.getCount(), fetchRoomListMessage.getOffset());
-		fetchRoomListMessage.setContent(rooms);
-		try {
-			session.getBasicRemote().sendObject(fetchRoomListMessage);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (EncodeException e) {
-			e.printStackTrace();
-		}
+		EndPointSupports.lookup(ChatRoomEndPointSupport.class).getMessageHander(session)
+				.processFetchChannels(actionMessage);
 	}
 
 	@OnClose
 	public void close(Session session, CloseReason closeReason) {
-		ProcessLogger.debug("One client disconnected to  room ,session id :[" + session.getId() + "]," + closeReason);
+		EndPointSupports.lookup(ChatRoomEndPointSupport.class).remove(session, closeReason);
+		ProcessLogger.debug("One client disconnected to chat channels list,session id :[" + session.getId() + "],"
+				+ closeReason);
 	}
 
 	@OnError
 	public void error(Session session, Throwable throwable) {
-		ProcessLogger.error(CommonUtilities.getCurrentInvokerMethod() + ":" + throwable.getMessage());
+		EndPointSupports.lookup(ChatRoomEndPointSupport.class).getErrorHander(session).process(throwable);
 	}
 }

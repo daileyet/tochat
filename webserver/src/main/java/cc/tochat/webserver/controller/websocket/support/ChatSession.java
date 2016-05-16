@@ -42,8 +42,8 @@ import com.openthinks.libs.utilities.logger.ProcessLogger;
  *
  */
 public final class ChatSession implements IEndPointSession {
-	private final Session session;
-	private final String room;
+	private String room;
+	private Session session;
 
 	private ChatSession(Session session, String room) {
 		this.session = session;
@@ -57,6 +57,7 @@ public final class ChatSession implements IEndPointSession {
 
 	public final static ChatSession convert(Session session) {
 		String room = (String) session.getUserProperties().get(IConstant.MSG_ROOM);
+		room = (room == null ? IConstant.MSG_ROOM_DEFAULT_INSTANCE : room);
 		return new ChatSession(session, room);
 	}
 
@@ -64,8 +65,9 @@ public final class ChatSession implements IEndPointSession {
 		return room == null ? IConstant.MSG_ROOM_DEFAULT_INSTANCE : room;
 	}
 
-	Session getInstance() {
-		return session;
+	@Override
+	public String getGroup() {
+		return getRoom();
 	}
 
 	@Override
@@ -76,11 +78,6 @@ public final class ChatSession implements IEndPointSession {
 	@Override
 	public boolean isOpen() {
 		return session.isOpen();
-	}
-
-	@Override
-	public String getGroup() {
-		return getRoom();
 	}
 
 	public Object getHttpSessionAttribute(String attributeName) {
@@ -103,12 +100,15 @@ public final class ChatSession implements IEndPointSession {
 		}
 	}
 
+	public final Session getInstance() {
+		return this.session;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((getInstance() == null) ? 0 : getInstance().getId().hashCode());
-		result = prime * result + ((room == null) ? 0 : room.hashCode());
+		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
 		return result;
 	}
 

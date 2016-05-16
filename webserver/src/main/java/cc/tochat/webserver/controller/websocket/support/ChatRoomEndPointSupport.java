@@ -16,26 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: ChatEndPointSupport.java 
+* @Title: ChatRoomEndPointSupport.java 
 * @Package cc.tochat.webserver.controller.websocket.support 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 28, 2016
+* @date May 16, 2016
 * @version V1.0   
 */
 package cc.tochat.webserver.controller.websocket.support;
+
+import java.util.Date;
+import java.util.List;
 
 import javax.websocket.CloseReason;
 import javax.websocket.EndpointConfig;
 import javax.websocket.Session;
 
-import cc.tochat.webserver.controller.websocket.ChatEndPoint;
+import cc.tochat.webserver.controller.websocket.ChatRoomEndPoint;
+import cc.tochat.webserver.model.Room;
 import cc.tochat.webserver.model.User;
+import cc.tochat.webserver.model.message.ActionMessage;
+import cc.tochat.webserver.model.message.FetchRoomListMessage;
 import cc.tochat.webserver.model.message.IMessage;
-import cc.tochat.webserver.model.message.LoginMessage;
-import cc.tochat.webserver.model.message.LogoutMessage;
 import cc.tochat.webserver.model.message.UserInfoMessage;
+import cc.tochat.webserver.service.ChatRoomService;
 import cc.tochat.webserver.service.SecurityService;
+import cc.tochat.webserver.service.impl.ChatRoomServiceImpl;
 import cc.tochat.webserver.service.impl.SecurityServiceImpl;
 
 import com.openthinks.easyweb.context.WebContexts;
@@ -46,75 +52,49 @@ import com.openthinks.libs.utilities.logger.ProcessLogger;
  * @author dailey.yet@outlook.com
  *
  */
-public class ChatEndPointSupport implements IEndPointSupported<ChatEndPoint, ChatSession> {
+public class ChatRoomEndPointSupport implements IEndPointSupported<ChatRoomEndPoint, ChatSession> {
+	private ChatRoomService roomService = WebContexts.get().lookup(ChatRoomServiceImpl.class);
 	private SecurityService securityService = WebContexts.get().lookup(SecurityServiceImpl.class);
-
 	@SuppressWarnings("unused")
 	private final EndpointConfig endpointConfig;
 
 	private final SessionCache<ChatSession> sessionCache = new SessionCache<ChatSession>();
 
-	public ChatEndPointSupport() {
+	public ChatRoomEndPointSupport() {
 		endpointConfig = null;
 	}
 
-	public ChatEndPointSupport(EndpointConfig endpointConfig) {
+	public ChatRoomEndPointSupport(EndpointConfig endpointConfig) {
 		this.endpointConfig = endpointConfig;
 	}
 
 	@Override
-	public IErrorHander getErrorHander(final Session session) {
-		final ChatSession chatSession = ChatSession.convert(session);
+	public void addSession(ChatSession endPointSession) {
+		securityService.validateEndpoit(endPointSession.getInstance());
+		sessionCache.add(endPointSession);
+	}
+
+	@Override
+	public IErrorHander getErrorHander(Session session) {
 		return new IErrorHander() {
 			@Override
 			public void process(Throwable t) {
-				ProcessLogger.error(CommonUtilities.getCurrentInvokerMethod() + " on Group:[" + chatSession.getGroup()
-						+ "]:" + t.getMessage());
+				ProcessLogger.error(CommonUtilities.getCurrentInvokerMethod() + t.getMessage());
 			}
 		};
 	}
 
 	@Override
-	public IChatMessageHander getMessageHander(final Session session) {
-		securityService.requireValidated(session);
-		final ChatSession chatSession = ChatSession.convert(session);
-		return new IChatMessageHander() {
+	public IChannelMessageHandler getMessageHander(final Session session) {
+		return new IChannelMessageHandler() {
+			final ChatSession chatSession = ChatSession.convert(session);
 
 			@Override
 			public void process(IMessage t) {
 				ProcessLogger.debug("Receive message on Chat Server:" + t);
-				ProcessLogger.debug("Find client number in Chat room[" + chatSession.getGroup() + "]:"
-						+ sessionCache.getSessionGroup(chatSession).size());
-				for (ChatSession cs : sessionCache.getSessionGroup(chatSession)) {
-					if (!cs.isOpen())
-						continue;
-					cs.sendMessage(t);
+				if (chatSession.isOpen()) {
+					chatSession.sendMessage(t);
 				}
-			}
-
-			@Override
-			public void processLoginBroadcast() {
-				LoginMessage loginMessage = LoginMessage.empty();
-				for (ChatSession cs : sessionCache.getSessionGroup(chatSession)) {
-					User user = securityService.getValidatedUser(cs.getInstance());
-					if (user != null) {
-						loginMessage.addUser(user);
-					}
-				}
-				ProcessLogger.debug("Process LoginMessage:" + loginMessage);
-				this.process(loginMessage);
-			}
-
-			@Override
-			public void processLogoutBroadcast() {
-				LogoutMessage logoutMessage = LogoutMessage.empty();
-				for (ChatSession cs : sessionCache.getSessionGroup(chatSession)) {
-					User user = securityService.getValidatedUser(cs.getInstance());
-					if (user != null) {
-						logoutMessage.addUser(user);
-					}
-				}
-				this.process(logoutMessage);
 			}
 
 			@Override
@@ -122,19 +102,24 @@ public class ChatEndPointSupport implements IEndPointSupported<ChatEndPoint, Cha
 				User user = securityService.getValidatedUser(session);
 				chatSession.sendMessage(UserInfoMessage.valueOf(user));
 			}
+
+			@Override
+			public void processFetchChannels(ActionMessage actionMessage) {
+				FetchRoomListMessage actionMsg = (FetchRoomListMessage) actionMessage;
+				if (actionMsg == null) {
+					actionMsg = new FetchRoomListMessage();
+				}
+				List<Room> rooms = roomService.getRooms(actionMsg.getCount(), actionMsg.getOffset());
+				actionMsg.setTimestamp(new Date().getTime());
+				actionMsg.setContent(rooms);
+				this.process(actionMsg);
+			}
 		};
 	}
 
 	@Override
 	public void remove(Session session, CloseReason closeReason) {
 		sessionCache.remove(ChatSession.convert(session));
-	}
-
-	@Override
-	public void addSession(ChatSession endPointSession) {
-		// validate is login and pass the room security 
-		securityService.requireValidated(endPointSession.getInstance());
-		sessionCache.add(endPointSession);
 	}
 
 }

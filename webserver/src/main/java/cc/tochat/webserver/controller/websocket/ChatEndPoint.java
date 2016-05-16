@@ -55,7 +55,7 @@ public class ChatEndPoint {
 	public void open(Session session, EndpointConfig configuration, @PathParam("room") String room) {
 		EndPointSupports.lookup(ChatEndPointSupport.class).addSession(ChatSession.valueOf(session, room));
 		EndPointSupports.lookup(ChatEndPointSupport.class).getMessageHander(session).processSessionUser();
-		EndPointSupports.lookup(ChatEndPointSupport.class).getMessageHander(session).processLogin();
+		EndPointSupports.lookup(ChatEndPointSupport.class).getMessageHander(session).processLoginBroadcast();
 		ProcessLogger.debug("One client connected to chat room:[" + room + "],session id :[" + session.getId() + "]");
 	}
 
@@ -67,7 +67,7 @@ public class ChatEndPoint {
 	@OnClose
 	public void close(Session session, @PathParam("room") String room, CloseReason closeReason) {
 		EndPointSupports.lookup(ChatEndPointSupport.class).remove(session, closeReason);
-		EndPointSupports.lookup(ChatEndPointSupport.class).getMessageHander(session).processLogout();
+		EndPointSupports.lookup(ChatEndPointSupport.class).getMessageHander(session).processLogoutBroadcast();
 		ProcessLogger.debug("One client disconnected to chat room:[" + room + "],session id :[" + session.getId()
 				+ "]," + closeReason);
 	}

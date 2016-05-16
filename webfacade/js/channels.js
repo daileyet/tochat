@@ -41,7 +41,6 @@ channel_C.init=function(){
 	$(channel_V.names.LINK_LOAD_MOR).unbind('click').click(channel_C.sendFCMessage);
 	
 	channel_V.components.tcWS.addMessageHander(function(evt){
-		console.log(evt.data);
 		var fcObj = JSON.parse(evt.data);
 		var fcmsg = new FetchChannelsMessage(fcObj);
 		var channels = fcmsg.getContent();

@@ -16,21 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: IMessageHander.java 
+* @Title: IChannelMessageHandler.java 
 * @Package cc.tochat.webserver.controller.websocket.support 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 28, 2016
+* @date May 16, 2016
 * @version V1.0   
 */
 package cc.tochat.webserver.controller.websocket.support;
 
-import cc.tochat.webserver.model.message.IMessage;
+import cc.tochat.webserver.model.message.ActionMessage;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
-public interface IMessageHander extends IHander<IMessage> {
-	public void processSessionUser();
+public interface IChannelMessageHandler extends IMessageHander {
+
+	public void processFetchChannels(ActionMessage actionMessage);
 }
