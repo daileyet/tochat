@@ -12,7 +12,7 @@ var channel_C = window.tochat.Channel.C;
 channel_V.names = {
 	'LINK_LOAD_MOR': 'a#load-more',
 	'CHANNEL_LIST': '#room-list tbody',
-	'CHANNEL_LIST_ITEM':'#room-list tbody .room-item'
+	'CHANNEL_LIST_ITEM': '#room-list tbody .room-item'
 }
 
 channel_V.components = {
@@ -45,10 +45,13 @@ channel_C.init = function() {
 
 	var msgHandlers = new MessageHandlers();
 
-	msgHandlers.addHander(UserInfoMessage,function(jobj){
+	msgHandlers.addHander(UserInfoMessage, function(jobj) {
 		var usermsg = new UserInfoMessage(jobj);
 		var useinfo = usermsg.getContent();
 		channel_M.current_user = useinfo;
+		if (sessionStorage) {
+			sessionStorage.setItem("tochat@user", useinfo.stringify());
+		}
 	});
 
 	msgHandlers.addHander(FetchChannelsMessage, function(jobj) {

@@ -11,7 +11,7 @@
 
 	<body>
 		<div class="parallax-container">
-			<div class="parallax"><img src="images/9435123826_a4c3b35c08_o.jpg"></div>
+			<div class="parallax"><img src="images/sky_top.png"></div>
 		</div>
 		<div class="section white">
 			<div class="row container">
@@ -20,19 +20,23 @@
 				<p>Simple, quick and free.</p>
 
 				<p>
-					<a class="waves-effect waves-light btn-large">Start Now! <i class="zmdi zmdi-comment-text"></i></a>
+					<a class="waves-effect waves-light btn-large" id="startBtn">Start Now! <i class="zmdi zmdi-comment-text"></i></a>
 				</p>
 				<p class="grey-text text-darken-3 lighten-3">ToChat is an effect where the background content or image in this case, is moved at a different speed than the foreground content while scrolling.</p>
 			</div>
 		</div>
-	<!--	<div class="parallax-container">
-			<div class="parallax"><img src="images/5620.jpg"></div>
-		</div>-->
+		<div class="parallax-container">
+			<div class="parallax"><img src="images/sky_bottom.png"></div>
+		</div>
 		<script src="js/jquery-1.10.2.min.js"></script>
 		<script type="text/javascript" src="js/materialize.min.js"></script>
+		<script src="js/utils.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/message.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/base.js" type="text/javascript" charset="utf-8"></script>
 		<script>
 			$(document).ready(function() {
 				$('.parallax').parallax();
+				$('#startBtn').click(window.tochat.startNow);
 			});
 		</script>
 	</body>

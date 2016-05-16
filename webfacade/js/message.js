@@ -127,6 +127,9 @@ UserInfo.prototype = {
 	},
 	getAlias: function() {
 		return this.data['alias'];
+	},
+	stringify: function() {
+		return JSON.stringify(this.data);
 	}
 };
 //User message definition

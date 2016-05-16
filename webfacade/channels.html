@@ -46,13 +46,14 @@
 		<script src="js/jquery-1.10.2.min.js"></script>
 		<script type="text/javascript" src="js/materialize.min.js"></script>
 		<script src="js/utils.js" type="text/javascript" charset="utf-8"></script>
-		<script src="js/websocket.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/message.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/base.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/websocket.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/channels.js" type="text/javascript" charset="utf-8"></script>
 
 		<script>
 			function joinChat(strId) {
-				window.location = "/webfacade/chats.html#" + strId;
+				window.location = getFullUrl("chats.html#" + strId);
 			}
 			window.addEventListener("load", channel_C.init, false);
 			window.addEventListener("unload", channel_C.destroy, false);

@@ -2,6 +2,7 @@
 <classpath>
   <classpathentry kind="src" path="src/test/java" output="target/test-classes" including="**/*.java"/>
   <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
+  <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
   <classpathentry kind="output" path="target/classes"/>
   <classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1/activation-1.1.jar"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
@@ -9,8 +10,8 @@
   <classpathentry kind="var" path="M2_REPO/javax/javaee-api/7.0/javaee-api-7.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/sun/mail/javax.mail/1.5.0/javax.mail-1.5.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/glassfish/javax.json/1.0.4/javax.json-1.0.4.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/openthinks/libs/utilities/1.0-SNAPSHOT/utilities-1.0-SNAPSHOT.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/openthinks/easyweb/1.0/easyweb-1.0.jar"/>
+  <classpathentry kind="src" path="/utilities"/>
+  <classpathentry kind="src" path="/easyweb"/>
   <classpathentry kind="var" path="M2_REPO/com/google/code/gson/gson/2.2.4/gson-2.2.4.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/freemarker/freemarker/2.3.20/freemarker-2.3.20.jar"/>
 </classpath>
