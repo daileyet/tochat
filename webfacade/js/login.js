@@ -15,10 +15,11 @@ function showLoginFailed() {
 }
 
 function startNow() {
+	updateViewIfLogin();
 	if (window.tochat.isLogin()) {
-		window.location = getClentUrl("channels.html");
+		window.location = getClientUrl("channels.html");
 	} else {
-		//window.location = getClentUrl("index.html#loginmodal");
+		//window.location = getClientUrl("index.html#loginmodal");
 		$('#loginmodal').openModal();
 	}
 }
@@ -39,8 +40,8 @@ function login() {
 			
 			hideLoginPreLoader();
 			if (data.type == "SUCESS") {
-				console.log(data);
-				//window.location = getClentUrl("channels.html?token=" + data.msg);
+				window.tochat.storeLoginUser(data.other);
+				window.location = getClientUrl("channels.html?token=" + data.msg);
 			} else {
 				setTimeout(showLoginFailed, 1000);
 			}

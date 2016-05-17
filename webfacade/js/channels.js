@@ -49,9 +49,6 @@ channel_C.init = function() {
 		var usermsg = new UserInfoMessage(jobj);
 		var useinfo = usermsg.getContent();
 		channel_M.current_user = useinfo;
-		if (sessionStorage) {
-			sessionStorage.setItem("tochat@user", useinfo.stringify());
-		}
 	});
 
 	msgHandlers.addHander(FetchChannelsMessage, function(jobj) {

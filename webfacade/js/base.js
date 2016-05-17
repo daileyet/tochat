@@ -1,7 +1,7 @@
 /**
  * base info js
  */
-var SESSION_USER_ITEM_KEY ="tochat@user";
+var SESSION_USER_ITEM_KEY = "tochat@user";
 window.tochat = window.tochat || {
 	envConf: {
 		dev: {
@@ -9,7 +9,7 @@ window.tochat = window.tochat || {
 				client: 'http://127.0.0.1:8020/webfacade/',
 				server: 'http://localhost:8080/tochatserver/'
 			},
-			timeout:60
+			timeout: 30*60
 		},
 		prod: {
 
@@ -22,49 +22,55 @@ window.tochat = window.tochat || {
 		if (sessionStorage && sessionStorage.getItem(SESSION_USER_ITEM_KEY)) {
 			var strVal = sessionStorage.getItem(SESSION_USER_ITEM_KEY);
 			try {
-				var userObj = new UserInfo(JSON.parse(strVal));
-				if (userObj.getId() != "") {
-					return true;
+				var userInfo = new UserInfo(JSON.parse(strVal));
+				if (userInfo.getId() == undefined || userInfo.getId() == "")
+					return false;
+				var startTime = userInfo.getTimestamp();
+				var isValided = Dates.inRange(Date.now(), startTime, startTime + getSessionTimeOut() * 1000);
+				if(!isValided){
+					sessionStorage.removeItem(SESSION_USER_ITEM_KEY);
 				}
+				return isValided;
 			} catch (e) {}
 		}
 		return false;
 	},
-	getLoginUser:function(){
-		if(window.tochat.isLogin()){
+	getLoginUser: function() {
+		if (window.tochat.isLogin()) {
 			var strVal = sessionStorage.getItem(SESSION_USER_ITEM_KEY);
 			var userObj = new UserInfo(JSON.parse(strVal));
 			return userObj;
 		}
 		return null;
 	},
-	storeLoginUser:function(userinfo){
+	storeLoginUser: function(userJson) {
 		if (sessionStorage) {
 			var itemVal = sessionStorage.getItem(SESSION_USER_ITEM_KEY);
-			if(itemVal==undefined || itemVal ==""){
+			if (itemVal == undefined || itemVal == "") {
+				var userinfo = new UserInfo(userJson);
 				sessionStorage.setItem(SESSION_USER_ITEM_KEY, userinfo.stringify());
 			}
 		}
 	}
 };
 
-function getClentUrl(path) {
+function getClientUrl(path) {
 	var sPath = '';
-	if(path){
-		sPath = ''+path;
+	if (path) {
+		sPath = '' + path;
 	}
-	return window.tochat.envConf.current().base_url.client+sPath;
+	return window.tochat.envConf.current().base_url.client + sPath;
 }
 
 function getServerUrl(path) {
 	var sPath = '';
-	if(path){
-		sPath = ''+path;
+	if (path) {
+		sPath = '' + path;
 	}
-	return window.tochat.envConf.current().base_url.server+sPath;
+	return window.tochat.envConf.current().base_url.server + sPath;
 }
 
-function getSessionTimeOut(){
+function getSessionTimeOut() {
 	var stout = window.tochat.envConf.current().timeout || 1800;
 	return stout;
 }

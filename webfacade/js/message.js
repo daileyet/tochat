@@ -115,7 +115,7 @@ var UserInfo = Class.create();
 UserInfo.prototype = {
 	init: function(data) {
 		this.data = data || {};
-		this.data.timestamp = Date.now();
+		this.data.timestamp = this.data['timestamp'] || Date.now();
 	},
 	getId: function() {
 		return this.data['id'];
@@ -128,6 +128,9 @@ UserInfo.prototype = {
 	},
 	getAlias: function() {
 		return this.data['alias'];
+	},
+	getTimestamp:function(){
+		return this.data.timestamp;
 	},
 	stringify: function() {
 		return JSON.stringify(this.data);
