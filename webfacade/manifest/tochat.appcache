@@ -1,0 +1,17 @@
+CACHE MANIFEST
+# 2016-05-17:v1
+
+# Explicitly cached 'master entries'.
+../index.html
+../images/sky_top.png
+../images/sky_bottom.png
+../css/material-design-iconic-font.min.css
+../css/materialize.min.css
+../js/jquery-1.10.2.min.js
+../js/materialize.min.js
+
+# Resources that require the user to be online.
+NETWORK:
+../js/utils.js
+../js/message.js
+../js/base.js

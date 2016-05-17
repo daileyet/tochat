@@ -38,6 +38,7 @@ import com.openthinks.easyweb.annotation.ResponseReturn;
 import com.openthinks.easyweb.context.WebContexts;
 import com.openthinks.easyweb.context.handler.WebAttributers;
 import com.openthinks.easyweb.utils.json.OperationJson;
+import com.openthinks.libs.utilities.logger.ProcessLogger;
 
 /**
  * @author dailey.yet@outlook.com
@@ -51,19 +52,19 @@ public class UserController {
 	@Jsonp
 	@ResponseReturn(contentType = "text/javascript")
 	public String login(WebAttributers was) {
+		ProcessLogger.debug("Session timeout:" + was.getSession().getMaxInactiveInterval());
 		String account = (String) was.get(IConstant.PARAM_LOGIN_NAME);
 		String pass = (String) was.get(IConstant.PARAM_LOGIN_PASS);
 		String token = "";
-		System.out.println("checking:" + account + "," + pass);
+		ProcessLogger.debug("checking login user:" + account + "," + pass);
 		User user = userService.findUser(account, pass);
-		System.out.println(user);
 		if (user != null) {
 			String clientIP = WebUtils.getRemoteIP(was.getRequest());
 			user.setLastip(clientIP);
 			userService.update(user);
 			token = userService.generateToken(user);
 			was.storeSession(IConstant.SESSION_USER, user);
-			return OperationJson.build().sucess(token).toString();
+			return OperationJson.build().sucess(token).setOther(user).toString();
 		}
 		return OperationJson.build().error().toString();
 	}

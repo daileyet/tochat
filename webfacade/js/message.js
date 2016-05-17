@@ -115,6 +115,7 @@ var UserInfo = Class.create();
 UserInfo.prototype = {
 	init: function(data) {
 		this.data = data || {};
+		this.data.timestamp = Date.now();
 	},
 	getId: function() {
 		return this.data['id'];

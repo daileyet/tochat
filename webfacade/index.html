@@ -1,15 +1,33 @@
 <!DOCTYPE html>
 <html>
-
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>ToChat</title>
 		<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
 		<link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	</head>
 
 	<body>
+		<div class="navbar-fixed">
+			<nav class="white">
+				<div class="nav-wrapper">
+					<a href="#!" class="brand-logo "><span class="text-blue text-accent-3">To</span><span class="text-blue text-accent-1">Chat</span></a>
+					<a href="#" data-activates="mobile-demo" class="button-collapse "><i class="zmdi zmdi-menu"></i></a>
+					<ul class="right hide-on-med-and-down ">
+						<li class="account-item hide"><a href="#!" ><i class="zmdi zmdi-account"></i></a></li>
+						<li class="login-item hide"><a href="#loginmodal" class="modal-trigger">LOGIN</a></li>
+						<li><a href="contact.html">CONTACT US</a></li>
+					</ul>
+					<ul class="side-nav" id="mobile-demo">
+						<li class="account-item hide"><a href="#!" ><i class="zmdi zmdi-account"></i></a></li>
+						<li class="login-item hide"><a href="#loginmodal" class="modal-trigger">LOGIN</a></li>
+						<li><a href="contact.html">CONTACT US</a></li>
+					</ul>
+				</div>
+			</nav>
+		</div>
 		<div class="parallax-container">
 			<div class="parallax"><img src="images/sky_top.png"></div>
 		</div>
@@ -20,7 +38,7 @@
 				<p>Simple, quick and free.</p>
 
 				<p>
-					<a class="waves-effect waves-light btn-large" id="startBtn">Start Now! <i class="zmdi zmdi-comment-text"></i></a>
+					<a class="waves-effect waves-light btn-large blue accent-2" id="startBtn">Start Now! <i class="zmdi zmdi-comment-text"></i></a>
 				</p>
 				<p class="grey-text text-darken-3 lighten-3">ToChat is an effect where the background content or image in this case, is moved at a different speed than the foreground content while scrolling.</p>
 			</div>
@@ -28,17 +46,69 @@
 		<div class="parallax-container">
 			<div class="parallax"><img src="images/sky_bottom.png"></div>
 		</div>
+
+		<!-- Modal Structure -->
+		<div id="loginmodal" class="modal modal-fixed-footer">
+			<div class="modal-content">
+				<div class="row">
+					<form class="col s12" onsubmit="return login()">
+						<div class="row">
+							<div class="input-field col s12">
+								<input id="tochat_name" name="tochat_name" type="text" class="validate" required>
+								<label for="tochat_name">Your account/email address</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<input id="tochat_pass" name="tochat_pass" type="password" class="validate" required>
+								<label for="tochat_pass">Your ToChat password</label>
+							</div>
+						</div>
+						<div class="row center-align">
+							<div class="input-field col s12">
+								<button class="btn waves-effect waves-light blue accent-2" type="submit">Login</button>
+							</div>
+						</div>
+						<div id="login-preloader" class="row center-align" style="display: none;">
+							<div class="preloader-wrapper small active">
+								<div class="spinner-layer spinner-blue">
+									<div class="circle-clipper right">
+										<div class="circle">
+										</div>
+									</div>
+								</div>
+								<div class="spinner-layer spinner-red">
+									<div class="circle-clipper right">
+										<div class="circle"></div>
+									</div>
+								</div>
+								<div class="spinner-layer spinner-yellow">
+									<div class="circle-clipper right">
+										<div class="circle"></div>
+									</div>
+								</div>
+								<div class="spinner-layer spinner-green">
+									<div class="circle-clipper right">
+										<div class="circle"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="login-failed-panel" class="row red-text center-align" style="display: none;">
+							Login failed, please try again.
+						</div>
+				</div>
+				</form>
+			</div>
+		</div>
+		</div>
+
 		<script src="js/jquery-1.10.2.min.js"></script>
 		<script type="text/javascript" src="js/materialize.min.js"></script>
 		<script src="js/utils.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/message.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/base.js" type="text/javascript" charset="utf-8"></script>
-		<script>
-			$(document).ready(function() {
-				$('.parallax').parallax();
-				$('#startBtn').click(window.tochat.startNow);
-			});
-		</script>
+		<script src="js/login.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 
 </html>

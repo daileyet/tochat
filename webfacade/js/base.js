@@ -1,10 +1,15 @@
 /**
  * base info js
  */
+var SESSION_USER_ITEM_KEY ="tochat@user";
 window.tochat = window.tochat || {
 	envConf: {
 		dev: {
-			base_url: 'http://127.0.0.1:8020/webfacade/'
+			base_url: {
+				client: 'http://127.0.0.1:8020/webfacade/',
+				server: 'http://localhost:8080/tochatserver/'
+			},
+			timeout:60
 		},
 		prod: {
 
@@ -14,8 +19,8 @@ window.tochat = window.tochat || {
 		}
 	},
 	isLogin: function() {
-		if (sessionStorage && sessionStorage.getItem("tochat@user")) {
-			var strVal = sessionStorage.getItem("tochat@user");
+		if (sessionStorage && sessionStorage.getItem(SESSION_USER_ITEM_KEY)) {
+			var strVal = sessionStorage.getItem(SESSION_USER_ITEM_KEY);
 			try {
 				var userObj = new UserInfo(JSON.parse(strVal));
 				if (userObj.getId() != "") {
@@ -25,19 +30,41 @@ window.tochat = window.tochat || {
 		}
 		return false;
 	},
-	startNow: function() {
-		if (window.tochat.isLogin()) {
-			window.location = getFullUrl("channels.html");
-		} else {
-			window.location = getFullUrl("login.html");
+	getLoginUser:function(){
+		if(window.tochat.isLogin()){
+			var strVal = sessionStorage.getItem(SESSION_USER_ITEM_KEY);
+			var userObj = new UserInfo(JSON.parse(strVal));
+			return userObj;
+		}
+		return null;
+	},
+	storeLoginUser:function(userinfo){
+		if (sessionStorage) {
+			var itemVal = sessionStorage.getItem(SESSION_USER_ITEM_KEY);
+			if(itemVal==undefined || itemVal ==""){
+				sessionStorage.setItem(SESSION_USER_ITEM_KEY, userinfo.stringify());
+			}
 		}
 	}
 };
 
-function getBaseUrl() {
-	return window.tochat.envConf.current().base_url;
-};
+function getClentUrl(path) {
+	var sPath = '';
+	if(path){
+		sPath = ''+path;
+	}
+	return window.tochat.envConf.current().base_url.client+sPath;
+}
 
-function getFullUrl(path) {
-	return getBaseUrl() + '' + path;
+function getServerUrl(path) {
+	var sPath = '';
+	if(path){
+		sPath = ''+path;
+	}
+	return window.tochat.envConf.current().base_url.server+sPath;
+}
+
+function getSessionTimeOut(){
+	var stout = window.tochat.envConf.current().timeout || 1800;
+	return stout;
 }

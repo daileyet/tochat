@@ -1,6 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>ToChat List</title>
@@ -53,7 +52,7 @@
 
 		<script>
 			function joinChat(strId) {
-				window.location = getFullUrl("chats.html#" + strId);
+				window.location = getClientUrl("chats.html#" + strId);
 			}
 			window.addEventListener("load", channel_C.init, false);
 			window.addEventListener("unload", channel_C.destroy, false);
