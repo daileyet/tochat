@@ -1,23 +1,32 @@
 /**
  * All message objects
  */
-
+// base message definition
 var Message = Class.create();
 Message.prototype = {
 	init: function(data) {
 		this.data = data || {};
 	},
-	getData: function() {
+	getData: function() { //return origin json data object
 		return this.data;
 	},
-	getType: function() {
+	getType: function() { // return message type 
 		return this.data['mt'];
 	},
-	getTimestamp: function() {
-		return this.data['ti'];
+	getTimestamp: function() { // return message timestamp(number), like Date.now()
+		var ts = this.data['ti'];
+		try{
+			ts = parseInt(ts);
+		}catch(e){
+			ts = NaN;
+		}
+		return ts;
 	},
 	getContent: function() {
 		return this.data['co'];
+	},
+	setType: function(stype) {
+		this.data['mt'] = stype;
 	},
 	setTimestamp: function(lTime) {
 		this.data['ti'] = lTime;
@@ -29,6 +38,35 @@ Message.prototype = {
 		return JSON.stringify(this.data);
 	}
 };
+var ChatMessage = Class.extend(Message, {
+	init: function(data) {
+		this.data = data || {};
+	},
+	getId: function() { //return message id
+		return this.data['id'];
+	},
+	getFrom: function() {
+		return this.data['fr'];
+	},
+	getChannel: function() {
+		return this.data['ro'];
+	},
+	getTo: function() {
+		return this.data['to'];
+	},
+	setId: function(sid) {
+		this.data['id'] = sid;
+	},
+	setFrom: function(sfromid) {
+		this.data['fr'] = sfromid;
+	},
+	setChannel: function(sChannelId) {
+		this.data['ro'] = sChannelId;
+	},
+	setTo: function(stoid) {
+		this.data['to'] = stoid;
+	}
+});
 //message handler
 var MessageHandler = Class.create();
 MessageHandler.prototype = {
@@ -78,7 +116,8 @@ MessageHandlers.prototype = {
 	size: function() {
 		return this.ctx.length;
 	}
-}
+};
+//
 //Channel definition
 var Channel = Class.create();
 Channel.prototype = {
@@ -129,7 +168,7 @@ UserInfo.prototype = {
 	getAlias: function() {
 		return this.data['alias'];
 	},
-	getTimestamp:function(){
+	getTimestamp: function() {
 		return this.data.timestamp;
 	},
 	stringify: function() {
@@ -139,7 +178,7 @@ UserInfo.prototype = {
 //User message definition
 var UserInfoMessage = Class.extend(Message, {
 	init: function(data) {
-		this.uber.init.call(this, data);
+		this.data = data || {};
 		this.data['mt'] = 'B00';
 	},
 	getContent: function() {
@@ -152,7 +191,7 @@ var UserInfoMessage = Class.extend(Message, {
 //Fetch Channels message definition
 var FetchChannelsMessage = Class.extend(Message, {
 	init: function(data) {
-		this.uber.init.call(this, data);
+		this.data = data || {};
 		this.data['mt'] = 'A01';
 	},
 	getFrom: function() {
@@ -184,3 +223,30 @@ var FetchChannelsMessage = Class.extend(Message, {
 		this.data['cou'] = lcount;
 	}
 }, 'A01');
+
+// Text Chat message definition
+var TextChatMessage = Class.extend(ChatMessage, {
+	init: function(data) {
+		this.data = data || {};
+		this.data['mt'] = 'C00';
+	}
+}, 'C00');
+
+var LoginMessage = Class.extend(ChatMessage, {
+	init: function(data) {
+		this.data = data || {};
+		this.data['mt'] = 'C01';
+	},
+	getContent: function() {
+		var usersObj = [];
+		var usersJson = this.getJsonUsers();
+		for (var i = 0, j = usersJson.length; i < j; i++) {
+			var userinfo = new UserInfo(usersJson[i]);
+			usersObj.push(userinfo);
+		}
+		return usersObj;
+	},
+	getJsonUsers: function() {
+		return this.data['users'] || [];
+	}
+}, 'C01');

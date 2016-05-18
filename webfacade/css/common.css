@@ -1,22 +1,47 @@
-nav.white{
+.tc-bluewhite nav {
 	padding-left: 1em;
+	background-color: #fafafa;
 }
 
-nav.white a{
+.tc-bluewhite nav a {
+	color: #448aff;
+}
+
+.tc-bluewhite nav ul {
+	color: #448aff;
+}
+
+.tc-bluewhite nav ul li {
+	color: #448aff;
+}
+
+.tc-bluewhite nav ul li a {
 	color: #448aff;
 }
 
 
-nav.white ul{
-	color: #448aff;
+/* label focus color */
+
+.tc-bluewhite input[type=text]:focus + label {
+	color: #039be5;
 }
 
-nav.white ul li{
-	color: #448aff;
+.tc-bluewhite input[type=password]:focus + label {
+	color: #039be5;
 }
 
+/* label underline focus color */
 
-nav.white ul li a{
-	color: #448aff;
+.tc-bluewhite input[type=text]:focus {
+	border-bottom: 1px solid #039be5;
+	box-shadow: 0 1px 0 0 #b3e5fc;
 }
 
+.tc-bluewhite input[type=password]:focus {
+	border-bottom: 1px solid #039be5;
+	box-shadow: 0 1px 0 0 #b3e5fc;
+}
+
+.tc-bluewhite button,.tc-bluewhite .btn, .tc-bluewhite .btn-large{
+	background-color: #42a5f5 ;
+}

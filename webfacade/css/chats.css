@@ -4,10 +4,10 @@ body {
 }
 
 .panel {
-	box-shadow: 0 2px 0 rgba(0, 0, 0, 0.075);
+	/*box-shadow: 0 2px 0 rgba(0, 0, 0, 0.075);*/
 	border-radius: 0;
 	border: 0;
-	margin-bottom: 24px;
+	/*margin-bottom: 24px;*/
 }
 
 .panel .panel-heading,
@@ -48,6 +48,11 @@ body {
 .panel-control .btn,
 .panel-control .dropdown-toggle.btn {
 	border: 0;
+}
+
+.panel-footer {
+	background-color: #f5f5f5;
+	border-top: 1px solid #ddd;
 }
 
 .nano {
@@ -104,6 +109,7 @@ body {
 	border-radius: 0;
 	padding: 12px 20px;
 	word-break: break-all;
+	margin-bottom: 1em;
 }
 
 .speech:before {
@@ -170,32 +176,10 @@ body {
 	color: #a07617;
 }
 
-.btn-primary,
-.btn-primary:focus,
-.btn-hover-primary:hover,
-.btn-hover-primary:active,
-.btn-hover-primary.active,
-.btn.btn-active-primary:active,
-.btn.btn-active-primary.active,
-.dropdown.open>.btn.btn-active-primary,
-.btn-group.open .dropdown-toggle.btn.btn-active-primary {
-	background-color: #579ddb;
-	border-color: #5fa2dd;
-	color: #fff !important;
-}
-
-.btn {
-	cursor: pointer;
-	/* background-color: transparent; */
-	color: inherit;
-	padding: 6px 12px;
-	border-radius: 0;
-	border: 1px solid 0;
-	font-size: 11px;
-	line-height: 1.42857;
-	vertical-align: middle;
-	-webkit-transition: all .25s;
-	transition: all .25s;
+.sender-btn {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 100%;
 }
 
 .form-control {

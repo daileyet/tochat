@@ -56,21 +56,9 @@ function login() {
 	return false;
 }
 
-function updateViewIfLogin(){
-	var user = window.tochat.getLoginUser();
-	if(user && user!=null){
-		$('.account-item').removeClass("hide");
-		$('.login-item').addClass("hide");
-	}else{
-		$('.account-item').addClass("hide");
-		$('.login-item').removeClass("hide");
-	}
-}
-
 $(document).ready(function() {
 	$('.parallax').parallax();
-	$(".button-collapse").sideNav();
-	$('.modal-trigger').leanModal();
 	$('#startBtn').click(startNow);
 	updateViewIfLogin();
+	tochat.view.enableNavbar();
 });

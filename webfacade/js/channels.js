@@ -39,10 +39,14 @@ channel_V.templates = {
 channel_M.current_user = {}; //current user
 //////////////////////
 channel_C.init = function() {
+	// init components
 	channel_V.components.init();
-
+	tochat.view.enableNavbar();
+	updateViewIfLogin();
+	// init event binder
 	$(channel_V.names.LINK_LOAD_MOR).unbind('click').click(channel_C.sendFCMessage);
 
+	// init message handler
 	var msgHandlers = new MessageHandlers();
 
 	msgHandlers.addHander(UserInfoMessage, function(jobj) {
@@ -66,6 +70,7 @@ channel_C.init = function() {
 		msgHandlers.exec(JSON.parse(evt.data));
 	});
 
+	// open connection
 	channel_V.components.tcWS.openConnection();
 }
 

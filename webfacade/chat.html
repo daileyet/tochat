@@ -1,171 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 	<head>
-		<meta charset="UTF-8">
+		<meta charset="utf-8">
+		<!--  This file has been downloaded from bootdey.com    @bootdey on twitter -->
+		<!--  All snippets are MIT license http://bootdey.com/license -->
+		<!-- 
+    	The codes are free, but we require linking to our web site.
+    	Why to Link?
+    	A true story: one girl didn't set a link and had no decent date for two years, and another guy set a link and got a top ranking in Google! 
+    	Where to Put the Link?
+    	home, about, credits... or in a good page that you want
+    	THANK YOU MY FRIEND!
+    -->
 		<title>ToChat Now</title>
-		<link rel="stylesheet" href="css/chat.css" />
-		<script src="https://code.jquery.com/jquery-1.12.3.min.js" crossorigin="anonymous"></script>
-		<script src="js/chat.js" type="text/javascript" charset="utf-8"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
+		<link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" href="css/chats.css" />
 	</head>
 
-	<body>
+	<body class="tc-bluewhite">
 
-		<section id="top"><span class="room-name" title="Chat Room">{Chat Room title}</span></section>
-		<section id="main">
-			<section id="messages">
-				<section id="viewer">
-					<div>
-						<div class="viewer-title">Title</div>
-						<div class="viewer-content">
-	
+		<section class="container">
+
+			<div class="panel white z-depth-1">
+				<!--Heading-->
+				<div class="panel-heading  col s12">
+					<h3 class="panel-title room-title">Chat</h3>
+				</div>
+				<!--Widget body-->
+				<div class="panel-body col s12">
+					<div class="nano has-scrollbar" style="height:380px">
+						<div class="nano-content pad-all" tabindex="0" style="right: -17px;">
+							<ul class="media-block viewer-content">
+								<li class="mar-btm  ">
+									<div class="media-left"><img src="http://bootdey.com/img/Content/avatar/avatar1.png" class="img-circle img-sm z-depth-1" alt="Profile Picture"></div>
+									<div class="media-body pad-hor">
+										<div class="speech z-depth-1"><a href="#" class="media-heading ">Dailey1</a>
+											<p>aaaassssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss</p>
+											<p class="speech-time"><i class="zmdi zmdi-time"></i>18/05/16 13:56:59</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="nano-pane">
+							<div class="nano-slider" style="height: 141px; transform: translate(0px, 0px);"></div>
 						</div>
 					</div>
-				</section>
-				<section id="sender">
-					<div class="sender-toolbar">Toolbar</div>
-					<div class="sender-input" contenteditable="true"></div>
-					<div class="sender-options">
-						<div class="float-left"></div>
-						<div class="float-right"><button onclick="postToServer()">Send</button></div>
-					</div>
-				</section>
-			</section>
-			<section id="siderbar">
-				<div class="user-list">
-					<div class="title">Users</div>
-					<div class="content">
+				</div>
 
+				<!--Widget footer-->
+				<div class="panel-footer">
+					<div class="row pad-hor">
+						<div class="col s12 m9 l10">
+							<input type="text" placeholder="Enter your text" class="form-control chat-input sender-input">
+						</div>
+						<div class="col s12 m3 l2">
+							<button class="waves-effect waves-light btn sender-btn" type="submit" >Send</button>
+						</div>
 					</div>
 				</div>
-			</section>
+
+			</div>
+
 		</section>
-		<section id="bottom"></section>
-		<script type="text/javascript">
-			var ws, url = "ws://localhost:8080/tochatserver/chat/";
-
-			function init() {
-				var room = getRoom();
-				if (room == "") {
-					window.history.back();
-					return;
-				}
-				$("#top .room-name").text(room);
-				setWebSocket();
-			}
-
-			function getRoom() {
-				var room = window.location.hash.replace("#", "");
-				return room;
-			}
-
-			function cleanUp() {
-				if (ws && ws.close) {
-					ws.close()
-				}
-			}
-
-			function setWebSocket() {
-				try {
-					if (ws && ws.close) {
-						ws.close()
-					}
-				} catch (e) {
-					console.log(e);
-				}
-				ws = new WebSocket(url + getRoom());
-				ws.onmessage = function(message) {
-					var amObj = JSON.parse(message.data);
-					console.log(message.data);
-					switch (amObj.mt) {
-						case "C00":
-							var strMsg = "<div>From:{fr}, at:{ti}<BR>{co}</div>";
-							var chObj = amObj;
-							strMsg = strMsg.replace("{fr}", chObj["fr"]);
-							strMsg = strMsg.replace("{ti}", chObj["ti"]);
-							strMsg = strMsg.replace("{co}", decodeURI(chObj["co"]));
-							$("#viewer .viewer-content").append(strMsg);
-							break;
-						case "C01":
-							var chObj_users = amObj.users;
-							$("#siderbar .user-list .content").empty();
-							for (var i = 0; i < chObj_users.length; i++) {
-								var strMsg = "<div class='item' data-id='{id}'>{name}</div>";
-								var userObj = chObj_users[i];
-								strMsg = strMsg.replace("{id}", userObj.id);
-								strMsg = strMsg.replace("{name}", userObj.name);
-								var $strMsg = $(strMsg);
-								if (window.tochat.Chat.M.current_user) {
-									if (userObj.id == window.tochat.Chat.M.current_user.id) {
-										$strMsg.addClass("is-current-user");
-									}
-								}
-								$("#siderbar .user-list .content").append($strMsg);
-							}
-							break;
-						case "C02":
-							break;
-						case "B00":
-							var userObj = amObj.user;
-							window.tochat.Chat.M.current_user = userObj;
-							break;
-						default:
-							break;
-					}
-				};
-				ws.onerror = function() {
-					console.log("WebSocket occur error.");
-				}
-			}
-			
-			function getCurrentUser(){
-				if(window.tochat.Chat.M.current_user){
-					return window.tochat.Chat.M.current_user;
-				}else{
-					return {};
-				}
-			}
-
-			function postToServer(txt) {
-				if (ws && ws.readyState == 1) {
-					if (txt == undefined) {
-						var cuObj = getCurrentUser(),sUid = cuObj?cuObj.id:'';
-						var cm = ChatMessage.create({
-							id: "1",
-							from: sUid,
-							to: "",
-							room: getRoom(),
-							content: encodeURI($("#sender .sender-input").html())
-						});
-						txt = cm.format();
-					}
-					console.log(txt);
-					ws.send(txt);
-					$("#sender .sender-input").empty();
-				}
-			}
-			window.addEventListener("load", init, false);
-			window.addEventListener("unload", cleanUp, false);
-
-			function ChatMessage() {
-				this.id = "";
-				this.from = "";
-				this.to = "";
-				this.room = "";
-				this.timestamp = new Date().getTime() + "";
-				this.content = "";
-				this.format = function() {
-					return '{"mt":"C00","id":"' + this.id + '","ro":"' + this.room + '","fr":"' + this.from + '","to":"' + this.to + '","co":"' + this.content + '","ti":"' + this.timestamp + '"}';
-				}
-			};
-			ChatMessage.create = function(obj) {
-				var cm = new ChatMessage();
-				if (obj == undefined) return cm;
-				for (var i in obj) {
-					cm[i] = obj[i];
-				}
-				return cm;
-			}
+		<!--end section container-->
+		<script src="js/jquery-1.10.2.min.js"></script>
+		<script src="js/jquery-dateFormat.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/materialize.min.js"></script>
+		<script src="js/utils.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/message.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/websocket.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/base.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/chat.js"></script>
+		<script>
+			window.addEventListener("load", chat_C.init, false);
+			window.addEventListener("unload", chat_C.destroy, false);
 		</script>
 	</body>
 

@@ -1,13 +1,34 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>ToChat List</title>
+		<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
 		<link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+		<link rel="stylesheet" type="text/css" href="css/common.css"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	</head>
 
-	<body>
+	<body class="tc-bluewhite">
+		<div class="navbar-fixed">
+			<nav class="white">
+				<div class="nav-wrapper">
+					<a href="#!" class="brand-logo "><span class="text-blue text-accent-3">To</span><span class="text-blue text-accent-1">Chat</span></a>
+					<a href="#" data-activates="mobile-demo" class="button-collapse "><i class="zmdi zmdi-menu"></i></a>
+					<ul class="right hide-on-med-and-down ">
+						<li class="account-item hide"><a href="#!"><i class="zmdi zmdi-account"></i></a></li>
+						<li class="login-item hide"><a href="#loginmodal" class="modal-trigger">LOGIN</a></li>
+						<li><a href="contact.html">CONTACT US</a></li>
+					</ul>
+					<ul class="side-nav" id="mobile-demo">
+						<li class="account-item hide"><a href="#!"><i class="zmdi zmdi-account"></i></a></li>
+						<li class="login-item hide"><a href="#loginmodal" class="modal-trigger">LOGIN</a></li>
+						<li><a href="contact.html">CONTACT US</a></li>
+					</ul>
+				</div>
+			</nav>
+		</div>
 		<div class="container">
 			<div class="section">
 				<h1>ToChat Channels</h1>
@@ -26,7 +47,7 @@
 							</tr>
 						</thead>
 						<tbody>
-						<!--	<tr>
+							<!--	<tr>
 								<td>Java</td>
 								<td>Discuss Java EE & ME</td>
 								<td>Dailey</td>
@@ -52,7 +73,7 @@
 
 		<script>
 			function joinChat(strId) {
-				window.location = getClientUrl("chats.html#" + strId);
+				window.location = getClientUrl("chat.html#" + strId);
 			}
 			window.addEventListener("load", channel_C.init, false);
 			window.addEventListener("unload", channel_C.destroy, false);

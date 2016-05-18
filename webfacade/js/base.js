@@ -51,6 +51,12 @@ window.tochat = window.tochat || {
 				sessionStorage.setItem(SESSION_USER_ITEM_KEY, userinfo.stringify());
 			}
 		}
+	},
+	view:{
+		enableNavbar:function(){
+			$(".button-collapse").sideNav();
+			$('.modal-trigger').leanModal();
+		}
 	}
 };
 
@@ -73,4 +79,16 @@ function getServerUrl(path) {
 function getSessionTimeOut() {
 	var stout = window.tochat.envConf.current().timeout || 1800;
 	return stout;
+}
+/////////////////////
+
+function updateViewIfLogin(){
+	var user = window.tochat.getLoginUser();
+	if(user && user!=null){
+		$('.account-item').removeClass("hide");
+		$('.login-item').addClass("hide");
+	}else{
+		$('.account-item').addClass("hide");
+		$('.login-item').removeClass("hide");
+	}
 }
