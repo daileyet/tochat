@@ -1,3 +1,9 @@
+.no-margin{
+margin: 0;
+}
+.no-margin-top{
+	margin-top: 0;
+}
 .tc-bluewhite nav {
 	padding-left: 1em;
 	background-color: #fafafa;
@@ -18,7 +24,9 @@
 .tc-bluewhite nav ul li a {
 	color: #448aff;
 }
-
+.tc-bluewhite .dropdown-content a{
+	color: #448aff;
+}
 
 /* label focus color */
 
@@ -42,6 +50,7 @@
 	box-shadow: 0 1px 0 0 #b3e5fc;
 }
 
-.tc-bluewhite button,.tc-bluewhite .btn, .tc-bluewhite .btn-large{
+.tc-bluewhite button,.tc-bluewhite .btn, .tc-bluewhite .btn-large,.tc-bluewhite .btn-floating{
 	background-color: #42a5f5 ;
 }
+

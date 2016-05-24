@@ -22,46 +22,110 @@
 	</head>
 
 	<body class="tc-bluewhite">
+		<div class="navbar-fixed">
+			<nav>
+				<div class="nav-wrapper">
+					<a href="#!" class="brand-logo "><span class="text-blue text-accent-3">To</span><span class="text-blue text-accent-1">Chat</span></a>
+					<a href="#" data-activates="mobile-demo" class="button-collapse "><i class="zmdi zmdi-menu"></i></a>
+					<ul class="right hide-on-med-and-down ">
+						<li class="account-item hide"><a href="#!"><i class="zmdi zmdi-account"></i></a></li>
+						<li class="login-item hide"><a href="#loginmodal" class="modal-trigger">LOGIN</a></li>
+						<li><a href="contact.html">CONTACT US</a></li>
+					</ul>
+					<ul class="side-nav" id="mobile-demo">
+						<li class="account-item hide"><a href="#!"><i class="zmdi zmdi-account"></i></a></li>
+						<li class="login-item hide"><a href="#loginmodal" class="modal-trigger">LOGIN</a></li>
+						<li><a href="contact.html">CONTACT US</a></li>
+					</ul>
+				</div>
+			</nav>
+		</div>
 
 		<section class="container">
-
-			<div class="panel white z-depth-1">
-				<!--Heading-->
-				<div class="panel-heading  col s12">
-					<h3 class="panel-title room-title">Chat</h3>
-				</div>
-				<!--Widget body-->
-				<div class="panel-body col s12">
-					<div class="nano has-scrollbar" style="height:380px">
-						<div class="nano-content pad-all" tabindex="0" style="right: -17px;">
-							<ul class="media-block viewer-content">
-								<li class="mar-btm  ">
-									<div class="media-left"><img src="http://bootdey.com/img/Content/avatar/avatar1.png" class="img-circle img-sm z-depth-1" alt="Profile Picture"></div>
-									<div class="media-body pad-hor">
-										<div class="speech z-depth-1"><a href="#" class="media-heading ">Dailey1</a>
-											<p>aaaassssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss</p>
-											<p class="speech-time"><i class="zmdi zmdi-time"></i>18/05/16 13:56:59</p>
-										</div>
-									</div>
-								</li>
+			<div class="row">
+				<div class="panel white z-depth-1 col s12 m10 l9" id="chat-viewer">
+					<!--Heading-->
+					<div class="panel-heading viewer-header">
+						<h3 class="panel-title room-title">Chat</h3>
+						<!--<a class="right  modal-trigger hide-on-med-and-up show-on-small " href="#chat-users-list-mobile"><i class=" zmdi zmdi-accounts "></i></a>-->
+						<div class="right" style="padding-top: 10px;">
+							<a id="chat-collapse-link" class='zmdi-hc-lg black-text' href='#' ><i class="zmdi zmdi-chevron-down zmdi-hc-rotate-180"></i></a>
+							&nbsp;
+							<a class='dropdown-button zmdi-hc-lg black-text' href='#' data-activates='setting-list'><i class="zmdi zmdi-settings"></i></a>
+							<!-- Dropdown Structure -->
+							<ul id='setting-list' class='dropdown-content '>
+								<li class="hide-on-med-and-up show-on-small "><a href="#chat-users-list-mobile" class="modal-trigger"><i class="zmdi zmdi-accounts"></i> Users</a></li>
+								<li class="divider"></li>
+								<li><a href="#!"><i class="zmdi zmdi-power"></i> Exit</a></li>
 							</ul>
 						</div>
-						<div class="nano-pane">
-							<div class="nano-slider" style="height: 141px; transform: translate(0px, 0px);"></div>
+
+					</div>
+					<!--Widget body-->
+					<div class="panel-body viewer-container ">
+						<div class="nano has-scrollbar" style="height:380px">
+							<div class="nano-content pad-all" tabindex="0" style="right: -17px;">
+								<ul class="media-block viewer-content">
+									<li class="mar-btm  ">
+										<div class="media-left"><img src="http://bootdey.com/img/Content/avatar/avatar1.png" class="img-circle img-sm z-depth-1" alt="Profile Picture"></div>
+										<div class="media-body pad-hor">
+											<div class="speech z-depth-1"><a href="#" class="media-heading ">Dailey1</a>
+												<p>aaaassssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss</p>
+												<p class="speech-time"><i class="zmdi zmdi-time"></i>18/05/16 13:56:59</p>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+							<div class="nano-pane">
+								<div class="nano-slider" style="height: 141px; transform: translate(0px, 0px);"></div>
+							</div>
+						</div>
+					</div>
+
+					<!--Widget footer-->
+					<div class="panel-footer">
+						<div class="row pad-hor">
+							<div class="col s12 m8 l10">
+								<input type="text" placeholder="Enter your text" class="form-control chat-input sender-input">
+							</div>
+							<div class="col s12 m4 l2">
+								<button class="waves-effect waves-light btn sender-btn" type="submit">Send</button>
+							</div>
 						</div>
 					</div>
 				</div>
 
-				<!--Widget footer-->
-				<div class="panel-footer">
-					<div class="row pad-hor">
-						<div class="col s12 m9 l10">
-							<input type="text" placeholder="Enter your text" class="form-control chat-input sender-input">
-						</div>
-						<div class="col s12 m3 l2">
-							<button class="waves-effect waves-light btn sender-btn" type="submit" >Send</button>
-						</div>
+				<div id="chat-users-list-mobile" class="modal bottom-sheet show-on-small hide-on-med-and-up">
+					<div class="modal-content">
+						<ul class="collapsible white no-margin z-depth-0 user-list-content" data-collapsible="accordion">
+							<li>
+								<div class="collapsible-header"><i class="zmdi zmdi-face"></i>First</div>
+								<div class="collapsible-body ">
+									<p>Lorem ipsum dolor sit amet.</p>
+								</div>
+							</li>
+						</ul>
 					</div>
+				</div>
+
+				<div id="chat-users-list" class="col s12 m2 l3 show-on-medium-and-up hide-on-small-and-down" >
+					<ul class="collapsible white no-margin-top" data-collapsible="accordion">
+						<li>
+							<div class="collapsible-header users-list-header active" ><i class="zmdi zmdi-accounts"></i><b>Members</b></div>
+							<div class="collapsible-body users-list-container">
+								<ul class="collapsible white no-margin z-depth-0 user-list-content" data-collapsible="accordion">
+									<li>
+										<div class="collapsible-header "><i class="zmdi zmdi-face"></i>First</div>
+										<div class="collapsible-body ">
+											<p>Lorem ipsum dolor sit amet.</p>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</li>
+
+					</ul>
 				</div>
 
 			</div>

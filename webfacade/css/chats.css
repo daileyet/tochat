@@ -1,6 +1,10 @@
 body {
-	margin-top: 20px;
+	margin-top: 0px;
 	background: #ebeef0;
+}
+
+section.container {
+	margin-top: 20px;
 }
 
 .panel {
@@ -23,12 +27,12 @@ body {
 	border-bottom: 1px solid #eee;
 }
 
-.panel-control {
-	height: 100%;
-	position: relative;
-	float: right;
-	padding: 0 15px;
+.users-list-header{
+	min-height: 50px;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
+
 
 .panel-title {
 	font-weight: normal;
@@ -38,17 +42,10 @@ body {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	display: inline;
 }
 
-.panel-control>.btn:last-child,
-.panel-control>.btn-group:last-child>.btn:first-child {
-	border-bottom-right-radius: 0;
-}
 
-.panel-control .btn,
-.panel-control .dropdown-toggle.btn {
-	border: 0;
-}
 
 .panel-footer {
 	background-color: #f5f5f5;
@@ -97,9 +94,10 @@ body {
 }
 
 .pad-hor {
-	padding-left: 15px;
-	padding-right: 15px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
+
 
 .speech {
 	position: relative;
@@ -201,4 +199,10 @@ body {
 	opacity: 0;
 	-webkit-transition: all .7s;
 	transition: all .7s;
+}
+
+#chat-users-list .users-list-container{
+	overflow-y: auto;
+	padding: 0;
+	margin: 0;
 }

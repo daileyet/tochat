@@ -13,13 +13,50 @@ var chat_C = window.tochat.Chat.C;
 chat_V.names = {
 	BTN_SEND_MSG: ".sender-btn",
 	INPUT_SEND_TEXT: "input.sender-input",
-	VIEW_REGION:".viewer-content"
+	VIEW_REGION: ".viewer-content",
+	VIEW_PANEL: "#chat-viewer",
+	VIEW_CONTAINER: "#chat-viewer .viewer-container",
+	VIEW_HEADER: "#chat-viewer .viewer-header",
+	VIEW_FOOTER: "#chat-viewer .panel-footer",
+	USERS_LIST_PANEL: "#chat-users-list",
+	USERS_LIST_CONTAINER: "#chat-users-list .users-list-container",
+	USERS_LIST_HEADER: "#chat-users-list .users-list-header",
+	LINK_CHAT_COLLAPSE: "#chat-collapse-link"
 };
 
 chat_V.components = {
 	tcWS: {},
 	init: function() {
+		chat_V.components.chat_users.init();
 		chat_V.components.tcWS = new TcWebSocket("ws://localhost:8080/tochatserver/chat/" + chat_M.getChannelId());
+	}
+};
+
+chat_V.components.chat_viewer = {
+	getViewPanelHeight: function() {
+		return $(chat_V.names.VIEW_PANEL).height();
+	},
+	getViewContainerHeight: function() {
+		return $(chat_V.names.VIEW_CONTAINER).height();
+	},
+	getViewHeaderHeight: function() {
+		return $(chat_V.names.VIEW_HEADER).height();
+	}
+};
+
+chat_V.components.chat_users = {
+	getUsersListheaderHeight: function() {
+		return $(chat_V.names.USERS_LIST_HEADER).height();
+	},
+	init: function() {
+		var ht1 = chat_V.components.chat_viewer.getViewPanelHeight();
+		var ht2 = chat_V.components.chat_users.getUsersListheaderHeight();
+		$(chat_V.names.USERS_LIST_CONTAINER).css(
+			"max-height", (ht1 - ht2) + "px"
+		);
+	},
+	updateView:function(){
+		
 	}
 };
 
@@ -101,7 +138,7 @@ chat_M.createMessageSupport = function(jsonObj) {
 		return "";
 	};
 	msgObj.getFormatTime = function() {
-		var _this =this;
+		var _this = this;
 		return $.format.date(Dates.convert(_this.getTimestamp()), "dd/MM/yy HH:mm:ss");
 	};
 	return msgObj;
@@ -116,32 +153,38 @@ chat_M.getChannelId = function() {
 	}
 	return strChannelId;
 };
-chat_M.getInputTxt=function(){
-	return encodeURI($(chat_V.names.INPUT_SEND_TEXT).val());
-}
-////////////////////////
-//chat controller
+chat_M.getInputTxt = function() {
+		return encodeURI($(chat_V.names.INPUT_SEND_TEXT).val());
+	}
+	////////////////////////
+	//chat controller
 chat_C.init = function() {
 	//init view
 	chat_V.components.init();
-
+	tochat.view.enableNavbar();
+	updateViewIfLogin();
 	// init event binder
 	$(chat_V.names.BTN_SEND_MSG).unbind('click').click(chat_C.sendTCMessage);
 	$(chat_V.names.INPUT_SEND_TEXT).unbind('keydown').keydown();
+	$(chat_V.names.LINK_CHAT_COLLAPSE).unbind('click').click(chat_C.collapseChatPanel);
+	$(window).resize(function() {
+		chat_V.components.chat_users.init();
+	});
+
 	// init message handler
 	var msgHandlers = new MessageHandlers();
-	msgHandlers.addHander(UserInfoMessage, function(jobj) {
+	msgHandlers.addHander(UserInfoMessage, function(jobj) { // hand user info message
 		var usermsg = new UserInfoMessage(jobj);
 		var useinfo = usermsg.getContent();
 		chat_M.current_user = useinfo;
 	});
-	
-	msgHandlers.addHander(TextChatMessage,function(jobj){
+
+	msgHandlers.addHander(TextChatMessage, function(jobj) { // hand text chat message
 		var htmlLiCtx = chat_V.templates.autoApply(jobj);
 		$(chat_V.names.VIEW_REGION).append(htmlLiCtx);
 	});
-	
-	msgHandlers.addHander(LoginMessage,function(jobj){
+
+	msgHandlers.addHander(LoginMessage, function(jobj) { // hand user login message
 		var loginmsg = new LoginMessage(jobj);
 		chat_M.updateOnlineUsers(loginmsg.getJsonUsers());
 	});
@@ -166,6 +209,26 @@ chat_C.sendTCMessage = function() {
 	chat_V.components.tcWS.sendMessage(txtmsg.stringify());
 };
 
+chat_C.collapseChatPanel = function() {
+	var $link_icon = $("i",chat_V.names.LINK_CHAT_COLLAPSE);
+	var willCollapse = $link_icon.hasClass("zmdi-hc-rotate-180");
+	if (willCollapse) {
+		$(chat_V.names.VIEW_CONTAINER).slideUp();
+		$(chat_V.names.VIEW_FOOTER).slideUp();
+		if($(chat_V.names.USERS_LIST_HEADER).hasClass("active")){
+			$(chat_V.names.USERS_LIST_HEADER).trigger('click');
+		}
+		$link_icon.removeClass("zmdi-hc-rotate-180");
+	}else{
+		$(chat_V.names.VIEW_CONTAINER).slideDown();
+		$(chat_V.names.VIEW_FOOTER).slideDown();
+		if(!$(chat_V.names.USERS_LIST_HEADER).hasClass("active")){
+			$(chat_V.names.USERS_LIST_HEADER).trigger('click');
+		}
+		$link_icon.addClass("zmdi-hc-rotate-180");
+	}
+}
+
 chat_C.sendInputKeydown = function(evt) {
 	if (!evt) {
 		var evt = window.event;
@@ -179,7 +242,7 @@ chat_C.sendInputKeydown = function(evt) {
 
 chat_C.destroy = function() {
 	chat_V.components.tcWS.closeConnection();
-	chat_M.current_user = {}; 
-	chat_M.online_users = {}; 
-	chat_M.current_channel = {}; 
+	chat_M.current_user = {};
+	chat_M.online_users = {};
+	chat_M.current_channel = {};
 }
