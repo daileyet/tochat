@@ -40,7 +40,7 @@ import cc.tochat.webserver.controller.websocket.support.ChatSession;
 import cc.tochat.webserver.controller.websocket.support.EndPointSupports;
 import cc.tochat.webserver.model.decoder.AbstractMessageDecoder;
 import cc.tochat.webserver.model.encoder.AbstractMessageEncoder;
-import cc.tochat.webserver.model.message.ChatMessage;
+import cc.tochat.webserver.model.message.AbstractMessage;
 
 import com.openthinks.libs.utilities.logger.ProcessLogger;
 
@@ -60,7 +60,7 @@ public class ChatEndPoint {
 	}
 
 	@OnMessage
-	public void receive(Session session, ChatMessage chatMessage) {
+	public void receive(Session session, AbstractMessage chatMessage) {
 		EndPointSupports.lookup(ChatEndPointSupport.class).getMessageHander(session).process(chatMessage);
 	}
 

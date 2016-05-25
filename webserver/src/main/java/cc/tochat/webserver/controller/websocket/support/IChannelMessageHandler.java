@@ -25,7 +25,7 @@
 */
 package cc.tochat.webserver.controller.websocket.support;
 
-import cc.tochat.webserver.model.message.ActionMessage;
+import cc.tochat.webserver.model.message.AbstractMessage;
 
 /**
  * @author dailey.yet@outlook.com
@@ -33,5 +33,5 @@ import cc.tochat.webserver.model.message.ActionMessage;
  */
 public interface IChannelMessageHandler extends IMessageHander {
 
-	public void processFetchChannels(ActionMessage actionMessage);
+	public void processFetchChannels(AbstractMessage actionMessage);
 }

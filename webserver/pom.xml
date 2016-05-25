@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>cc.tochat</groupId>
-  <artifactId>webserver</artifactId>
-  <packaging>war</packaging>
-  <version>1.0-SNAPSHOT</version>
-  <name>ToChat Webserver</name>
-  <url>https://github.com/daileyet/tochat.git</url>
-  <properties>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>cc.tochat</groupId>
+	<artifactId>webserver</artifactId>
+	<packaging>war</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>ToChat Webserver</name>
+	<url>https://github.com/daileyet/tochat.git</url>
+	<properties>
 		<tomcatVersion>7.0.67</tomcatVersion>
 		<tomcatDeployUrl>http://localhost:8080/manager/text</tomcatDeployUrl>
 		<tomcatServer>tomcat7</tomcatServer>
@@ -15,42 +15,44 @@
 		<tomcatServerPass>tomcat</tomcatServerPass>
 		<tomcatServerPort>8080</tomcatServerPort>
 		<endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
-  </properties>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
+
+		<jettyVersion>9.3.8.v20160314</jettyVersion>
+		<jettyPort>8080</jettyPort>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>7.0</version>
 			<scope>provided</scope>
-	</dependency>
-	<dependency>
+		</dependency>
+		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>javax.json</artifactId>
 			<version>1.0.4</version>
-	</dependency>
-	<dependency>
+		</dependency>
+		<dependency>
 			<groupId>com.openthinks.libs</groupId>
 			<artifactId>utilities</artifactId>
 			<version>1.0-SNAPSHOT</version>
-	</dependency>
-	
-	<dependency>
+		</dependency>
+
+		<dependency>
 			<groupId>com.openthinks</groupId>
 			<artifactId>easyweb</artifactId>
 			<version>1.0</version>
-	</dependency>
-	
-  </dependencies>
-  <build>
-	<defaultGoal>compile</defaultGoal>
-    <finalName>tochatserver</finalName>
-    <pluginManagement>
+		</dependency>
+	</dependencies>
+	<build>
+		<defaultGoal>compile</defaultGoal>
+		<finalName>tochatserver</finalName>
+		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.tomcat.maven</groupId>
@@ -58,7 +60,7 @@
 					<version>2.2</version>
 					<configuration>
 						<path>/${project.build.finalName}</path>
-						<port>8080</port>
+						<port>${tomcatServerPort}</port>
 					</configuration>
 				</plugin>
 			</plugins>
@@ -76,6 +78,24 @@
 					</compilerArguments>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${jettyVersion}</version>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<httpConnector>
+						<port>${jettyPort}</port>
+					</httpConnector>
+					<webApp>
+						<contextPath>/${project.build.finalName}</contextPath>
+						<resourceBases>
+							<resourceBase>${project.basedir}/src/main/webapp</resourceBase>
+						</resourceBases>
+					</webApp>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -124,5 +144,5 @@
 			<url>http://download.java.net/maven/glassfish/</url>
 		</pluginRepository>
 	</pluginRepositories>
-	
+
 </project>

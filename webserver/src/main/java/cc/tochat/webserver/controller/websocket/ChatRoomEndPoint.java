@@ -40,7 +40,7 @@ import cc.tochat.webserver.controller.websocket.support.EndPointSupports;
 import cc.tochat.webserver.model.IConstant;
 import cc.tochat.webserver.model.decoder.AbstractMessageDecoder;
 import cc.tochat.webserver.model.encoder.AbstractMessageEncoder;
-import cc.tochat.webserver.model.message.ActionMessage;
+import cc.tochat.webserver.model.message.AbstractMessage;
 import cc.tochat.webserver.model.message.FetchRoomListMessage;
 
 import com.openthinks.libs.utilities.logger.ProcessLogger;
@@ -62,7 +62,7 @@ public class ChatRoomEndPoint {
 	}
 
 	@OnMessage
-	public void receive(Session session, ActionMessage actionMessage) {
+	public void receive(Session session, AbstractMessage actionMessage) {
 		EndPointSupports.lookup(ChatRoomEndPointSupport.class).getMessageHander(session)
 				.processFetchChannels(actionMessage);
 	}

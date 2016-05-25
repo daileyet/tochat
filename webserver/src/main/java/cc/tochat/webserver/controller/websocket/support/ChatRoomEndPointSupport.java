@@ -35,7 +35,7 @@ import javax.websocket.Session;
 import cc.tochat.webserver.controller.websocket.ChatRoomEndPoint;
 import cc.tochat.webserver.model.Room;
 import cc.tochat.webserver.model.User;
-import cc.tochat.webserver.model.message.ActionMessage;
+import cc.tochat.webserver.model.message.AbstractMessage;
 import cc.tochat.webserver.model.message.FetchRoomListMessage;
 import cc.tochat.webserver.model.message.IMessage;
 import cc.tochat.webserver.model.message.UserInfoMessage;
@@ -103,7 +103,7 @@ public class ChatRoomEndPointSupport implements IEndPointSupported<ChatRoomEndPo
 			}
 
 			@Override
-			public void processFetchChannels(ActionMessage actionMessage) {
+			public void processFetchChannels(AbstractMessage actionMessage) {
 				ProcessLogger.debug("Receive message on Chat Server:" + actionMessage);
 				FetchRoomListMessage actionMsg = (FetchRoomListMessage) actionMessage;
 				if (actionMsg == null) {
