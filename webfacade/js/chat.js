@@ -23,7 +23,9 @@ chat_V.names = {
 	USERS_LIST_CONTAINER: "#chat-users-list .users-list-container",
 	
 	USERS_LIST_HEADER: "#chat-users-list .users-list-header",
-	LINK_CHAT_COLLAPSE: "#chat-collapse-link"
+	LINK_CHAT_COLLAPSE: "#chat-collapse-link",
+	
+	LINK_CHAT_EXIT:".exit-item a"
 };
 
 chat_V.components = {
@@ -190,6 +192,7 @@ chat_C.init = function() {
 	updateViewIfLogin();
 	// init event binder
 	//$(chat_V.names.BTN_SEND_MSG).unbind('click').click(chat_C.sendTCMessage);
+	$(chat_V.names.LINK_CHAT_EXIT).unbind('click').click();
 	$(chat_V.names.INPUT_SEND_TEXT).unbind('keydown').keydown();
 	$(chat_V.names.LINK_CHAT_COLLAPSE).unbind('click').click(chat_C.collapseChatPanel);
 	$(window).resize(function() {
