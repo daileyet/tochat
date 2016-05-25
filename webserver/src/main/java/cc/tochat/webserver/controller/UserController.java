@@ -37,6 +37,7 @@ import com.openthinks.easyweb.annotation.Mapping;
 import com.openthinks.easyweb.annotation.ResponseReturn;
 import com.openthinks.easyweb.context.WebContexts;
 import com.openthinks.easyweb.context.handler.WebAttributers;
+import com.openthinks.easyweb.context.handler.WebAttributers.WebScope;
 import com.openthinks.easyweb.utils.json.OperationJson;
 import com.openthinks.libs.utilities.logger.ProcessLogger;
 
@@ -52,7 +53,6 @@ public class UserController {
 	@Jsonp
 	@ResponseReturn(contentType = "text/javascript")
 	public String login(WebAttributers was) {
-		ProcessLogger.debug("Session timeout:" + was.getSession().getMaxInactiveInterval());
 		String account = (String) was.get(IConstant.PARAM_LOGIN_NAME);
 		String pass = (String) was.get(IConstant.PARAM_LOGIN_PASS);
 		String token = "";
@@ -66,6 +66,15 @@ public class UserController {
 			was.storeSession(IConstant.SESSION_USER, user);
 			return OperationJson.build().sucess(token).setOther(user).toString();
 		}
+		return OperationJson.build().error().toString();
+	}
+
+	@Mapping("/logout")
+	@Jsonp
+	@ResponseReturn(contentType = "text/javascript")
+	public String logout(WebAttributers was) {
+		was.removeAttribute(IConstant.SESSION_USER, WebScope.SESSION);
+		was.getSession().invalidate();
 		return OperationJson.build().error().toString();
 	}
 }

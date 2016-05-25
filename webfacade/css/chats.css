@@ -32,6 +32,10 @@ section.container {
 	text-overflow: ellipsis;
 	overflow: hidden;
 }
+.collapsible-header,.collapsible-body .p,.collapsible-body{
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
 
 
 .panel-title {
@@ -60,8 +64,9 @@ section.container {
 }
 
 .nano>.nano-content {
+	height: 100%;
 	position: absolute;
-	overflow: scroll;
+	overflow: auto;
 	overflow-x: hidden;
 	top: 0;
 	right: 0;

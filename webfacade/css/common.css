@@ -24,6 +24,10 @@ margin: 0;
 .tc-bluewhite nav ul li a {
 	color: #448aff;
 }
+
+.tc-bluewhite nav ul li a i {
+	display: inline ;
+}
 .tc-bluewhite .dropdown-content a{
 	color: #448aff;
 }

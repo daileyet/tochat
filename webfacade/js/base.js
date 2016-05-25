@@ -9,7 +9,7 @@ window.tochat = window.tochat || {
 				client: 'http://127.0.0.1:8020/webfacade/',
 				server: 'http://localhost:8080/tochatserver/'
 			},
-			timeout: 30*60
+			timeout: 30 * 60
 		},
 		prod: {
 
@@ -27,7 +27,7 @@ window.tochat = window.tochat || {
 					return false;
 				var startTime = userInfo.getTimestamp();
 				var isValided = Dates.inRange(Date.now(), startTime, startTime + getSessionTimeOut() * 1000);
-				if(!isValided){
+				if (!isValided) {
 					sessionStorage.removeItem(SESSION_USER_ITEM_KEY);
 				}
 				return isValided;
@@ -38,8 +38,10 @@ window.tochat = window.tochat || {
 	getLoginUser: function() {
 		if (window.tochat.isLogin()) {
 			var strVal = sessionStorage.getItem(SESSION_USER_ITEM_KEY);
-			var userObj = new UserInfo(JSON.parse(strVal));
-			return userObj;
+			try {
+				var userObj = new UserInfo(JSON.parse(strVal));
+				return userObj;
+			} catch (e) {}
 		}
 		return null;
 	},
@@ -52,10 +54,26 @@ window.tochat = window.tochat || {
 			}
 		}
 	},
-	view:{
-		enableNavbar:function(){
+	removeLoginUser: function() {
+		if (sessionStorage) {
+			sessionStorage.removeItem(SESSION_USER_ITEM_KEY);
+		}
+	},
+	view: {
+		enableNavbar: function() {
 			$(".button-collapse").sideNav();
 			$('.modal-trigger').leanModal();
+			$('.dropdown-button').dropdown({
+				inDuration: 300,
+				outDuration: 225,
+				constrain_width: false, // Does not change width of dropdown to that of the activator
+				hover: true, // Activate on hover
+				gutter: 0, // Spacing from edge
+				belowOrigin: true, // Displays dropdown below the button
+				alignment: 'left' // Displays dropdown with edge aligned to the left of button
+			});
+			$(".logout-item").click(logout);
+			
 		}
 	}
 };
@@ -82,13 +100,32 @@ function getSessionTimeOut() {
 }
 /////////////////////
 
-function updateViewIfLogin(){
+function updateViewIfLogin() {
 	var user = window.tochat.getLoginUser();
-	if(user && user!=null){
+	if (user && user != null) {
 		$('.account-item').removeClass("hide");
+		$('.logout-item').removeClass("hide");
 		$('.login-item').addClass("hide");
-	}else{
+		$('.account-item-text').text(user.getName());
+	} else {
 		$('.account-item').addClass("hide");
+		$('.logout-item').addClass("hide");
 		$('.login-item').removeClass("hide");
+		$('.account-item-text').empty();
 	}
+}
+
+function logout() {
+	$.ajax({
+		type: "post",
+		url: getServerUrl("auth/logout.htm"),
+		async: false,
+		dataType: "jsonp",
+		success: function(data) {},
+		error: function() {},
+		complete: function() {
+			window.tochat.removeLoginUser();
+			window.location = getClientUrl("index.html");
+		}
+	});
 }

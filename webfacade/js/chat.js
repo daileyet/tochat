@@ -19,7 +19,9 @@ chat_V.names = {
 	VIEW_HEADER: "#chat-viewer .viewer-header",
 	VIEW_FOOTER: "#chat-viewer .panel-footer",
 	USERS_LIST_PANEL: "#chat-users-list",
+	USERS_LIST_CONTENT: ".user-list-content",
 	USERS_LIST_CONTAINER: "#chat-users-list .users-list-container",
+	
 	USERS_LIST_HEADER: "#chat-users-list .users-list-header",
 	LINK_CHAT_COLLAPSE: "#chat-collapse-link"
 };
@@ -55,8 +57,31 @@ chat_V.components.chat_users = {
 			"max-height", (ht1 - ht2) + "px"
 		);
 	},
-	updateView:function(){
-		
+	updateView: function() {
+		$(chat_V.names.USERS_LIST_CONTENT).empty();
+		for (var uid in chat_M.online_users) {
+			var userInfo = chat_M.online_users[uid];
+			var strItemHtml = chat_V.components.chat_users.templates.applyMemberItem(userInfo);
+			$(chat_V.names.USERS_LIST_CONTENT).append(strItemHtml);
+		}
+		$(chat_V.names.USERS_LIST_CONTENT).collapsible({
+			accordion: false
+		});
+	},
+	templates: {
+		applyMemberItem: function(useInfoObj) {
+			var temp = '';
+			temp = temp + '<li class="user-list-item" data-user="' + useInfoObj.getId() + '">';
+			temp = temp + '<div class="collapsible-header ">';
+			temp = temp + '<i class="zmdi zmdi-face"></i>';
+			temp = temp + '' + useInfoObj.getName();
+			temp = temp + '</div>';
+			temp = temp + '<div class="collapsible-body ">';
+			temp = temp + '<p class=""><i class="zmdi zmdi-email"></i>' + useInfoObj.getEmail() + '</p>';
+			temp = temp + '</div>';
+			temp = temp + '</li>';
+			return temp;
+		}
 	}
 };
 
@@ -164,7 +189,7 @@ chat_C.init = function() {
 	tochat.view.enableNavbar();
 	updateViewIfLogin();
 	// init event binder
-	$(chat_V.names.BTN_SEND_MSG).unbind('click').click(chat_C.sendTCMessage);
+	//$(chat_V.names.BTN_SEND_MSG).unbind('click').click(chat_C.sendTCMessage);
 	$(chat_V.names.INPUT_SEND_TEXT).unbind('keydown').keydown();
 	$(chat_V.names.LINK_CHAT_COLLAPSE).unbind('click').click(chat_C.collapseChatPanel);
 	$(window).resize(function() {
@@ -187,6 +212,7 @@ chat_C.init = function() {
 	msgHandlers.addHander(LoginMessage, function(jobj) { // hand user login message
 		var loginmsg = new LoginMessage(jobj);
 		chat_M.updateOnlineUsers(loginmsg.getJsonUsers());
+		chat_V.components.chat_users.updateView();
 	});
 
 	chat_V.components.tcWS.addMessageHander(function(evt) {
@@ -207,22 +233,24 @@ chat_C.sendTCMessage = function() {
 	txtmsg.setContent(chat_M.getInputTxt());
 	txtmsg.setTimestamp(Date.now());
 	chat_V.components.tcWS.sendMessage(txtmsg.stringify());
+	$(chat_V.names.INPUT_SEND_TEXT).val("");
+	return false;
 };
 
 chat_C.collapseChatPanel = function() {
-	var $link_icon = $("i",chat_V.names.LINK_CHAT_COLLAPSE);
+	var $link_icon = $("i", chat_V.names.LINK_CHAT_COLLAPSE);
 	var willCollapse = $link_icon.hasClass("zmdi-hc-rotate-180");
 	if (willCollapse) {
 		$(chat_V.names.VIEW_CONTAINER).slideUp();
 		$(chat_V.names.VIEW_FOOTER).slideUp();
-		if($(chat_V.names.USERS_LIST_HEADER).hasClass("active")){
+		if ($(chat_V.names.USERS_LIST_HEADER).hasClass("active")) {
 			$(chat_V.names.USERS_LIST_HEADER).trigger('click');
 		}
 		$link_icon.removeClass("zmdi-hc-rotate-180");
-	}else{
+	} else {
 		$(chat_V.names.VIEW_CONTAINER).slideDown();
 		$(chat_V.names.VIEW_FOOTER).slideDown();
-		if(!$(chat_V.names.USERS_LIST_HEADER).hasClass("active")){
+		if (!$(chat_V.names.USERS_LIST_HEADER).hasClass("active")) {
 			$(chat_V.names.USERS_LIST_HEADER).trigger('click');
 		}
 		$link_icon.addClass("zmdi-hc-rotate-180");

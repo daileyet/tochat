@@ -3,16 +3,6 @@
 
 	<head>
 		<meta charset="utf-8">
-		<!--  This file has been downloaded from bootdey.com    @bootdey on twitter -->
-		<!--  All snippets are MIT license http://bootdey.com/license -->
-		<!-- 
-    	The codes are free, but we require linking to our web site.
-    	Why to Link?
-    	A true story: one girl didn't set a link and had no decent date for two years, and another guy set a link and got a top ranking in Google! 
-    	Where to Put the Link?
-    	home, about, credits... or in a good page that you want
-    	THANK YOU MY FRIEND!
-    -->
 		<title>ToChat Now</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
@@ -25,17 +15,23 @@
 		<div class="navbar-fixed">
 			<nav>
 				<div class="nav-wrapper">
-					<a href="#!" class="brand-logo "><span class="text-blue text-accent-3">To</span><span class="text-blue text-accent-1">Chat</span></a>
-					<a href="#" data-activates="mobile-demo" class="button-collapse "><i class="zmdi zmdi-menu"></i></a>
+					<a href="index.html" class="brand-logo "><span class="text-blue text-accent-3">To</span><span class="text-blue text-accent-1">Chat</span></a>
+					<a href="#" data-activates="mobile-side" class="button-collapse "><i class="zmdi zmdi-menu"></i></a>
 					<ul class="right hide-on-med-and-down ">
-						<li class="account-item hide"><a href="#!"><i class="zmdi zmdi-account"></i></a></li>
+						<li class="account-item hide"><a href="#!" data-activates="dropdown-account" class="dropdown-button"><i class="zmdi zmdi-account"></i></a></li>
 						<li class="login-item hide"><a href="#loginmodal" class="modal-trigger">LOGIN</a></li>
 						<li><a href="contact.html">CONTACT US</a></li>
 					</ul>
-					<ul class="side-nav" id="mobile-demo">
-						<li class="account-item hide"><a href="#!"><i class="zmdi zmdi-account"></i></a></li>
+					<ul class="side-nav" id="mobile-side">
+						<li class="account-item hide"><a href="#!"><i class="zmdi zmdi-account"></i> <span class="account-item-text"></span></a></li>
 						<li class="login-item hide"><a href="#loginmodal" class="modal-trigger">LOGIN</a></li>
+						<li class="logout-item hide"><a href="#logout">Logout</a></li>
 						<li><a href="contact.html">CONTACT US</a></li>
+					</ul>
+					<ul id='dropdown-account' class='dropdown-content'>
+						<li class="account-item hide"><a href="#!"><span class="account-item-text"></span></a></li>
+						<li class="divider"></li>
+						<li class="logout-item hide"><a href="#!">Logout</a></li>
 					</ul>
 				</div>
 			</nav>
@@ -43,14 +39,12 @@
 
 		<section class="container">
 			<div class="row">
-				<div class="panel white z-depth-1 col s12 m10 l9" id="chat-viewer">
+				<div class="panel white z-depth-1 col s12 m9 l9" id="chat-viewer">
 					<!--Heading-->
 					<div class="panel-heading viewer-header">
 						<h3 class="panel-title room-title">Chat</h3>
-						<!--<a class="right  modal-trigger hide-on-med-and-up show-on-small " href="#chat-users-list-mobile"><i class=" zmdi zmdi-accounts "></i></a>-->
 						<div class="right" style="padding-top: 10px;">
-							<a id="chat-collapse-link" class='zmdi-hc-lg black-text' href='#' ><i class="zmdi zmdi-chevron-down zmdi-hc-rotate-180"></i></a>
-							&nbsp;
+							<a id="chat-collapse-link" class='zmdi-hc-lg black-text' href='#'><i class="zmdi zmdi-chevron-down zmdi-hc-rotate-180"></i></a> &nbsp;
 							<a class='dropdown-button zmdi-hc-lg black-text' href='#' data-activates='setting-list'><i class="zmdi zmdi-settings"></i></a>
 							<!-- Dropdown Structure -->
 							<ul id='setting-list' class='dropdown-content '>
@@ -64,9 +58,9 @@
 					<!--Widget body-->
 					<div class="panel-body viewer-container ">
 						<div class="nano has-scrollbar" style="height:380px">
-							<div class="nano-content pad-all" tabindex="0" style="right: -17px;">
+							<div class="nano-content pad-all" tabindex="0">
 								<ul class="media-block viewer-content">
-									<li class="mar-btm  ">
+									<!--<li class="mar-btm  ">
 										<div class="media-left"><img src="http://bootdey.com/img/Content/avatar/avatar1.png" class="img-circle img-sm z-depth-1" alt="Profile Picture"></div>
 										<div class="media-body pad-hor">
 											<div class="speech z-depth-1"><a href="#" class="media-heading ">Dailey1</a>
@@ -74,7 +68,7 @@
 												<p class="speech-time"><i class="zmdi zmdi-time"></i>18/05/16 13:56:59</p>
 											</div>
 										</div>
-									</li>
+									</li>-->
 								</ul>
 							</div>
 							<div class="nano-pane">
@@ -82,45 +76,46 @@
 							</div>
 						</div>
 					</div>
-
 					<!--Widget footer-->
-					<div class="panel-footer">
-						<div class="row pad-hor">
-							<div class="col s12 m8 l10">
-								<input type="text" placeholder="Enter your text" class="form-control chat-input sender-input">
-							</div>
-							<div class="col s12 m4 l2">
-								<button class="waves-effect waves-light btn sender-btn" type="submit">Send</button>
-							</div>
+					<div class="panel-footer ">
+						<div class=" row pad-hor">
+							<form onsubmit="return chat_C.sendTCMessage()">
+								<div class="col s12 m9 l9">
+									<input type="text" placeholder="Enter your text" class="form-control chat-input sender-input">
+								</div>
+								<div class="col s12 m3 l3">
+									<button class="waves-effect waves-light btn sender-btn" type="submit">Send</button>
+								</div>
+							</form>
 						</div>
 					</div>
-				</div>
 
+				</div>
 				<div id="chat-users-list-mobile" class="modal bottom-sheet show-on-small hide-on-med-and-up">
 					<div class="modal-content">
 						<ul class="collapsible white no-margin z-depth-0 user-list-content" data-collapsible="accordion">
-							<li>
+							<!--<li>
 								<div class="collapsible-header"><i class="zmdi zmdi-face"></i>First</div>
 								<div class="collapsible-body ">
 									<p>Lorem ipsum dolor sit amet.</p>
 								</div>
-							</li>
+							</li>-->
 						</ul>
 					</div>
 				</div>
 
-				<div id="chat-users-list" class="col s12 m2 l3 show-on-medium-and-up hide-on-small-and-down" >
+				<div id="chat-users-list" class="col s12 m3 l3 show-on-medium-and-up hide-on-small-and-down">
 					<ul class="collapsible white no-margin-top" data-collapsible="accordion">
 						<li>
-							<div class="collapsible-header users-list-header active" ><i class="zmdi zmdi-accounts"></i><b>Members</b></div>
+							<div class="collapsible-header users-list-header active"><i class="zmdi zmdi-accounts"></i><b>Members</b></div>
 							<div class="collapsible-body users-list-container">
 								<ul class="collapsible white no-margin z-depth-0 user-list-content" data-collapsible="accordion">
-									<li>
+									<!--<li>
 										<div class="collapsible-header "><i class="zmdi zmdi-face"></i>First</div>
 										<div class="collapsible-body ">
 											<p>Lorem ipsum dolor sit amet.</p>
 										</div>
-									</li>
+									</li>-->
 								</ul>
 							</div>
 						</li>
@@ -129,8 +124,8 @@
 				</div>
 
 			</div>
-
 		</section>
+
 		<!--end section container-->
 		<script src="js/jquery-1.10.2.min.js"></script>
 		<script src="js/jquery-dateFormat.min.js" type="text/javascript" charset="utf-8"></script>
