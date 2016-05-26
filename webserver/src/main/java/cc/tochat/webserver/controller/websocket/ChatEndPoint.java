@@ -66,8 +66,8 @@ public class ChatEndPoint {
 
 	@OnClose
 	public void close(Session session, @PathParam("room") String room, CloseReason closeReason) {
-		EndPointSupports.lookup(ChatEndPointSupport.class).remove(session, closeReason);
 		EndPointSupports.lookup(ChatEndPointSupport.class).getMessageHander(session).processLogoutBroadcast();
+		EndPointSupports.lookup(ChatEndPointSupport.class).remove(session, closeReason);
 		ProcessLogger.debug("One client disconnected to chat room:[" + room + "],session id :[" + session.getId()
 				+ "]," + closeReason);
 	}

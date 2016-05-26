@@ -21,11 +21,11 @@ chat_V.names = {
 	USERS_LIST_PANEL: "#chat-users-list",
 	USERS_LIST_CONTENT: ".user-list-content",
 	USERS_LIST_CONTAINER: "#chat-users-list .users-list-container",
-	
+
 	USERS_LIST_HEADER: "#chat-users-list .users-list-header",
 	LINK_CHAT_COLLAPSE: "#chat-collapse-link",
-	
-	LINK_CHAT_EXIT:".exit-item a"
+
+	LINK_CHAT_EXIT: ".exit-item a"
 };
 
 chat_V.components = {
@@ -98,7 +98,7 @@ chat_V.templates = {
 		temp = temp + '<div class="media-body pad-hor">';
 		temp = temp + '<div class="speech z-depth-1">';
 		temp = temp + '<a href="#" class="media-heading">' + msgObjSupport.getFromName() + '</a>';
-		temp = temp + '<p >' + msgObjSupport.getContent() + '</p>';
+		temp = temp + '<p >' + msgObjSupport.getDecodeContent() + '</p>';
 		temp = temp + '<p class="speech-time">';
 		temp = temp + '<i class="zmdi zmdi-time"></i>' + msgObjSupport.getFormatTime();
 		temp = temp + '</p>';
@@ -117,7 +117,7 @@ chat_V.templates = {
 		temp = temp + '<div class="media-body pad-hor speech-right">';
 		temp = temp + '<div class="speech z-depth-1">';
 		temp = temp + '<a href="#" class="media-heading">' + msgObjSupport.getFromName() + '</a>';
-		temp = temp + '<p>' + msgObjSupport.getContent() + '</p>';
+		temp = temp + '<p>' + msgObjSupport.getDecodeContent() + '</p>';
 		temp = temp + '<p class="speech-time">';
 		temp = temp + '<i class="zmdi zmdi-time"></i>' + msgObjSupport.getFormatTime();
 		temp = temp + '</p>';
@@ -168,6 +168,12 @@ chat_M.createMessageSupport = function(jsonObj) {
 		var _this = this;
 		return $.format.date(Dates.convert(_this.getTimestamp()), "dd/MM/yy HH:mm:ss");
 	};
+	
+	msgObj.getDecodeContent=function(){
+		var ctx = this.getContent();
+		return decodeURI(ctx);
+	};
+	
 	return msgObj;
 };
 chat_M.getChannelId = function() {
@@ -195,28 +201,13 @@ chat_C.init = function() {
 	$(chat_V.names.LINK_CHAT_EXIT).unbind('click').click();
 	$(chat_V.names.INPUT_SEND_TEXT).unbind('keydown').keydown();
 	$(chat_V.names.LINK_CHAT_COLLAPSE).unbind('click').click(chat_C.collapseChatPanel);
+	$(chat_V.names.LINK_CHAT_EXIT).unbind('click').click(chat_C.exitAndBack);
 	$(window).resize(function() {
 		chat_V.components.chat_users.init();
 	});
 
-	// init message handler
-	var msgHandlers = new MessageHandlers();
-	msgHandlers.addHander(UserInfoMessage, function(jobj) { // hand user info message
-		var usermsg = new UserInfoMessage(jobj);
-		var useinfo = usermsg.getContent();
-		chat_M.current_user = useinfo;
-	});
-
-	msgHandlers.addHander(TextChatMessage, function(jobj) { // hand text chat message
-		var htmlLiCtx = chat_V.templates.autoApply(jobj);
-		$(chat_V.names.VIEW_REGION).append(htmlLiCtx);
-	});
-
-	msgHandlers.addHander(LoginMessage, function(jobj) { // hand user login message
-		var loginmsg = new LoginMessage(jobj);
-		chat_M.updateOnlineUsers(loginmsg.getJsonUsers());
-		chat_V.components.chat_users.updateView();
-	});
+	// init message handlers
+	var msgHandlers = chat_C.createMessageHandlers();
 
 	chat_V.components.tcWS.addMessageHander(function(evt) {
 		console.log(JSON.parse(evt.data));
@@ -226,6 +217,29 @@ chat_C.init = function() {
 	// open connection
 	chat_V.components.tcWS.openConnection();
 
+};
+chat_C.createMessageHandlers = function() {
+	var msgHandlers = new MessageHandlers();
+	msgHandlers.addHander(UserInfoMessage, function(jobj) { // hand user info message
+		var usermsg = new UserInfoMessage(jobj);
+		var useinfo = usermsg.getContent();
+		chat_M.current_user = useinfo;
+	});
+	msgHandlers.addHander(TextChatMessage, function(jobj) { // hand text chat message
+		var htmlLiCtx = chat_V.templates.autoApply(jobj);
+		$(chat_V.names.VIEW_REGION).append(htmlLiCtx);
+	});
+	msgHandlers.addHander(LoginMessage, function(jobj) { // hand user login message
+		var loginmsg = new LoginMessage(jobj);
+		chat_M.updateOnlineUsers(loginmsg.getJsonUsers());
+		chat_V.components.chat_users.updateView();
+	});
+	msgHandlers.addHander(LogoutMessage, function(jobj) { // hand user login message
+		var logoutmsg = new LogoutMessage(jobj);
+		chat_M.updateOnlineUsers(logoutmsg.getJsonUsers());
+		chat_V.components.chat_users.updateView();
+	});
+	return msgHandlers;
 };
 
 chat_C.sendTCMessage = function() {
@@ -270,6 +284,11 @@ chat_C.sendInputKeydown = function(evt) {
 		chat_C.sendTCMessage();
 	}
 };
+
+chat_C.exitAndBack=function(){
+	chat_C.destroy();
+	window.location = getClientUrl("channels.html");
+}
 
 chat_C.destroy = function() {
 	chat_V.components.tcWS.closeConnection();

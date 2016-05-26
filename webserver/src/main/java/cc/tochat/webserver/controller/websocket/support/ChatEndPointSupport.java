@@ -109,6 +109,8 @@ public class ChatEndPointSupport implements IEndPointSupported<ChatEndPoint, Cha
 			public void processLogoutBroadcast() {
 				LogoutMessage logoutMessage = LogoutMessage.empty();
 				for (ChatSession cs : sessionCache.getSessionGroup(chatSession)) {
+					if (cs.equals(chatSession))
+						continue;
 					User user = securityService.getValidatedUser(cs.getInstance());
 					if (user != null) {
 						logoutMessage.addUser(user);

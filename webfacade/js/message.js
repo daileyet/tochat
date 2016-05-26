@@ -250,3 +250,22 @@ var LoginMessage = Class.extend(ChatMessage, {
 		return this.data['users'] || [];
 	}
 }, 'C01');
+
+var LogoutMessage = Class.extend(ChatMessage, {
+	init: function(data) {
+		this.data = data || {};
+		this.data['mt'] = 'C02';
+	},
+	getContent: function() {
+		var usersObj = [];
+		var usersJson = this.getJsonUsers();
+		for (var i = 0, j = usersJson.length; i < j; i++) {
+			var userinfo = new UserInfo(usersJson[i]);
+			usersObj.push(userinfo);
+		}
+		return usersObj;
+	},
+	getJsonUsers: function() {
+		return this.data['users'] || [];
+	}
+}, 'C02');
