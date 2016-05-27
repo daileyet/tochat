@@ -25,14 +25,13 @@
 */
 package cc.tochat.webserver.controller;
 
-import com.openthinks.easyweb.annotation.Controller;
 import com.openthinks.easyweb.annotation.Mapping;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
-@Controller("/room")
+//@Controller("/room")
 public class ChatRoomController {
 
 	@Mapping("/index")

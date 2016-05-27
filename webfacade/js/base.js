@@ -7,15 +7,18 @@ window.tochat = window.tochat || {
 		dev: {
 			base_url: {
 				client: 'http://127.0.0.1:8020/webfacade/',
-				server: 'http://localhost:8080/tochatserver/'
+				server: '//localhost:8080/tochatserver/'
 			},
 			timeout: 30 * 60
 		},
 		prod: {
-
+			base_url:{
+				client: '//openthinks.com/tochat/',
+				server: '//home.openthinks.com:9090/tochatserver/'
+			}
 		},
 		current: function() {
-			return window.tochat.envConf.dev;
+			return window.tochat.envConf.prod;
 		}
 	},
 	isLogin: function() {
@@ -77,6 +80,10 @@ window.tochat = window.tochat || {
 		}
 	}
 };
+function log(msg){
+	if(window.tochat.envConf.current() == window.tochat.envConf.dev)
+		console.log(msg);
+}
 
 function getClientUrl(path) {
 	var sPath = '';
@@ -92,6 +99,17 @@ function getServerUrl(path) {
 		sPath = '' + path;
 	}
 	return window.tochat.envConf.current().base_url.server + sPath;
+}
+
+function getServerWSUrl(path){
+	var sPath = '';
+	if (path) {
+		sPath = '' + path;
+	}
+	var url_path = window.tochat.envConf.current().base_url.server;
+	var index = url_path.indexOf("//");
+	url_path = url_path.substring(index);
+	return  "ws:"+url_path + sPath;
 }
 
 function getSessionTimeOut() {

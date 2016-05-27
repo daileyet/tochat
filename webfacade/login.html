@@ -21,11 +21,15 @@
 			</div>
 		</from>
 		<script src="js/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="js/materialize.min.js"></script>
+		<script src="js/utils.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/message.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/base.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			function login() {
 				$.ajax({
 					type: "post",
-					url: "http://localhost:8080/tochatserver/auth/login.htm",
+					url: getServerUrl("auth/login.htm"),
 					async: false,
 					data:{
 						tochat_name:$("#tochat_name").val(),
@@ -34,7 +38,8 @@
 					dataType: "jsonp",
 					success: function(data) {
 						if (data.type == "SUCESS") {
-							window.location = "/webfacade/channels.html?token=" + data.msg;
+							window.tochat.storeLoginUser(data.other);
+							window.location = getClientUrl("channels.html?token=" + data.msg);
 						} else {
 							alert("Iinvalid account and password!");
 						}

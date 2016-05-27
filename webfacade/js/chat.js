@@ -32,7 +32,8 @@ chat_V.components = {
 	tcWS: {},
 	init: function() {
 		chat_V.components.chat_users.init();
-		chat_V.components.tcWS = new TcWebSocket("ws://localhost:8080/tochatserver/chat/" + chat_M.getChannelId());
+		chat_V.components.tcWS.URL = getServerWSUrl("chat/" + chat_M.getChannelId());
+		chat_V.components.tcWS = new TcWebSocket(chat_V.components.tcWS.URL);
 	}
 };
 
@@ -168,12 +169,12 @@ chat_M.createMessageSupport = function(jsonObj) {
 		var _this = this;
 		return $.format.date(Dates.convert(_this.getTimestamp()), "dd/MM/yy HH:mm:ss");
 	};
-	
-	msgObj.getDecodeContent=function(){
+
+	msgObj.getDecodeContent = function() {
 		var ctx = this.getContent();
 		return decodeURI(ctx);
 	};
-	
+
 	return msgObj;
 };
 chat_M.getChannelId = function() {
@@ -208,9 +209,8 @@ chat_C.init = function() {
 
 	// init message handlers
 	var msgHandlers = chat_C.createMessageHandlers();
-
 	chat_V.components.tcWS.addMessageHander(function(evt) {
-		console.log(JSON.parse(evt.data));
+		log(JSON.parse(evt.data));
 		msgHandlers.exec(JSON.parse(evt.data));
 	});
 
@@ -278,14 +278,13 @@ chat_C.sendInputKeydown = function(evt) {
 	if (!evt) {
 		var evt = window.event;
 	}
-
 	if (evt.keyCode == 13) {
 		evt.preventDefault(); // sometimes useful
 		chat_C.sendTCMessage();
 	}
 };
 
-chat_C.exitAndBack=function(){
+chat_C.exitAndBack = function() {
 	chat_C.destroy();
 	window.location = getClientUrl("channels.html");
 }

@@ -28,29 +28,29 @@ TcWebSocket.prototype = {
 					try{
 						handler.call(_this,evt);
 					}catch(e){
-						console.log(e);
+						log(e);
 					}
 				}
 			}
 		};
 		
 		this.instance.onopen = function(evt){
-			console.log("onopen");
+			log("onopen");
 			var handlers = _this.handlers["onopen"];
 			execHandlers(handlers,evt);
 		};
 		this.instance.onmessage = function(evt){
-			console.log("onmessage");
+			log("onmessage");
 			var handlers = _this.handlers["onmessage"];
 			execHandlers(handlers,evt);
 		};
 		this.instance.onerror = function(evt){
-			console.log("onerror");
+			log("onerror");
 			var handlers = _this.handlers["onerror"];
 			execHandlers(handlers,evt);
 		};
 		this.instance.onclose = function(evt){
-			console.log("onclose");
+			log("onclose");
 			var handlers = _this.handlers["onclose"];
 			execHandlers(handlers,evt);
 		};

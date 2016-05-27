@@ -18,7 +18,8 @@ channel_V.names = {
 channel_V.components = {
 	tcWS: {},
 	init: function() {
-		channel_V.components.tcWS = new TcWebSocket("ws://localhost:8080/tochatserver/room");
+		channel_V.components.tcWS.URL  = getServerWSUrl("room");
+		channel_V.components.tcWS = new TcWebSocket(channel_V.components.tcWS.URL);
 	}
 }
 
@@ -66,7 +67,7 @@ channel_C.init = function() {
 	});
 
 	channel_V.components.tcWS.addMessageHander(function(evt) {
-		console.log(JSON.parse(evt.data));
+		log(JSON.parse(evt.data));
 		msgHandlers.exec(JSON.parse(evt.data));
 	});
 

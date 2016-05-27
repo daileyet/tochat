@@ -37,8 +37,8 @@
 	</context-param>
 	<context-param>
 		<param-name>easyweb-class-dir</param-name>
-		<param-value>R:\MyGit\tochat\webserver\target\classes</param-value>
-	</context-param>
+		<param-value>R:\MyGit\tochat\webserver\target\tochatserver\WEB-INF\classes</param-value>
+	</context-param> 
 	<session-config>
 		<!-- minutes -->
 		<session-timeout>30</session-timeout>
