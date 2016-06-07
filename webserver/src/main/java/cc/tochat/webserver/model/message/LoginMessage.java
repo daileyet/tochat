@@ -28,6 +28,7 @@ package cc.tochat.webserver.model.message;
 import java.util.HashSet;
 import java.util.Set;
 
+import cc.tochat.webserver.helper.json.Exclude;
 import cc.tochat.webserver.model.IConstant;
 import cc.tochat.webserver.model.User;
 
@@ -49,17 +50,20 @@ public class LoginMessage extends ChatMessage {
 	@SerializedName(IConstant.MSG_LOGIN_USERS)
 	private Set<User> users = new HashSet<User>();
 
+	@Exclude
+	private User user;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public String getContent() {
 		return "";
 	}
 
-	public Set<User> getUser() {
+	public Set<User> getUsers() {
 		return this.users;
 	}
 
-	public void setUser(Set<User> users) {
+	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
 
@@ -70,6 +74,15 @@ public class LoginMessage extends ChatMessage {
 
 	public boolean addUser(User user) {
 		return users.add(user);
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public LoginMessage setUser(User user) {
+		this.user = user;
+		return this;
 	}
 
 }

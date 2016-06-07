@@ -25,6 +25,8 @@
 */
 package cc.tochat.webserver.model;
 
+import cc.tochat.webserver.helper.json.Exclude;
+
 /**
  * @author dailey.yet@outlook.com
  *
@@ -33,10 +35,17 @@ public class Room implements IRecordable {
 	private String id;
 	private String name;
 	private String owner;
+	@Exclude
 	private String active;
+	@Exclude
 	private String createon;
+	@Exclude
 	private Float period;
 	private String desc;
+	@Exclude
+	private String securitycode;
+	@Exclude
+	private String starton;
 
 	@Override
 	public String getId() {
@@ -93,6 +102,22 @@ public class Room implements IRecordable {
 
 	public void setDesc(String desc) {
 		this.desc = desc;
+	}
+
+	public String getSecuritycode() {
+		return securitycode;
+	}
+
+	public void setSecuritycode(String securitycode) {
+		this.securitycode = securitycode;
+	}
+
+	public String getStarton() {
+		return starton;
+	}
+
+	public void setStarton(String starton) {
+		this.starton = starton;
 	}
 
 	@Override

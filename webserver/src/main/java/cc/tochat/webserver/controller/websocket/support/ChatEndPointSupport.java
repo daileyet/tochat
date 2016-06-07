@@ -78,6 +78,8 @@ public class ChatEndPointSupport implements IEndPointSupported<ChatEndPoint, Cha
 	public IChatMessageHander getMessageHander(final Session session) {
 		securityService.requireValidated(session);
 		final ChatSession chatSession = ChatSession.convert(session);
+		final User currentUser = securityService.getValidatedUser(session);
+
 		return new IChatMessageHander() {
 
 			@Override
@@ -94,7 +96,7 @@ public class ChatEndPointSupport implements IEndPointSupported<ChatEndPoint, Cha
 
 			@Override
 			public void processLoginBroadcast() {
-				LoginMessage loginMessage = LoginMessage.empty();
+				LoginMessage loginMessage = LoginMessage.empty().setUser(currentUser);
 				for (ChatSession cs : sessionCache.getSessionGroup(chatSession)) {
 					User user = securityService.getValidatedUser(cs.getInstance());
 					if (user != null) {
@@ -107,7 +109,8 @@ public class ChatEndPointSupport implements IEndPointSupported<ChatEndPoint, Cha
 
 			@Override
 			public void processLogoutBroadcast() {
-				LogoutMessage logoutMessage = LogoutMessage.empty();
+				LogoutMessage logoutMessage = LogoutMessage.empty().setUser(currentUser);
+
 				for (ChatSession cs : sessionCache.getSessionGroup(chatSession)) {
 					if (cs.equals(chatSession))
 						continue;
@@ -121,8 +124,7 @@ public class ChatEndPointSupport implements IEndPointSupported<ChatEndPoint, Cha
 
 			@Override
 			public void processSessionUser() {
-				User user = securityService.getValidatedUser(session);
-				chatSession.sendMessage(UserInfoMessage.valueOf(user));
+				chatSession.sendMessage(UserInfoMessage.valueOf(currentUser));
 			}
 		};
 	}

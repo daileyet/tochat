@@ -28,10 +28,11 @@ package cc.tochat.webserver.model.message;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.google.gson.annotations.SerializedName;
-
+import cc.tochat.webserver.helper.json.Exclude;
 import cc.tochat.webserver.model.IConstant;
 import cc.tochat.webserver.model.User;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * @author dailey.yet@outlook.com
@@ -39,25 +40,37 @@ import cc.tochat.webserver.model.User;
  */
 public class LogoutMessage extends ChatMessage {
 	@SerializedName(IConstant.MSG_LOGIN_USERS)
-	private Set<User> users=new HashSet<User>();
+	private Set<User> users = new HashSet<User>();
+	@Exclude
+	private User user;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public String getContent() {
 		return "";
 	}
-	public boolean addUser(User user){
+
+	public boolean addUser(User user) {
 		return users.add(user);
 	}
-	
+
 	public Set<User> getUsers() {
 		return users;
 	}
-	
+
 	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
-	
+
+	public User getUser() {
+		return user;
+	}
+
+	public LogoutMessage setUser(User user) {
+		this.user = user;
+		return this;
+	}
+
 	public static LogoutMessage empty() {
 		LogoutMessage logoutMessage = new LogoutMessage();
 		return logoutMessage;

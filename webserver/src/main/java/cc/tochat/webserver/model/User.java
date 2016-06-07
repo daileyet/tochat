@@ -41,6 +41,10 @@ public class User implements IRecordable {
 	private String alias;
 	@Exclude
 	private String lastip;
+	@Exclude
+	private String createon;
+	@Exclude
+	private String lock;
 
 	@Override
 	public String getId() {
@@ -95,6 +99,22 @@ public class User implements IRecordable {
 
 	public void setLastip(String lastip) {
 		this.lastip = lastip;
+	}
+
+	public String getCreateon() {
+		return createon;
+	}
+
+	public void setCreateon(String createon) {
+		this.createon = createon;
+	}
+
+	public String getLock() {
+		return lock;
+	}
+
+	public void setLock(String lock) {
+		this.lock = lock;
 	}
 
 	@Override

@@ -18,7 +18,7 @@ window.tochat = window.tochat || {
 			}
 		},
 		current: function() {
-			return window.tochat.envConf.prod;
+			return window.tochat.envConf.dev;
 		}
 	},
 	isLogin: function() {
