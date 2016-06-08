@@ -16,34 +16,42 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: ChatRoomServiceImpl.java 
-* @Package cc.tochat.webserver.service.impl 
+* @Title: DhibernateHelper.java 
+* @Package cc.tochat.webserver.dao.impl 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 29, 2016
+* @date Jun 8, 2016
 * @version V1.0   
 */
-package cc.tochat.webserver.service.impl;
+package cc.tochat.webserver.dao.impl;
 
-import java.util.List;
+import cc.tochat.webserver.dao.BaseDao;
 
-import cc.tochat.webserver.dao.ChannelDao;
-import cc.tochat.webserver.dao.impl.ChannelDaoImpl;
-import cc.tochat.webserver.model.Room;
-import cc.tochat.webserver.service.ChatRoomService;
-
-import com.openthinks.easyweb.context.WebContexts;
+import com.openthinks.libs.sql.dhibernate.Session;
+import com.openthinks.libs.sql.dhibernate.support.SessionFactory;
+import com.openthinks.libs.utilities.InstanceUtilities;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
-public class ChatRoomServiceImpl implements ChatRoomService {
+public abstract class DhibernateHelper {
+	protected Session session;
 
-	private ChannelDao channelDao = WebContexts.get().lookup(ChannelDaoImpl.class);
+	public DhibernateHelper() {
+		this.session = SessionFactory.getSession();
+	}
 
-	@Override
-	public List<Room> getRooms(int count, Long offset) {
-		return channelDao.list(count, offset);
+	public Session getSession() {
+		if (this.session == null) {
+			this.session = SessionFactory.getSession();
+		}
+		return session;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends BaseDao> T newInstance() {
+		Class<T> clazz = (Class<T>) this.getClass();
+		return InstanceUtilities.create(clazz, null);
 	}
 }

@@ -1,4 +1,4 @@
-package cc.tochat.webserver.test;
+package cc.tochat.webserver;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

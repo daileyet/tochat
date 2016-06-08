@@ -8,6 +8,9 @@ import com.openthinks.easyweb.annotation.configure.RequestSuffixs;
 import com.openthinks.easyweb.annotation.configure.ScanPackages;
 import com.openthinks.easyweb.context.Bootstrap;
 import com.openthinks.easyweb.utils.json.OperationJson;
+import com.openthinks.libs.sql.dhibernate.support.SessionFactory;
+import com.openthinks.libs.sql.lang.Configurator;
+import com.openthinks.libs.sql.lang.ConfiguratorFactory;
 import com.openthinks.libs.utilities.logger.ProcessLogger;
 
 @EasyConfigure
@@ -17,8 +20,6 @@ public class EasyWebConfigure implements Bootstrap {
 
 	@Override
 	public void cleanUp() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -26,5 +27,9 @@ public class EasyWebConfigure implements Bootstrap {
 		ProcessLogger.currentLevel = ProcessLogger.PLLevel.DEBUG;
 		OperationJson.setGsonInstance(new GsonBuilder().setExclusionStrategies(new AnnotationExclusionStrategy())
 				.create());
+
+		Configurator configuration = ConfiguratorFactory.getInstance(getClass().getResourceAsStream(
+				"/dbconfig.properties"));
+		SessionFactory.setDefaultConfigurator(configuration);
 	}
 }

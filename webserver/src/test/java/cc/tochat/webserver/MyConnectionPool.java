@@ -16,34 +16,36 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-* @Title: ChatRoomServiceImpl.java 
-* @Package cc.tochat.webserver.service.impl 
+* @Title: MyConnectionPool.java 
+* @Package openthinks.libs.sql 
 * @Description: TODO
 * @author dailey.yet@outlook.com  
-* @date Apr 29, 2016
+* @date Aug 3, 2015
 * @version V1.0   
 */
-package cc.tochat.webserver.service.impl;
+package cc.tochat.webserver;
 
-import java.util.List;
-
-import cc.tochat.webserver.dao.ChannelDao;
-import cc.tochat.webserver.dao.impl.ChannelDaoImpl;
-import cc.tochat.webserver.model.Room;
-import cc.tochat.webserver.service.ChatRoomService;
-
-import com.openthinks.easyweb.context.WebContexts;
+import com.openthinks.libs.sql.dao.pool.impl.SimpleConnectionPool;
+import com.openthinks.libs.sql.lang.Configurator;
+import com.openthinks.libs.sql.lang.ConfiguratorFactory;
 
 /**
  * @author dailey.yet@outlook.com
  *
  */
-public class ChatRoomServiceImpl implements ChatRoomService {
+public class MyConnectionPool extends SimpleConnectionPool {
 
-	private ChannelDao channelDao = WebContexts.get().lookup(ChannelDaoImpl.class);
-
-	@Override
-	public List<Room> getRooms(int count, Long offset) {
-		return channelDao.list(count, offset);
+	/**
+	 * @param configurator
+	 */
+	public MyConnectionPool(Configurator configurator) {
+		super(configurator);
+		System.out.println("Constructor");
 	}
+
+	public MyConnectionPool() {
+		super(ConfiguratorFactory.getDefaultInstance());
+		System.out.println("no Constructor");
+	}
+
 }

@@ -1,4 +1,4 @@
-package cc.tochat.webserver.test;
+package cc.tochat.webserver;
 
 import cc.tochat.webserver.model.User;
 import cc.tochat.webserver.model.message.LoginMessage;

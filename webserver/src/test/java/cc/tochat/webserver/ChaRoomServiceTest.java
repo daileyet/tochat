@@ -1,4 +1,4 @@
-package cc.tochat.webserver.test;
+package cc.tochat.webserver;
 
 import java.util.Date;
 import java.util.List;
